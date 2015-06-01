@@ -16,11 +16,12 @@
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
-
+	
   <!-- Other module inherits                                      -->
-
+  <inherits name="gwt.material.design.GwtMaterialDesign" />
+  
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='dtu.cdio_final.client.Group13cdio_final'/>
+  <entry-point class='dtu.cdio_final.client.Group13cdio_final'></entry-point>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
