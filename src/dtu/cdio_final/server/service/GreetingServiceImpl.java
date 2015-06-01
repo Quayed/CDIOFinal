@@ -1,4 +1,4 @@
-package dtu.cdio_final.server;
+package dtu.cdio_final.server.service;
 
 import dtu.cdio_final.client.GreetingService;
 import dtu.cdio_final.shared.FieldVerifier;
