@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialTitle title="Users" />
+<table class="striped responsive-table">
+  <thead>
+    <tr>
+      <th data-field="id">UserID</th>
+	  <th data-field="name">Name</th>
+	  <th data-field="price">Ini</th>
+	  <th data-field="price">Password</th>
+	  <th data-field="price">Ini</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+	  <td>Alvin</td>
+	  <td>Eclair</td>
+	  <td>$0.87</td>
+	</tr>
+	<tr>
+	  <td>Alan</td>
+	  <td>Jellybean</td>
+	  <td>$3.76</td>
+	</tr>
+	<tr>
+	  <td>Jonathan</td>
+	  <td>Lollipop</td>
+	  <td>$7.00</td>
+	</tr>
+  </tbody>
+</table>
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 
