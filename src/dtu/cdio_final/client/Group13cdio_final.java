@@ -24,6 +24,8 @@ public class Group13cdio_final implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		RootPanel.get().add(new MainComposite());
+		MainComposite gui = new MainComposite();
+		RootPanel.get().add(gui);
+		gui.setContent(new LoginComposite());
 	}
 }

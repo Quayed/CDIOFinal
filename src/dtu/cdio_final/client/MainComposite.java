@@ -36,4 +36,13 @@ public class MainComposite extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 
 	}
+	
+	public void showMenu(int role){
+		
+	}
+	
+	public void setContent(Widget widget){
+		contentPanel.clear();
+		contentPanel.add(widget);
+	}
 }

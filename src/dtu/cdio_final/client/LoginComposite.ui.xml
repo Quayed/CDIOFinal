@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+		.login{
+			width: 300px;
+			margin: auto;
+
+		}
+	</ui:style>
+	<g:HTMLPanel styleName="{style.login}" >
+		
+		<m:MaterialTitle title="Login"></m:MaterialTitle>
+		<m:MaterialLabel>UserID</m:MaterialLabel>
+		<g:TextBox />
+		<m:MaterialLabel>Password</m:MaterialLabel>
+		<g:PasswordTextBox />
+		
+		<m:MaterialButton text="Login"></m:MaterialButton>
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 

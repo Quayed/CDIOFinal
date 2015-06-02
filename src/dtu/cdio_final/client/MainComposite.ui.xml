@@ -17,12 +17,12 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 		.panel{
 			padding-left: 5%;
 			width: 100%;
-			margin-top: -150px;
 			padding: 10px 50px 150px 50px;
 			background: #FFF;
 			box-sizing: border-box;
 			-webkit-box-sizing: border-box;
 			-moz-box-sizing: border-box;
+			max-width: none !important;
 		}
 		.pointer{
 			cursor: pointer;
@@ -32,6 +32,7 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 		}
 		.footer{
 			margin-top: -50px !important;
+			text-align: center;
 		}
 		.logo{
 			padding: 10px;
@@ -40,7 +41,7 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 	</ui:style>	
 	<g:HTMLPanel >
 			<main>
-				<m:MaterialNavBar wave="blue" ui:field="navBar" name="myNavBar"  sideBar="fixed" color="blue darken-1"  align="right" >
+				<m:MaterialNavBar wave="blue" ui:field="navBar" name="myNavBar" sideBar="fixed" color="blue darken-1"  align="right" >
 					<m:sidebaritem>
 						<m:MaterialTitle color="blue" description="Group 13" title="CDIO Final" ></m:MaterialTitle>
 					</m:sidebaritem>
@@ -51,23 +52,7 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 					<m:sidebaritem><m:MaterialLink href="#" ui:field="productBatchPage" text="ProductBatches" textColor="blue"/></m:sidebaritem>
 				</m:MaterialNavBar>
 	
-				
-				
-				<g:HTMLPanel ui:field="contentPanel" addStyleNames="{style.panel} container z-depth-2">
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<p>sdsdfsdfsadfsdf</p>
-					<!-- <p:Team /> -->
+				<g:HTMLPanel ui:field="contentPanel" addStyleNames="{style.panel} container z-depth-2">				
 				</g:HTMLPanel>
 			</main>	
 			<m:MaterialFooter color="blue" copyright="© 2015 Copyright GWT Material" addStyleNames="{style.footer}">
