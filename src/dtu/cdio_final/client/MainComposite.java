@@ -34,11 +34,38 @@ public class MainComposite extends Composite {
 	
 	public MainComposite() {
 		initWidget(uiBinder.createAndBindUi(this));
-
+		showMenu(0);
 	}
 	
 	public void showMenu(int role){
-		
+		if(role == 3){
+			userPage.setVisible(true);
+			materialPage.setVisible(true);
+			formulaPage.setVisible(true);
+			materialBatchPage.setVisible(true);
+			productBatchPage.setVisible(true);
+		}
+		else if(role == 2){
+			userPage.setVisible(false);
+			materialPage.setVisible(true);
+			formulaPage.setVisible(true);
+			materialBatchPage.setVisible(true);
+			productBatchPage.setVisible(true);
+		}
+		else if(role == 1){
+			userPage.setVisible(false);
+			materialPage.setVisible(false);
+			formulaPage.setVisible(false);
+			materialBatchPage.setVisible(true);
+			productBatchPage.setVisible(true);
+		}
+		else if(role == 0){
+			userPage.setVisible(false);
+			materialPage.setVisible(false);
+			formulaPage.setVisible(false);
+			materialBatchPage.setVisible(false);
+			productBatchPage.setVisible(false);
+		}
 	}
 	
 	public void setContent(Widget widget){
