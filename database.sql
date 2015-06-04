@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS formula;
 DROP TABLE IF EXISTS materialbatch;
 DROP TABLE IF EXISTS material;
 
-CREATE TABLE `user`(user_id INT PRIMARY KEY, user_name TEXT NOT NULL, ini TEXT NOT NULL, cpr TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role INT NOT NULL, status INT NOT NULL) ENGINE=innoDB;
+CREATE TABLE `user`(user_id INT PRIMARY KEY, user_name TEXT NOT NULL, ini TEXT NOT NULL, cpr VARCHAR(10) NOT NULL UNIQUE, password TEXT NOT NULL, role INT NOT NULL, status INT NOT NULL) ENGINE=innoDB;
  
 CREATE TABLE material(material_id INT PRIMARY KEY, material_name TEXT NOT NULL, provider TEXT NOT NULL) ENGINE=innoDB;
 
