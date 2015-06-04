@@ -1,36 +1,36 @@
 DROP TABLE IF EXISTS productbatch_component;
 DROP TABLE IF EXISTS productbatch;
-DROP TABLE IF EXISTS operator;
+DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS formula_component;
 DROP TABLE IF EXISTS formula;
 DROP TABLE IF EXISTS materialbatch;
 DROP TABLE IF EXISTS material;
 
-CREATE TABLE operator(opr_id INT PRIMARY KEY AUTO_INCREMENT, opr_name TEXT, ini TEXT, cpr TEXT, password TEXT) ENGINE=innoDB;
+CREATE TABLE `user`(user_id INT PRIMARY KEY, user_name TEXT NOT NULL, ini TEXT NOT NULL, cpr TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role INT NOT NULL, status INT NOT NULL) ENGINE=innoDB;
  
-CREATE TABLE material(material_id INT PRIMARY KEY AUTO_INCREMENT, material_name TEXT, provider TEXT) ENGINE=innoDB;
+CREATE TABLE material(material_id INT PRIMARY KEY, material_name TEXT NOT NULL, provider TEXT NOT NULL) ENGINE=innoDB;
 
-CREATE TABLE materialbatch(mb_id INT PRIMARY KEY AUTO_INCREMENT, material_id INT NOT NULL, quantity REAL, 
+CREATE TABLE materialbatch(mb_id INT PRIMARY KEY, material_id INT NOT NULL, quantity REAL NOT NULL, 
    FOREIGN KEY (material_id) REFERENCES material(material_id)) ENGINE=innoDB;
 
-CREATE TABLE formula(formula_id INT PRIMARY KEY AUTO_INCREMENT, formula_name TEXT) ENGINE=innoDB;
+CREATE TABLE formula(formula_id INT PRIMARY KEY, formula_name TEXT) ENGINE=innoDB;
 
-CREATE TABLE formula_component(formula_id INT, material_id INT, nom_netto REAL, tolerance REAL, 
+CREATE TABLE formula_component(formula_id INT NOT NULL, material_id INT NOT NULL, nom_netto REAL NOT NULL, tolerance REAL NOT NULL, 
    PRIMARY KEY (formula_id, material_id), 
    FOREIGN KEY (formula_id) REFERENCES formula(formula_id), 
    FOREIGN KEY (material_id) REFERENCES material(material_id)) ENGINE=innoDB;
 
-CREATE TABLE productbatch(pb_id INT PRIMARY KEY AUTO_INCREMENT, status INT, formula_id INT NOT NULL, 
+CREATE TABLE productbatch(pb_id INT PRIMARY KEY, status INT NOT NULL, formula_id INT NOT NULL, 
    FOREIGN KEY (formula_id) REFERENCES formula(formula_id)) ENGINE=innoDB;
 
-CREATE TABLE productbatch_component(pb_id INT, mb_id INT, tare REAL, netto REAL, opr_id INT NOT NULL, 
+CREATE TABLE productbatch_component(pb_id INT, mb_id INT, tare REAL NOT NULL, netto REAL NOT NULL, user_id INT NOT NULL, 
    PRIMARY KEY (pb_id, mb_id), 
    FOREIGN KEY (pb_id) REFERENCES productbatch(pb_id), 
    FOREIGN KEY (mb_id) REFERENCES materialbatch(mb_id), 
-   FOREIGN KEY (opr_id) REFERENCES operator(opr_id)) ENGINE=innoDB;
+   FOREIGN KEY (user_id) REFERENCES `user`(user_id)) ENGINE=innoDB;
 
 
-INSERT INTO operator(opr_id, opr_name, ini, cpr, password) VALUES
+INSERT INTO `user`(user_id, user_name, ini, cpr, password) VALUES
 (1, 'Angelo A', 'AA', '070770-7007', 'lKje4fa'),
 (2, 'Antonella B', 'AB', '080880-8008', 'atoJ21v'),
 (3, 'Luigi C', 'LC', '090990-9009', 'jEfm5aQ');
@@ -83,7 +83,7 @@ INSERT INTO productbatch(pb_id, formula_id, status) VALUES
 (5, 3, 0);
 
 
-INSERT INTO productbatch_component(pb_id, mb_id, tare, netto, opr_id) VALUES
+INSERT INTO productbatch_component(pb_id, mb_id, tare, netto, user_id) VALUES
 (1, 1, 0.5, 10.05, 1),
 (1, 2, 0.5, 2.03, 1),
 (1, 4, 0.5, 1.98, 1),
