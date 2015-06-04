@@ -7,11 +7,11 @@ package dtu.cdio_final.shared.dto;
  * @version 1.2
  */
 
-public class OperatorDTO {
+public class UserDTO {
 	/** Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges af brugerne */
-	private int oprID;
+	private int userID;
 	/** Operatoernavn (opr_navn) min. 2 max. 20 karakterer */
-	private String oprName;
+	private String userName;
 	/** Operatoer-initialer min. 2 max. 3 karakterer */
 	private String ini;
 	/** Operatoer cpr-nr 10 karakterer */
@@ -19,35 +19,35 @@ public class OperatorDTO {
 	/** Operatoer password min. 7 max. 8 karakterer */
 	private String password;
 
-	public OperatorDTO(int oprID, String oprName, String ini, String cpr, String password) {
-		this.oprID = oprID;
-		this.oprName = oprName;
+	public UserDTO(int userID, String userName, String ini, String cpr, String password) {
+		this.userID = userID;
+		this.userName = userName;
 		this.ini = ini;
 		this.cpr = cpr;
 		this.password = password;
 	}
 
-	public OperatorDTO(OperatorDTO opr) {
-		this.oprID = opr.getOprID();
-		this.oprName = opr.getOprName();
-		this.ini = opr.getIni();
-		this.cpr = opr.getCpr();
-		this.password = opr.getPassword();
+	public UserDTO(UserDTO user) {
+		this.userID = user.getUserID();
+		this.userName = user.getUserName();
+		this.ini = user.getIni();
+		this.cpr = user.getCpr();
+		this.password = user.getPassword();
 	}
 
-	public int getOprID() {
-		return oprID;
+	public int getUserID() {
+		return userID;
 	}
-	public void setOprID(int oprID) {
-		this.oprID = oprID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	
-	public String getOprName() {
-		return oprName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setOprName(String oprName) {
-		this.oprName = oprName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getIni() {
@@ -75,7 +75,7 @@ public class OperatorDTO {
 	}
 
 	public String toString() {
-		return oprID + "\t" + oprName + "\t" + ini + "\t" + cpr + "\t" + password;
+		return userID + "\t" + userName + "\t" + ini + "\t" + cpr + "\t" + password;
 	}
 
 }

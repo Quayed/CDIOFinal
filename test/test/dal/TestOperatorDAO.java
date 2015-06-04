@@ -12,29 +12,29 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import dtu.cdio_final.server.dal.connector.Connector;
-import dtu.cdio_final.server.dal.daoimpl.OperatorDAO;
+import dtu.cdio_final.server.dal.daoimpl.UserDAO;
 import dtu.cdio_final.server.dal.daointerfaces.DALException;
-import dtu.cdio_final.server.dal.daointerfaces.IOperatorDAO;
-import dtu.cdio_final.shared.dto.OperatorDTO;
+import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.shared.dto.UserDTO;
 
 public class TestOperatorDAO{
 
 	private static int insertID;
 	
-	private static IOperatorDAO operatorDAO;
-	private OperatorDTO operatorDTO;
+	private static IUserDAO operatorDAO;
+	private UserDTO operatorDTO;
 	
 	@BeforeClass
 	public static void connect() {
 				
-		operatorDAO = new OperatorDAO();
+		operatorDAO = new UserDAO();
 
 	}
 	
 	@Test
 	public void getOperator() {
 		try {
-			operatorDTO = operatorDAO.getOperator(3);
+			operatorDTO = operatorDAO.getUser(3);
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
@@ -44,7 +44,7 @@ public class TestOperatorDAO{
 	@Test
 	public void getOperatorList() {
 		try {
-			operatorDAO.getOperatorList();
+			operatorDAO.getUserList();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
@@ -52,35 +52,35 @@ public class TestOperatorDAO{
 	
 	@Test
 	public void createUpdateOperator() {
-		operatorDTO = new OperatorDTO(0, "Don Juan", "DJ", "000000-0000", "iloveyou");
+		operatorDTO = new UserDTO(0, "Don Juan", "DJ", "000000-0000", "iloveyou");
 		try {
-			operatorDAO.createOperator(operatorDTO);
-			insertID = operatorDTO.getOprID();
+			operatorDAO.createUser(operatorDTO);
+			insertID = operatorDTO.getUserID();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
 
 		try {
-			operatorDTO = operatorDAO.getOperator(insertID);
+			operatorDTO = operatorDAO.getUser(insertID);
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
 
 		operatorDTO.setIni("DoJu");
 		try {
-			operatorDAO.updateOperator(operatorDTO);
+			operatorDAO.updateUser(operatorDTO);
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
 
 		try {
-			assertEquals(operatorDTO.getIni(), operatorDAO.getOperator(insertID).getIni());
+			assertEquals(operatorDTO.getIni(), operatorDAO.getUser(insertID).getIni());
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
 
 		try {
-			assertNull(operatorDAO.getOperator(insertID+1));
+			assertNull(operatorDAO.getUser(insertID+1));
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

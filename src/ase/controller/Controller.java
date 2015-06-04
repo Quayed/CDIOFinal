@@ -7,7 +7,7 @@ import java.util.Scanner;
 import ase.entity.DAO;
 import ase.entity.IDAO;
 import dtu.cdio_final.shared.dto.MaterialDTO;
-import dtu.cdio_final.shared.dto.OperatorDTO;
+import dtu.cdio_final.shared.dto.UserDTO;
 
 public class Controller {
 	
@@ -17,7 +17,7 @@ public class Controller {
 	private IDAO dao = new DAO();
 	private SocketConnector connector;
 
-	private OperatorDTO currentOperator;
+	private UserDTO currentUser;
 	private MaterialDTO material;
 
 	public Controller() {
@@ -60,7 +60,7 @@ public class Controller {
 		boolean running = true;
 		do {
 			try {
-				getOperator();
+				getUser();
 				getMaterialBatch();
 				weight();
 
@@ -70,21 +70,21 @@ public class Controller {
 		} while (running);
 	}
 
-	private void getOperator() throws IOException, RestartException {
+	private void getUser() throws IOException, RestartException {
 
-		int oprID = connector.getAnId("oprNr?");
-		OperatorDTO operator = dao.getOperator(oprID);
+		int userID = connector.getAnId("userID?");
+		UserDTO user = dao.getUser(userID);
 
 		do {
 
-			while (oprID == 0 || operator == null) {
-				oprID = connector.getAnId("Ugyldig, oprNr?");
-				operator = dao.getOperator(oprID);
+			while (userID == 0 || user == null) {
+				userID = connector.getAnId("Ugyldig, userID?");
+				user = dao.getUser(userID);
 			}
 
-		} while (!connector.confirm(operator.getOprName() + "?"));
+		} while (!connector.confirm(user.getUserName() + "?"));
 
-		currentOperator = operator;
+		currentUser = user;
 
 	}
 
@@ -152,6 +152,6 @@ public class Controller {
 		}
 
 		dao.updateMaterial(material.getMaterialID(), netto,
-				currentOperator.getOprID());
+				currentUser.getUserID());
 	}
 }

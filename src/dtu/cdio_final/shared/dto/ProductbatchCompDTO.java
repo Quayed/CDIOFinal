@@ -3,14 +3,14 @@ package dtu.cdio_final.shared.dto;
 public class ProductbatchCompDTO {
 	private int pbID; // produktbatchets id
 	private int mbID; // i omraadet 1-99999999
-	private int oprID; // operatoer-nummer
+	private int userID; // operatoer-nummer
 	private double tare;
 	private double netto;
 
-	public ProductbatchCompDTO(int pbID, int mbID, int oprID, double tare, double netto) {
+	public ProductbatchCompDTO(int pbID, int mbID, int userID, double tare, double netto) {
 		this.pbID = pbID;
 		this.mbID = mbID;
-		this.oprID = oprID;
+		this.userID = userID;
 		this.tare = tare;
 		this.netto = netto;
 		
@@ -32,12 +32,12 @@ public class ProductbatchCompDTO {
 		this.mbID = mbID;
 	}
 
-	public int getOprID() {
-		return oprID;
+	public int getUserID() {
+		return userID;
 	}
 
-	public void setOprID(int oprID) {
-		this.oprID = oprID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	
 	public double getTare() {
@@ -57,6 +57,6 @@ public class ProductbatchCompDTO {
 	}
 
 	public String toString() {
-		return pbID + "\t" + mbID + "\t" + "\t" + oprID + tare + "\t" + netto;
+		return pbID + "\t" + mbID + "\t" + "\t" + userID + tare + "\t" + netto;
 	}
 }

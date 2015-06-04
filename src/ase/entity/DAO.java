@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import dtu.cdio_final.shared.dto.MaterialDTO;
-import dtu.cdio_final.shared.dto.OperatorDTO;
+import dtu.cdio_final.shared.dto.UserDTO;
 
 public class DAO implements IDAO {
 
@@ -21,8 +21,8 @@ public class DAO implements IDAO {
 	private BufferedWriter writer;
 	
 	@Override
-	public OperatorDTO getOperator(int oprID) {
-		return new OperatorDTO(oprID, "Test Operator", null, null, null);
+	public UserDTO getUser(int userID) {
+		return new UserDTO(userID, "Test User", null, null, null);
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class DAO implements IDAO {
 	}
 
 	@Override
-	public void updateMaterial(int getMaterialID, double netto, int oprID) throws IOException {
+	public void updateMaterial(int getMaterialID, double netto, int userID) throws IOException {
 		reader = new BufferedReader(new FileReader("store.txt"));
 		
 		double materialLeft = 0;
@@ -87,14 +87,14 @@ public class DAO implements IDAO {
 		}
 		writer.close();
 		
-		updateLog(getMaterialID, netto, oprID, materialLeft);
+		updateLog(getMaterialID, netto, userID, materialLeft);
 	}
 
-	private void updateLog(int materialID, double netto, int oprID, double materialLeft) throws IOException{
+	private void updateLog(int materialID, double netto, int userID, double materialLeft) throws IOException{
 		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String currentDate = String.valueOf(format.format(new Date()));
 		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));
-		writer.append(currentDate + "," + String.valueOf(oprID) + "," + String.valueOf(materialID) + "," + String.valueOf(netto) + "," + String.valueOf(materialLeft));
+		writer.append(currentDate + "," + String.valueOf(userID) + "," + String.valueOf(materialID) + "," + String.valueOf(netto) + "," + String.valueOf(materialLeft));
 		writer.close();
 	}
 	
