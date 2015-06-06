@@ -1,5 +1,7 @@
 package dtu.cdio_final.shared.dto;
 
+import java.io.Serializable;
+
 /**
  * Raavare Data Objekt
  * 
@@ -7,7 +9,7 @@ package dtu.cdio_final.shared.dto;
  * @version 1.2
  */
 
-public class MaterialDTO {
+public class MaterialDTO implements Serializable {
 	/** i omraadet 1-99999999 vaelges af brugerne */
 	private int materialID;
 	/** min. 2 max. 20 karakterer */
@@ -15,6 +17,9 @@ public class MaterialDTO {
 	/** min. 2 max. 20 karakterer */
 	private String provider;
 
+	public MaterialDTO() {
+	}
+	
 	public MaterialDTO(int materialID, String materialName, String provider) {
 		this.materialID = materialID;
 		this.materialName = materialName;

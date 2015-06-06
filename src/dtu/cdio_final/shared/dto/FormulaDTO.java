@@ -1,5 +1,7 @@
 package dtu.cdio_final.shared.dto;
 
+import java.io.Serializable;
+
 /**
  * Recept Data Objekt
  * 
@@ -7,7 +9,7 @@ package dtu.cdio_final.shared.dto;
  * @version 1.2
  */
 
-public class FormulaDTO {
+public class FormulaDTO implements Serializable {
 	/** Recept nr i omraadet 1-99999999 */
 	private int formulaID;
 	/** formulaName min. 2 max. 20 karakterer */
@@ -15,6 +17,9 @@ public class FormulaDTO {
 
 	/** liste af kompenenter i recepten */
 
+	public FormulaDTO() {
+	}
+	
 	public FormulaDTO(int formulaID, String formulaName) {
 		this.formulaID = formulaID;
 		this.formulaName = formulaName;

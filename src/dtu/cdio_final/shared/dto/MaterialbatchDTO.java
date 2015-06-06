@@ -1,10 +1,15 @@
 package dtu.cdio_final.shared.dto;
 
-public class MaterialbatchDTO {
+import java.io.Serializable;
+
+public class MaterialbatchDTO implements Serializable {
 	private int mbID; // i omraadet 1-99999999
 	private int materialID; // i omraadet 1-99999999
 	private double quantity; // kan vaere negativ
 
+	public MaterialbatchDTO() {
+	}
+	
 	public MaterialbatchDTO(int mbID, int materialID, double quantity) {
 		this.mbID = mbID;
 		this.materialID = materialID;

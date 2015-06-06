@@ -16,6 +16,16 @@
     <url-pattern>/group13cdio_final/greet</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>dataServlet</servlet-name>
+    <servlet-class>dtu.cdio_final.server.service.DataServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>dataServlet</servlet-name>
+    <url-pattern>/group13cdio_final/data</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Group13cdio_final.html</welcome-file>

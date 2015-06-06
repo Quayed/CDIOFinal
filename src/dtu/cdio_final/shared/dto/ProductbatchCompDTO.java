@@ -1,12 +1,17 @@
 package dtu.cdio_final.shared.dto;
 
-public class ProductbatchCompDTO {
+import java.io.Serializable;
+
+public class ProductbatchCompDTO implements Serializable {
 	private int pbID; // produktbatchets id
 	private int mbID; // i omraadet 1-99999999
 	private int userID; // operatoer-nummer
 	private double tare;
 	private double netto;
 
+	public ProductbatchCompDTO() {
+	}
+	
 	public ProductbatchCompDTO(int pbID, int mbID, int userID, double tare, double netto) {
 		this.pbID = pbID;
 		this.mbID = mbID;

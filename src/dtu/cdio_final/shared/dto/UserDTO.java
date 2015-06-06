@@ -1,5 +1,7 @@
 package dtu.cdio_final.shared.dto;
 
+import java.io.Serializable;
+
 /**
  * Operatoer Data Access Objekt
  * 
@@ -7,7 +9,7 @@ package dtu.cdio_final.shared.dto;
  * @version 1.2
  */
 
-public class UserDTO {
+public class UserDTO implements Serializable {
 	/** Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges af brugerne */
 	private int userID;
 	/** Operatoernavn (opr_navn) min. 2 max. 20 karakterer */
@@ -19,20 +21,15 @@ public class UserDTO {
 	/** Operatoer password min. 7 max. 8 karakterer */
 	private String password;
 
+	public UserDTO() {
+	}
+	
 	public UserDTO(int userID, String userName, String ini, String cpr, String password) {
 		this.userID = userID;
 		this.userName = userName;
 		this.ini = ini;
 		this.cpr = cpr;
 		this.password = password;
-	}
-
-	public UserDTO(UserDTO user) {
-		this.userID = user.getUserID();
-		this.userName = user.getUserName();
-		this.ini = user.getIni();
-		this.cpr = user.getCpr();
-		this.password = user.getPassword();
 	}
 
 	public int getUserID() {

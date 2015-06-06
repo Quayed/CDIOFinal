@@ -1,11 +1,16 @@
 package dtu.cdio_final.shared.dto;
 
-public class FormulaCompDTO {
+import java.io.Serializable;
+
+public class FormulaCompDTO implements Serializable {
 	private int formulaID; // auto genereres fra 1..n
 	private int materialID; // i omraadet 1-99999999
 	private double nomNetto; // skal vaere positiv og passende stor
 	private double tolerance; // skal vaere positiv og passende stor
 
+	public FormulaCompDTO() {
+	}
+	
 	public FormulaCompDTO(int formulaID, int materialID, double nomNetto, double tolerance) {
 		this.formulaID = formulaID;
 		this.materialID = materialID;

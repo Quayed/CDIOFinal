@@ -2,7 +2,11 @@ package dtu.cdio_final.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
+
+import dtu.cdio_final.client.service.DataService;
+import dtu.cdio_final.client.service.DataServiceAsync;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -26,6 +30,15 @@ public class Group13cdio_final implements EntryPoint {
 	public void onModuleLoad() {
 		MainComposite gui = new MainComposite();
 		RootPanel.get().add(gui);
-		gui.setContent(new UsersComposite());
+		
+		
+		
+		String url = GWT.getModuleBaseURL() + "data";	
+		DataServiceAsync service = GWT.create(DataService.class);
+		ServiceDefTarget endpoint = (ServiceDefTarget) service;
+		endpoint.setServiceEntryPoint(url);
+		
+		
+		gui.setContent(new UsersComposite(service));
 	}
 }

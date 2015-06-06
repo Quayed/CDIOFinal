@@ -1,10 +1,15 @@
 package dtu.cdio_final.shared.dto;
 
-public class ProductbatchDTO {
+import java.io.Serializable;
+
+public class ProductbatchDTO implements Serializable {
 	private int pbID; // i omraadet 1-99999999
 	private int formulaID;
 	private int status; // 0: ikke paabegyndt, 1: under produktion, 2: afsluttet
 
+	public ProductbatchDTO() {
+	}
+	
 	public ProductbatchDTO(int pbID, int formulaID, int status) {
 		this.pbID = pbID;
 		this.formulaID = formulaID;
