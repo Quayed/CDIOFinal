@@ -20,11 +20,11 @@ public class UsersComposite extends Composite {
 
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 
-	
-	@UiField FlexTable usersTable;
-	
+	@UiField
+	FlexTable usersTable;
+
 	DataServiceAsync service;
-	
+
 	public UsersComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
@@ -39,13 +39,13 @@ public class UsersComposite extends Composite {
 		usersTable.setWidget(0, 4, new Label("Password"));
 		usersTable.setWidget(0, 5, new Label("Role"));
 		usersTable.setWidget(0, 6, new Label("Status"));
-		
+
 		service.getUsers(new AsyncCallback<List<UserDTO>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -56,12 +56,11 @@ public class UsersComposite extends Composite {
 					usersTable.setWidget(i + 1, 2, new Label(users.get(i).getIni()));
 					usersTable.setWidget(i + 1, 3, new Label(users.get(i).getCpr()));
 					usersTable.setWidget(i + 1, 4, new Label(users.get(i).getPassword()));
-					
+
 				}
 			}
 
-
 		});
 	}
-	
+
 }

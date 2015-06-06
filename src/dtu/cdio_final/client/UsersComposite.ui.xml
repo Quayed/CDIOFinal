@@ -9,49 +9,5 @@
 		<m:MaterialTitle title="Users" />
 		<g:FlexTable ui:field="usersTable" styleName="bordered">
 		</g:FlexTable>
-<table class="striped ">
-  <thead>
-    <tr>
-      <th data-field="id">UserID</th>
-	  <th data-field="name">Name</th>
-	  <th data-field="ini">Ini</th>
-	  <th data-field="cpr">CPR</th>
-	  <th data-field="password">Password</th>
-	  <th data-field="role">Role</th>
-	  <th data-field="status">Status</th>
-    </tr>
-  </thead>
-
-  <tbody>
-      <tr>
-	  <td>Alvin</td>
-	  <td>Eclair</td>
-	  <td>$0.87</td>
-	  <td>Alvin</td>
-	  <td>Eclair</td>
-	  <td>$0.87</td>
-	  <td>Alvin</td>
-	</tr>
-	<tr>
-	  <td>Alan</td>
-	  <td>Jellybean</td>
-	  <td>$3.76</td>
-	  <td>Alvin</td>
-	  <td>Eclair</td>
-	  <td>$0.87</td>
-	  <td>Alvin</td>
-	</tr>
-	<tr>
-	  <td>Jonathan</td>
-	  <td>Lollipop</td>
-	  <td>$7.00</td>
-	  <td>Alvin</td>
-	  <td>Eclair</td>
-	  <td>$0.87</td>
-	  <td>Alvin</td>
-	</tr>
-  </tbody>
-</table>
-		
 	</g:HTMLPanel>
 </ui:UiBinder> 
