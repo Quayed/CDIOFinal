@@ -1,4 +1,4 @@
-package dtu.cdio_final.client;
+package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBar;

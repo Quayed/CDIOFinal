@@ -1,4 +1,4 @@
-package dtu.cdio_final.client;
+package dtu.cdio_final.client.view;
 
 import java.util.List;
 

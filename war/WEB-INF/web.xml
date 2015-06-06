@@ -6,15 +6,6 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>dtu.cdio_final.server.service.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/group13cdio_final/greet</url-pattern>
-  </servlet-mapping>
   
     <servlet>
     <servlet-name>dataServlet</servlet-name>

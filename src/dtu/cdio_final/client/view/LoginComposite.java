@@ -1,4 +1,4 @@
-package dtu.cdio_final.client;
+package dtu.cdio_final.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

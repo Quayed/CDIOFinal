@@ -7,38 +7,19 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.view.MainComposite;
+import dtu.cdio_final.client.view.UsersComposite;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class Group13cdio_final implements EntryPoint {
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
-	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private final DataServiceAsync service = GWT.create(DataService.class);
 
-	/**
-	 * This is the entry point method.
-	 */
 	public void onModuleLoad() {
+		((ServiceDefTarget) service).setServiceEntryPoint(GWT.getModuleBaseURL() + "data");
+
 		MainComposite gui = new MainComposite();
 		RootPanel.get().add(gui);
-		
-		
-		
-		String url = GWT.getModuleBaseURL() + "data";	
-		DataServiceAsync service = GWT.create(DataService.class);
-		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		endpoint.setServiceEntryPoint(url);
-		
-		
+
 		gui.setContent(new UsersComposite(service));
 	}
 }
