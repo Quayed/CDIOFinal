@@ -10,7 +10,10 @@ import java.io.Serializable;
  */
 
 public class UserDTO implements Serializable {
-	/** Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges af brugerne */
+	/**
+	 * Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges
+	 * af brugerne
+	 */
 	private int userID;
 	/** Operatoernavn (opr_navn) min. 2 max. 20 karakterer */
 	private String userName;
@@ -21,24 +24,30 @@ public class UserDTO implements Serializable {
 	/** Operatoer password min. 7 max. 8 karakterer */
 	private String password;
 
+	private int role;
+	private int status;
+
 	public UserDTO() {
 	}
-	
-	public UserDTO(int userID, String userName, String ini, String cpr, String password) {
-		this.userID = userID;
-		this.userName = userName;
-		this.ini = ini;
-		this.cpr = cpr;
-		this.password = password;
+
+	public UserDTO(int userID, String userName, String ini, String cpr, String password, int role, int status) {
+		this.setUserID(userID);
+		this.setUserName(userName);
+		this.setIni(ini);
+		this.setCpr(cpr);
+		this.setPassword(password);
+		this.setRole(role);
+		this.setStatus(status);
 	}
 
 	public int getUserID() {
 		return userID;
 	}
+
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
@@ -73,6 +82,22 @@ public class UserDTO implements Serializable {
 
 	public String toString() {
 		return userID + "\t" + userName + "\t" + ini + "\t" + cpr + "\t" + password;
+	}
+
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

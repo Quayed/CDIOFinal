@@ -78,19 +78,17 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public void deleteUser(int userID)
-	{
-		//NYI missing "active/inactive" field in DAO/DTO
-		
-//		try
-//		{
-//			UserDTO user = userDao.getUser(userID);
-//			user.setActiveStatus("inactive");
-//			userDao.updateUser(user);
-//		}
-//		catch (DALException e)
-//		{
-//			e.printStackTrace();
-//		}
+	{	
+		try
+		{
+			UserDTO user = userDao.getUser(userID);
+			user.setStatus(0);
+			userDao.updateUser(user);
+		}
+		catch (DALException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override

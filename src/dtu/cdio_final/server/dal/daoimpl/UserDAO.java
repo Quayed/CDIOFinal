@@ -24,7 +24,7 @@ public class UserDAO implements IUserDAO {
 				return null;
 			} else {
 				return new UserDTO(userID, rs.getString("user_name"), rs.getString("ini"), rs.getString("cpr"),
-					rs.getString("password"));
+					rs.getString("password"), 0, 0);
 			}
 		} catch (SQLException e) {
 			throw new DALException(e);
@@ -37,7 +37,7 @@ public class UserDAO implements IUserDAO {
 			ResultSet rs = Connector.doQuery("SELECT user_id, user_name, ini, cpr, password FROM user");
 			while (rs.next()) {
 				list.add(new UserDTO(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("ini"), rs.getString("cpr"),
-						rs.getString("password")));
+						rs.getString("password"), 0, 0));
 			}
 		} catch (SQLException e) {
 			throw new DALException(e);

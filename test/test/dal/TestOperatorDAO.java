@@ -52,7 +52,7 @@ public class TestOperatorDAO{
 	
 	@Test
 	public void createUpdateOperator() {
-		operatorDTO = new UserDTO(0, "Don Juan", "DJ", "000000-0000", "iloveyou");
+		operatorDTO = new UserDTO(0, "Don Juan", "DJ", "000000-0000", "iloveyou", 0, 0);
 		try {
 			operatorDAO.createUser(operatorDTO);
 			insertID = operatorDTO.getUserID();

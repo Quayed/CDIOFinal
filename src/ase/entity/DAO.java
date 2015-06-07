@@ -22,7 +22,7 @@ public class DAO implements IDAO {
 	
 	@Override
 	public UserDTO getUser(int userID) {
-		return new UserDTO(userID, "Test User", null, null, null);
+		return new UserDTO(userID, "Test User", null, null, null, 0, 0);
 	}
 	
 	@Override
