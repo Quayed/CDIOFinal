@@ -18,7 +18,7 @@ import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
 public class TestProductbatchDAO {
 
-	private static int insertID;
+	private final static int insertID = 76;
 
 	private static IProductbatchDAO productbatchDAO;
 	private ProductbatchDTO productbatchDTO;
@@ -51,10 +51,9 @@ public class TestProductbatchDAO {
 
 	@Test
 	public void createUpdateProductbatch() {
-		productbatchDTO = new ProductbatchDTO(0, 2, 0);
+		productbatchDTO = new ProductbatchDTO(insertID, 2, 0);
 		try {
 			productbatchDAO.createProductbatch(productbatchDTO);
-			insertID = productbatchDTO.getPbID();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

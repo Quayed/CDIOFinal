@@ -47,11 +47,11 @@ public class MaterialDAO implements IMaterialDAO {
 	@Override
 	public void createMaterial(MaterialDTO material) throws DALException {
 		try {
-			PreparedStatement ps = Connector.prepare("INSERT INTO material (material_name, provider) VALUES (?, ?);");
-			ps.setString(1, material.getMaterialName());
-			ps.setString(2, material.getProvider());
+			PreparedStatement ps = Connector.prepare("INSERT INTO material (material_id, material_name, provider) VALUES (?,?,?);");
+			ps.setInt(1, material.getMaterialID());
+			ps.setString(2, material.getMaterialName());
+			ps.setString(3, material.getProvider());
 			ps.execute();
-			material.setMaterialID(Connector.getLastInsert(ps));
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}

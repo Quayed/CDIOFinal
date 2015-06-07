@@ -18,7 +18,7 @@ import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 
 public class TestMaterialBatchDAO {
 
-	private static int insertID;
+	private static int insertID = 30;
 
 	private static IMaterialBatchDAO materialbatchDAO;
 	private MaterialbatchDTO materialbatchDTO;
@@ -51,10 +51,9 @@ public class TestMaterialBatchDAO {
 
 	@Test
 	public void createUpdateMaterialbatch() {
-		materialbatchDTO = new MaterialbatchDTO(0, 3, 100);
+		materialbatchDTO = new MaterialbatchDTO(insertID, 3, 100);
 		try {
 			materialbatchDAO.createMaterialBatch(materialbatchDTO);
-			insertID = materialbatchDTO.getMaterialID();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

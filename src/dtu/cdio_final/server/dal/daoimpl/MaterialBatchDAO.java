@@ -63,11 +63,11 @@ public class MaterialBatchDAO implements IMaterialBatchDAO {
 	@Override
 	public void createMaterialBatch(MaterialbatchDTO materialbatch) throws DALException {
 		try {
-			PreparedStatement ps = Connector.prepare("INSERT INTO materialbatch (material_id, quantity) VALUES (?,?)");
-			ps.setInt(1, materialbatch.getMaterialID());
-			ps.setDouble(2, materialbatch.getQuantity());
+			PreparedStatement ps = Connector.prepare("INSERT INTO materialbatch (mb_id, material_id, quantity) VALUES (?,?,?)");
+			ps.setInt(1, materialbatch.getMbID());
+			ps.setInt(2, materialbatch.getMaterialID());
+			ps.setDouble(3, materialbatch.getQuantity());
 			ps.execute();
-			materialbatch.setMaterialID(Connector.getLastInsert(ps));
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}

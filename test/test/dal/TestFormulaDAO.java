@@ -18,7 +18,7 @@ import dtu.cdio_final.shared.dto.FormulaDTO;
 
 public class TestFormulaDAO {
 
-	private static int insertID;
+	private static int insertID = 80;
 
 	private static IFormulaDAO formulaDAO;
 	private FormulaDTO formulaDTO;
@@ -51,10 +51,9 @@ public class TestFormulaDAO {
 
 	@Test
 	public void createUpdateFormula() {
-		formulaDTO = new FormulaDTO(0, "Test");
+		formulaDTO = new FormulaDTO(insertID, "Test");
 		try {
 			formulaDAO.createFormula(formulaDTO);
-			insertID = formulaDTO.getFormulaID();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

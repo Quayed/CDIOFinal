@@ -51,7 +51,7 @@ public class TestMaterialDAO {
 
 	@Test
 	public void createUpdateMaterial() {
-		materialDTO = new MaterialDTO(0, "Origano", "OrIgana A/S");
+		materialDTO = new MaterialDTO(30, "Origano", "OrIgana A/S");
 		try {
 			materialDAO.createMaterial(materialDTO);
 			insertID = materialDTO.getMaterialID();

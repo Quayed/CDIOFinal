@@ -19,7 +19,7 @@ import dtu.cdio_final.shared.dto.UserDTO;
 
 public class TestOperatorDAO{
 
-	private static int insertID;
+	private final static int insertID = 43;
 	
 	private static IUserDAO operatorDAO;
 	private UserDTO operatorDTO;
@@ -52,10 +52,9 @@ public class TestOperatorDAO{
 	
 	@Test
 	public void createUpdateOperator() {
-		operatorDTO = new UserDTO(0, "Don Juan", "DJ", "000000-0000", "iloveyou", 0, 0);
+		operatorDTO = new UserDTO(insertID, "Don Juan", "DJ", "0000000000", "iloveyou", 0, 0);
 		try {
 			operatorDAO.createUser(operatorDTO);
-			insertID = operatorDTO.getUserID();
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}
@@ -89,7 +88,7 @@ public class TestOperatorDAO{
 	@AfterClass
 	public static void close() {
 		try {
-			Connector.doUpdate("DELETE FROM operator WHERE opr_id = "+insertID);
+			Connector.doUpdate("DELETE FROM user WHERE user_id = "+insertID);
 		} catch (SQLException e) {}
 	}
 

@@ -47,10 +47,10 @@ public class FormulaDAO implements IFormulaDAO {
 	@Override
 	public void createFormula(FormulaDTO formula) throws DALException {
 		try{
-			PreparedStatement ps = Connector.prepare("INSERT INTO formula(formula_id, formula_name) VALUES (null, ?);");
-			ps.setString(1, formula.getFormulaName());
+			PreparedStatement ps = Connector.prepare("INSERT INTO formula(formula_id, formula_name) VALUES (?, ?);");
+			ps.setInt(1, formula.getFormulaID());
+			ps.setString(2, formula.getFormulaName());
 			ps.execute();
-			formula.setFormulaID(Connector.getLastInsert(ps));
 		} catch(SQLException e){
 			throw new DALException(e);
 		}
