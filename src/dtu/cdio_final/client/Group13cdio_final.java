@@ -19,7 +19,7 @@ public class Group13cdio_final implements EntryPoint {
 
 		MainComposite gui = new MainComposite();
 		RootPanel.get().add(gui);
-
-		gui.setContent(new UsersComposite(service));
+		
+		gui.addPage("Users", new UsersComposite(service), true);
 	}
 }
