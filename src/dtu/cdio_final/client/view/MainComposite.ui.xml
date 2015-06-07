@@ -45,11 +45,6 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 					<m:sidebaritem>
 						<m:MaterialTitle color="blue" description="Group 13" title="CDIO Final" ></m:MaterialTitle>
 					</m:sidebaritem>
-					<m:sidebaritem><m:MaterialLink href="#" ui:field="userPage" text="Users" textColor="blue"  /></m:sidebaritem>
-					<m:sidebaritem><m:MaterialLink href="#" ui:field="materialPage" text="Materials" textColor="blue" /></m:sidebaritem>
-					<m:sidebaritem><m:MaterialLink href="#" ui:field="formulaPage" text="Formulas" textColor="blue"/></m:sidebaritem>
-					<m:sidebaritem><m:MaterialLink href="#" ui:field="materialBatchPage" text="MaterialBatches" textColor="blue"/></m:sidebaritem>
-					<m:sidebaritem><m:MaterialLink href="#" ui:field="productBatchPage" text="ProductBatches" textColor="blue"/></m:sidebaritem>
 				</m:MaterialNavBar>
 	
 				<g:HTMLPanel ui:field="contentPanel" addStyleNames="{style.panel} container z-depth-2">				
