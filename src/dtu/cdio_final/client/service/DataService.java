@@ -33,6 +33,6 @@ public interface DataService extends RemoteService{
 	void createProductBatch(ProductbatchDTO productBatch);
 	List<ProductbatchDTO> getProductBatches();
 	
-	boolean login(int userID, String password);
+	String login(int userID, String password);
 	
 }

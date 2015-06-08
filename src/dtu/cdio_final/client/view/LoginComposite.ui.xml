@@ -14,11 +14,11 @@
 		
 		<m:MaterialTitle title="Login"></m:MaterialTitle>
 		<m:MaterialLabel>UserID</m:MaterialLabel>
-		<g:TextBox />
+		<g:TextBox ui:field="usernameTextbox" />
 		<m:MaterialLabel>Password</m:MaterialLabel>
-		<g:PasswordTextBox />
+		<g:PasswordTextBox ui:field="passwordTextbox" />
 		
-		<m:MaterialButton text="Login"></m:MaterialButton>
+		<m:MaterialButton ui:field="loginButton" text="Login"></m:MaterialButton>
 		
 	</g:HTMLPanel>
 </ui:UiBinder> 
