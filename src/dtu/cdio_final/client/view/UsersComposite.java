@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -56,7 +57,24 @@ public class UsersComposite extends Composite {
 					usersTable.setWidget(i + 1, 2, new Label(users.get(i).getIni()));
 					usersTable.setWidget(i + 1, 3, new Label(users.get(i).getCpr()));
 					usersTable.setWidget(i + 1, 4, new Label(users.get(i).getPassword()));
-
+					int role = users.get(i).getRole();
+					if(role == 1){
+						usersTable.setWidget(i + 1, 5, new Label("Administrator"));
+					} else if(role ==  2){
+						usersTable.setWidget(i + 1, 5, new Label("Farmaceut"));
+					} else if(role == 3){
+						usersTable.setWidget(i + 1, 5, new Label("Foreman"));
+					} else if(role == 4){
+						usersTable.setWidget(i + 1, 5, new Label("Operator"));
+					} else{
+						usersTable.setWidget(i + 1, 5, new Label("Error"));
+						Window.alert("ERROR!! Unknown role!!" );
+					}
+					if(users.get(i).getStatus() == 1){
+						usersTable.setWidget(i + 1, 6, new Label("Active"));
+					} else{
+						usersTable.setWidget(i + 1, 6, new Label("Inactive"));
+					}
 				}
 			}
 
