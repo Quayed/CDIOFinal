@@ -9,5 +9,21 @@
 		<m:MaterialTitle title="Users" />
 		<g:FlexTable ui:field="usersTable" styleName="bordered">
 		</g:FlexTable>
+		<div style="display:none">	
+			<g:TextBox ui:field="userID"></g:TextBox>
+			<g:TextBox ui:field="userName"></g:TextBox>
+			<g:TextBox ui:field="userIni"></g:TextBox>
+			<g:TextBox ui:field="userCPR"></g:TextBox>
+			<g:TextBox ui:field="userPassword"></g:TextBox>
+			<m:MaterialListBox ui:field ="userRole">
+			   <item>Administrator</item>
+			   <item>Farmaceut</item>
+			   <item>Foreman</item>
+			   <item>Operator</item>
+			</m:MaterialListBox>
+			<m:MaterialCheckBox text="Active" ui:field="userStatus"/>
+			<g:Button ui:field="submitButton">Save</g:Button>
+			<g:Button ui:field="cancelButton">Cancel</g:Button>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 
