@@ -30,10 +30,10 @@ CREATE TABLE productbatch_component(pb_id INT, mb_id INT, tare REAL NOT NULL, ne
    FOREIGN KEY (user_id) REFERENCES `user`(user_id)) ENGINE=innoDB;
 
 
-INSERT INTO `user`(user_id, user_name, ini, cpr, password) VALUES
-(1, 'Angelo A', 'AA', '070770-7007', 'lKje4fa'),
-(2, 'Antonella B', 'AB', '080880-8008', 'atoJ21v'),
-(3, 'Luigi C', 'LC', '090990-9009', 'jEfm5aQ');
+INSERT INTO `user`(user_id, user_name, ini, cpr, password, role, status) VALUES
+(1, 'Angelo A', 'AA', '0707707007', 'lKje4fa', 4, 1),
+(2, 'Antonella B', 'AB', '0808808008', 'atoJ21v', 3, 1),
+(3, 'Luigi C', 'LC', '0909909009', 'jEfm5aQ', 1, 0);
 
 INSERT INTO material(material_id, material_name, provider) VALUES
 (1, 'dej', 'Wawelka'),
