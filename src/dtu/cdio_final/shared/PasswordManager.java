@@ -1,17 +1,13 @@
 package dtu.cdio_final.shared;
 
-import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import java.util.Random;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-
-import org.apache.xerces.impl.dv.util.Base64;
 
 public class PasswordManager
 {
@@ -132,9 +128,6 @@ public class PasswordManager
 		return pass;
 	}
 
-	
-	
-
 	//add code to generate salt (server)
 	private static byte[] generateSalt(int nrOfBits)
 	{	
@@ -169,7 +162,7 @@ public class PasswordManager
 	}
 	//add code to compare hashes (server)
 
-	//add code to encrypt and decrypt base64 (server and client)
+	//add code to encrypt and decrypt base16 (server and client)
 
 	//kun til tests, slettes før endelig version.
 	public static void main(String[] args)
