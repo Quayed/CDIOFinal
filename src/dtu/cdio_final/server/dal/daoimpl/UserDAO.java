@@ -40,6 +40,7 @@ public class UserDAO implements IUserDAO {
 						rs.getString("password"), rs.getInt("role"), rs.getInt("status")));
 			}
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			throw new DALException(e);
 		}
 		return list;
