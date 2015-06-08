@@ -22,8 +22,8 @@
 			   <item>Operator</item>
 			</m:MaterialListBox>
 			<m:MaterialCheckBox text="Active" ui:field="userStatus"/>
-			<g:Button ui:field="submitButton">Save</g:Button>
-			<g:Button ui:field="cancelButton">Cancel</g:Button>
+			<m:MaterialButton ui:field="submitButton" icon="mdi-content-create" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 
