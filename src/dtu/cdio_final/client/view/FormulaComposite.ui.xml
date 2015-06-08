@@ -7,7 +7,17 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<m:MaterialTitle title="Formulas" />
-		<g:FlexTable ui:field="formulaTable" styleName="bordered">
-		</g:FlexTable>
+		<g:FlexTable ui:field="formulaTable" styleName="bordered"/>
+		<m:MaterialCollapsible  type="accordion">
+			<m:item>
+				<m:MaterialCollapsibleItem>
+					<m:header><m:MaterialLink ui:field="treeItem" textColor="black"/></m:header>
+					<m:content>
+					<m:MaterialTitle ui:field="rootItem" >				
+					</m:MaterialTitle>
+					</m:content>
+				</m:MaterialCollapsibleItem>
+			</m:item>
+		</m:MaterialCollapsible>
 	</g:HTMLPanel>
 </ui:UiBinder> 
