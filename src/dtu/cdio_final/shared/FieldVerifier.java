@@ -1,9 +1,5 @@
 package dtu.cdio_final.shared;
 
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
-
-
 /**
  * <p>
  * FieldVerifier validates that the name the user enters is valid.
@@ -24,54 +20,48 @@ import com.google.gwt.regexp.shared.RegExp;
  * JavaScript (such as Widgets) cannot be run on the server.
  * </p>
  */
-public class FieldVerifier {
-
-	/**
-	 * Verifies that the specified name is valid for our service.
-	 * 
-	 * In this example, we only require that the name is at least four
-	 * characters. In your application, you can use more complex checks to ensure
-	 * that usernames, passwords, email addresses, URLs, and other fields have the
-	 * proper syntax.
-	 * 
-	 * @param name the name to validate
-	 * @return true if valid, false if invalid
-	 */
-	
-	
+public class FieldVerifier
+{	
 	// We use this online regex tool to test patterns https://regex101.com/
 
 	/**
 	 * These variables define the limits and patterns that our input should
 	 * conform to.
 	 */
-
-	private static final RegExp NAME_PATTERN = RegExp.compile("^[a-zA-ZæøåÆØÅ -]{2,20}$");
-	private static final RegExp INI_PATTERN = RegExp.compile("^[a-zA-ZæøåÆØÅ]{2,4}$");
-	private static final RegExp CPR_PATTERN = RegExp.compile("^\\d{10}$");
+	private static final String NAME_PATTERN = "^[a-zA-ZæøåÆØÅ -]{2,20}$";
+	private static final String INI_PATTERN = "^[a-zA-ZæøåÆØÅ]{2,4}$";
+	private static final String CPR_PATTERN = "^\\d{10}$";
 
 	private static final int PASSWORD_MIN = 5;
-	private static final int PASSWORD_MAX = 8;
 
-	public static boolean isValidName(String name) {
+	public static boolean isValidName(String name)
+	{
 		if (name == null)
 			return false;
-		return NAME_PATTERN.exec(name) != null;
+		return name.matches(NAME_PATTERN);
 	}
 
-	public static boolean isValidCPR(String cpr) {
+	public static boolean isValidCPR(String cpr)
+	{
 		if (cpr == null)
 			return false;
-		return CPR_PATTERN.exec(cpr) != null;
+		return cpr.matches(CPR_PATTERN);
 	}
 
-	public static boolean isValidInitials(String ini) {
+	public static boolean isValidInitials(String ini)
+	{
 		if (ini == null)
 			return false;
-		return INI_PATTERN.exec(ini) != null;
+		return ini.matches(INI_PATTERN);
 	}
 
-	public static boolean isValidPassword(String password) {
+	/**
+	 * Checks if the given password matches the criteria
+	 * @param pass The password to check
+	 * @return true if the password matches 3 of 4 categories, and has a length >= 6, false otherwise.
+	 */
+	public static boolean isValidPassword(String password)
+	{
 		boolean[] check = checkPW(password);
 
 		int passedCategories = 0;
@@ -86,8 +76,8 @@ public class FieldVerifier {
 	}
 	
 	/** nominel nettomængde i området 0,05 ­ 20,0 kg */
-	public static boolean isValidNomNetto(double nomNetto) {
-
+	public static boolean isValidNomNetto(double nomNetto)
+	{
 		if (nomNetto >= 0.05 && nomNetto <= 20)
 			return true;
 
@@ -95,32 +85,42 @@ public class FieldVerifier {
 	}
 
 	/** tolerance i området 0,1 ­ 10,0 % */
-	public static boolean isValidTolerance(double tolerance) {
-
+	public static boolean isValidTolerance(double tolerance)
+	{
 		if (tolerance >= 0.1 && tolerance <= 10)
 			return true;
 
 		return false;
 	}
 
-
-	private static boolean[] checkPW(String pw) {
+	/**
+	 * checks if the password matches the requirements, returns a boolean array
+	 *  of length = 5 where:
+	 * 0 = [0-9]
+	 * 1 = [a-z]
+	 * 2 = [A-Z]
+	 * 3 = [\\+\\-_?=]
+	 * 4 = length >= 6
+	 * @param pw The password to check
+	 * @return An array containing true for all passed test, and false for all failed ones.
+	 */
+	private static boolean[] checkPW(String pw)
+	{
 		boolean[] results = new boolean[5];
-		RegExp[] patterns = new RegExp[4];
+		String[] patterns = new String[4];
 
-		// make a pattern for each category
-		patterns[0] = RegExp.compile(".*\\d+.*");
-		patterns[1] = RegExp.compile(".*[a-z]+.*");
-		patterns[2] = RegExp.compile(".*[A-Z]+.*");
-		patterns[3] = RegExp.compile(".*[\\+\\-_?=!\\.]+.*");
+		//make a pattern for each category
+		patterns[0] = ".*\\d+.*";
+		patterns[1] = ".*[a-z]+.*";
+		patterns[2] = ".*[A-Z]+.*";
+		patterns[3] = ".*[\\+\\-_?=!\\.]+.*";
 
-		// check against patterns and store results of check
-		for (int i = 0; i < patterns.length; i++) {
-			MatchResult m = patterns[i].exec(pw);
-			results[i] = m != null;
-		}
-		// check length of pw
-		results[4] = pw.length() >= PASSWORD_MIN && pw.length() <= PASSWORD_MAX;
+		//check against patterns and store results of check
+		for (int i = 0; i < patterns.length; i++)
+			results[i] = pw.matches(patterns[i]);
+		
+		//check length of pw
+		results[4] = pw.length() >= PASSWORD_MIN;
 
 		return results;
 	}
