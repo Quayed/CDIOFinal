@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.view.FormulaComposite;
 import dtu.cdio_final.client.view.MainComposite;
 import dtu.cdio_final.client.view.UsersComposite;
 
@@ -21,5 +22,6 @@ public class Group13cdio_final implements EntryPoint {
 		RootPanel.get().add(gui);
 		
 		gui.addPage("Users", new UsersComposite(service), true);
+		gui.addPage("Fomulas", new FormulaComposite(service), true);
 	}
 }
