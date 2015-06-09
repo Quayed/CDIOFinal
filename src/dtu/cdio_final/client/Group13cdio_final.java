@@ -29,16 +29,16 @@ public class Group13cdio_final implements EntryPoint
 		RootPanel.get().add(gui);	
 		
 
-		gui.addPage("Login", new LoginComposite(service, new LoginEvent() {
-			
-			@Override
-			public void login(UserDTO user)
-			{
-				Group13cdio_final.this.gui.addPage("Users", new UsersComposite(service), true);
+//		gui.addPage("Login", new LoginComposite(service, new LoginEvent() {
+//			
+//			@Override
+//			public void login(UserDTO user)
+//			{
+				gui.addPage("Users", new UsersComposite(service), true);
 				gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service));
 				gui.addPage("Fomulas", new FormulaComposite(service));
-			}
-		}), true);
+//			}
+//		}), true);
 	}
 	
 	public interface LoginEvent

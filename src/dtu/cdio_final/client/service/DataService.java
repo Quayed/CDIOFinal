@@ -37,5 +37,4 @@ public interface DataService extends RemoteService{
 	List<ProductbatchDTO> getProductBatches();
 	
 	HashMap<String, Object> login(int userID, String password);
-	
 }
