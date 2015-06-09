@@ -10,6 +10,7 @@ import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.view.FormulaComposite;
 import dtu.cdio_final.client.view.LoginComposite;
 import dtu.cdio_final.client.view.MainComposite;
+import dtu.cdio_final.client.view.MaterialBatchComposite;
 import dtu.cdio_final.client.view.UsersComposite;
 
 public class Group13cdio_final implements EntryPoint
@@ -30,6 +31,7 @@ public class Group13cdio_final implements EntryPoint
 		{
 			gui.addPage("Users", new UsersComposite(service), true);
 			gui.addPage("Fomulas", new FormulaComposite(service), true);
+			gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service), true);
 		}
 	}
 }
