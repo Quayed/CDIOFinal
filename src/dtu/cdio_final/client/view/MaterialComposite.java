@@ -2,6 +2,7 @@ package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialListBox;
+import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -17,6 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 
 public class MaterialComposite extends PageComposite{
@@ -29,10 +32,16 @@ public class MaterialComposite extends PageComposite{
 
 	@UiField FlexTable materialsTable;
 	
+	@UiField MaterialTextBox createMaterialID;
+	@UiField MaterialTextBox createMaterialName;
+	@UiField MaterialTextBox createProvider;
+	@UiField MaterialButton createMaterialButton;
+	
 	DataServiceAsync service;
 	
 	private int editRow = -1;
-	
+	private int numberOfRows = 1;
+	private MaterialDTO newMaterial;
 	
 	
 	public MaterialComposite(DataServiceAsync service) {
@@ -53,14 +62,9 @@ public class MaterialComposite extends PageComposite{
 		materialsTable.setWidget(0, 2, new Label("Provider"));
 		materialsTable.setWidget(0, 3, new Label(""));
 		materialsTable.setWidget(0, 4, new Label(""));
+		createMaterialButton.addStyleName("fullWidth");
 		
-		service.getMaterials(new AsyncCallback<List<MaterialDTO>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
+		service.getMaterials(new TokenAsyncCallback<List<MaterialDTO>>() {
 			
 			@Override
 			public void onSuccess(List<MaterialDTO> materials) {
@@ -75,6 +79,7 @@ public class MaterialComposite extends PageComposite{
 					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 3, "limitWidth");
 					materialsTable.setWidget(i + 1, 4, new Label(""));
 					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 4, "limitWidth");
+					numberOfRows++;
 				}
 			}
 		});	
@@ -112,7 +117,7 @@ public class MaterialComposite extends PageComposite{
 		@Override
 		public void onClick(ClickEvent event) {
 			if (editRow > -1){
-			//	cancelButton.fireEvent(new ClickEvent(){});
+				cancelButton.fireEvent(new ClickEvent(){});
 			}
 			
 			editRow = materialsTable.getCellForEvent(event).getRowIndex();
@@ -120,7 +125,7 @@ public class MaterialComposite extends PageComposite{
 			editRow = materialsTable.insertRow(editRow);
 			materialsTable.getRowFormatter().setVisible(editRow+1, false);
 			
-			service.getMaterials(new AsyncCallback<List<MaterialDTO>>() {
+			service.getMaterials(new TokenAsyncCallback<List<MaterialDTO>>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -206,8 +211,40 @@ public class MaterialComposite extends PageComposite{
 		}
 		
 	}
+	
+	@UiHandler("createMaterialButton")
+	void createUser(ClickEvent event){
+		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
+		service.createMaterial(newMaterial, new AsyncCallback<Void>(){
 
-	
-	
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Something went wrong!!");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// Add a new row to the table, when the database query has been completed.
+				materialsTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterial.getMaterialID()));
+				materialsTable.setWidget(numberOfRows + 1, 1, new Label(newMaterial.getMaterialName()));
+				materialsTable.setWidget(numberOfRows + 1, 2, new Label(newMaterial.getProvider()));
+				materialsTable.setWidget(numberOfRows + 1, 3, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
+				((MaterialButton)materialsTable.getWidget(numberOfRows + 1, 3)).addClickHandler(new editClick());
+				materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
+				materialsTable.setWidget(numberOfRows + 1, 4, new Label(""));
+				materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
+				numberOfRows++;
+				
+				// Clear the create fields
+				createMaterialID.setText("");
+				createMaterialID.backToDefault();
+				createMaterialName.setText("");
+				createMaterialName.backToDefault();
+				createProvider.setText("");
+				createProvider.backToDefault();
+				Window.alert("The user has been created!");
+			}
+		});
+	}
 }
 	
