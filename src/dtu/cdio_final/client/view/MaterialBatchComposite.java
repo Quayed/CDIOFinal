@@ -13,16 +13,15 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 import dtu.cdio_final.shared.dto.MaterialbatchDTO;
-import dtu.cdio_final.shared.dto.UserDTO;
 
 public class MaterialBatchComposite extends PageComposite {
 
@@ -84,13 +83,7 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.setWidget(0, 5, new Label(""));
 		createMaterialBatchButton.addStyleName("fullWidth");
 
-		service.getMaterialBatches(new AsyncCallback<List<MaterialbatchDTO>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
+		service.getMaterialBatches(new TokenAsyncCallback<List<MaterialbatchDTO>>() {
 
 			@Override
 			public void onSuccess(List<MaterialbatchDTO> materialBatches) {
@@ -119,17 +112,12 @@ public class MaterialBatchComposite extends PageComposite {
 		});
 	}
 
-	private class MaterialCallback implements AsyncCallback<List<MaterialDTO>> {
+	private class MaterialCallback extends TokenAsyncCallback<List<MaterialDTO>> {
 
 		private final List<Integer> materials;
 
 		MaterialCallback(List<Integer> materials) {
 			this.materials = materials;
-		}
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
@@ -191,12 +179,7 @@ public class MaterialBatchComposite extends PageComposite {
 
 		MaterialbatchDTO materialBatch = new MaterialbatchDTO(
 				materialBatchIDInt, materialIDInt, quantityDouble);
-		service.updateMaterialBatch(materialBatch, new AsyncCallback<Void>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Something went wrong!");
-			}
+		service.updateMaterialBatch(materialBatch, new TokenAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
@@ -236,12 +219,7 @@ public class MaterialBatchComposite extends PageComposite {
 		// todo insert : , createMaterialName.getText(),
 		
 		
-		service.createMaterialBatch(newMaterialBatch, new AsyncCallback<Void>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Something went wrong!!");
-			}
+		service.createMaterialBatch(newMaterialBatch, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {
