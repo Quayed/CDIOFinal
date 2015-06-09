@@ -7,6 +7,37 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<m:MaterialTitle title="Users" />
+		<m:MaterialCollapsible type="Popout">
+		    <m:item>
+		        <m:MaterialCollapsibleItem>
+			        <m:header><m:MaterialLink text="Create User" icon="mdi-content-add" textColor="black"/></m:header>
+			        <m:content>
+			            <g:VerticalPanel>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createUserID" placeholder="User ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createUserName" placeholder="User Name"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createUserIni" placeholder="User Initials"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createUserCPR" placeholder="User CPR"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createUserPassword" placeholder="User Password"></m:MaterialTextBox></m:MaterialColumn>
+			            		<m:MaterialColumn grid="s6"><m:MaterialListBox ui:field ="createUserRole">
+								   <item>Administrator</item>
+								   <item>Farmaceut</item>
+								   <item>Foreman</item>
+								   <item>Operator</item>
+								</m:MaterialListBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createUserButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            </g:VerticalPanel>
+			        </m:content>
+		      	</m:MaterialCollapsibleItem>
+		    </m:item>
+		</m:MaterialCollapsible>
 		<g:FlexTable ui:field="usersTable" styleName="bordered">
 		</g:FlexTable>
 		<div style="display:none">	

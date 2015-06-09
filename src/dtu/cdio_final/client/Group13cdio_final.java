@@ -30,8 +30,9 @@ public class Group13cdio_final implements EntryPoint
 //		else
 		{
 			gui.addPage("Users", new UsersComposite(service), true);
-			gui.addPage("Fomulas", new FormulaComposite(service), true);
-			gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service), true);
+			gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service));
+			gui.addPage("Fomulas", new FormulaComposite(service));
 		}
+
 	}
 }
