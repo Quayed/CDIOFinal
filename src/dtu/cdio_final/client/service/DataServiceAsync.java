@@ -35,7 +35,5 @@ public interface DataServiceAsync {
 	void createProductBatch(ProductbatchDTO productBatch, AsyncCallback<Void> callback);
 	void getProductBatches(AsyncCallback<List<ProductbatchDTO>> callback);
 	
-	void login(int userID, String password, AsyncCallback<String> callback);
-
 	void login(int userID, String password, AsyncCallback<HashMap<String, Object>> callback);
 }

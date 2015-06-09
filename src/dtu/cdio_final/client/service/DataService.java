@@ -36,8 +36,6 @@ public interface DataService extends RemoteService{
 	void createProductBatch(ProductbatchDTO productBatch);
 	List<ProductbatchDTO> getProductBatches();
 	
-	String login(int userID, String password);
-
 	HashMap<String, Object> login(int userID, String password);
 	
 }
