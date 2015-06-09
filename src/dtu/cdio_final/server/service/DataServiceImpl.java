@@ -1,5 +1,6 @@
 package dtu.cdio_final.server.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -18,6 +19,7 @@ import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.TokenHandler;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
@@ -50,8 +52,11 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<UserDTO> getUsers()
+	public List<UserDTO> getUsers(String token) throws TokenException
 	{
+		if(!validateToken(token))
+			throw new TokenException();
+			
 		List<UserDTO> result = null; 
 		try
 		{
@@ -246,16 +251,24 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public String login(int userID, String password)
+	public HashMap<String, Object> login(int userID, String password)
 	{
 		//TODO: update to use tokens
 		//TODO: update to use hashing
+		HashMap<String, Object> results = new HashMap<String, Object>();
+		
 		try
 		{
 			UserDTO user = userDao.getUser(userID);
 			
 			if((user != null) && user.getPassword().equals(password))
-				return TokenHandler.getInstance().createToken(Integer.toString(userID));
+			{
+				results.put("token", TokenHandler.getInstance().createToken(Integer.toString(userID)));
+				results.put("user", user);
+				
+				return results;
+			}
+				
 		}
 		catch (DALException e)
 		{
@@ -268,6 +281,19 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	private boolean validateToken(String token)
 	{
 		token = TokenHandler.getInstance().validateToken(token);
-		return token == null;
+		return !(token == null);
+	}
+
+	@Override
+	public void updateMaterialBatch(MaterialbatchDTO materialBatch) {
+		
+		try
+		{
+			materialBatchDao.updateMaterialBatch(materialBatch);
+		}
+		catch (DALException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
