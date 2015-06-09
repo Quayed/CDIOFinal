@@ -122,7 +122,6 @@ public class UsersComposite extends PageComposite {
 			if (editRow > -1){
 				cancelButton.fireEvent(new ClickEvent(){});
 			}
-			
 			editRow = usersTable.getCellForEvent(event).getRowIndex();
 			usersTable.insertRow(editRow);
 			usersTable.getRowFormatter().setVisible(editRow+1, false);
@@ -148,19 +147,16 @@ public class UsersComposite extends PageComposite {
 			userStatus.setValue(getValueOfStatus(getTableLabelText(6)));
 			usersTable.setWidget(editRow, 5, userStatus);
 						
-			submitButton.addClickHandler(new submitClickHandler());
 			usersTable.setWidget(editRow, 6, submitButton);
 			
-			cancelButton.addClickHandler(new cancelClickHandler());
 			usersTable.setWidget(editRow, 7, cancelButton);
 		}
 		
 	}
 	
-	private class submitClickHandler implements ClickHandler{
+	@UiHandler("submitButton")
+	void submitClickHandler(ClickEvent event){
 
-		@Override
-		public void onClick(ClickEvent event) {
 			int userIDInt = Integer.valueOf(userID.getText());
 			int userRoleInt = userRole.getSelectedIndex() +1;
 			int userStatusInt;
@@ -170,8 +166,9 @@ public class UsersComposite extends PageComposite {
 				userStatusInt = 0;
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
+			Window.alert("Clicked");
 			service.updateUser(user, new AsyncCallback<Void>(){
-
+			
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("Something went wrong!");
@@ -198,8 +195,6 @@ public class UsersComposite extends PageComposite {
 				
 			});
 		}
-		
-	}
 	
 	@UiHandler("createUserButton")
 	void createUser(ClickEvent event){
@@ -246,15 +241,15 @@ public class UsersComposite extends PageComposite {
 		});
 	}
 	
-	private class cancelClickHandler implements ClickHandler{
+	@UiHandler("cancelButton")
+	void cancelClickHandler(ClickEvent event){
 
-		@Override
-		public void onClick(ClickEvent event) {
+		
 			usersTable.getRowFormatter().setVisible(editRow+1, true);
 			usersTable.getRowFormatter().setVisible(editRow, false);
 			usersTable.removeRow(editRow);
 			editRow = -1;
-		}
+		
 		
 	}
 	
