@@ -18,6 +18,7 @@ import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.shared.TokenHandler;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 import dtu.cdio_final.shared.dto.MaterialDTO;
@@ -245,7 +246,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public boolean login(int userID, String password)
+	public String login(int userID, String password)
 	{
 		//TODO: update to use tokens
 		//TODO: update to use hashing
@@ -253,14 +254,20 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		{
 			UserDTO user = userDao.getUser(userID);
 			
-			if(user.getPassword().equals(password))
-				return true;
+			if((user != null) && user.getPassword().equals(password))
+				return TokenHandler.getInstance().createToken(Integer.toString(userID));
 		}
 		catch (DALException e)
 		{
 			System.err.println("Invalid login or password");
 			e.printStackTrace();
 		}
-		return false;
+		return null;
+	}
+	
+	private boolean validateToken(String token)
+	{
+		token = TokenHandler.getInstance().validateToken(token);
+		return token == null;
 	}
 }
