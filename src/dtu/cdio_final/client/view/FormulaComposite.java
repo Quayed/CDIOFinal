@@ -28,7 +28,7 @@ import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 
 
-public class FormulaComposite extends Composite {
+public class FormulaComposite extends PageComposite {
 	interface MainUiBinder extends UiBinder<Widget, FormulaComposite> {
 	}
 	
@@ -45,6 +45,12 @@ public class FormulaComposite extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		initTable();
+	}
+	
+	@Override
+	public void reloadPage() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void initTable() {
@@ -98,6 +104,8 @@ public class FormulaComposite extends Composite {
 
 		});
 	}
+
+	
 
 }
 

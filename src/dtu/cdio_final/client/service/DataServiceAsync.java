@@ -1,5 +1,6 @@
 package dtu.cdio_final.client.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,7 +14,7 @@ import dtu.cdio_final.shared.dto.UserDTO;
 
 public interface DataServiceAsync {
 	void createUser(UserDTO user, AsyncCallback<Void> callback);
-	void getUsers(AsyncCallback<List<UserDTO>> callback);
+	void getUsers(String token, AsyncCallback<List<UserDTO>> callback);
 	void updateUser(UserDTO user, AsyncCallback<Void> callback);
 	void deleteUser(int userID, AsyncCallback<Void> callback);
 	
@@ -36,4 +37,5 @@ public interface DataServiceAsync {
 	
 	void login(int userID, String password, AsyncCallback<String> callback);
 
+	void login(int userID, String password, AsyncCallback<HashMap<String, Object>> callback);
 }

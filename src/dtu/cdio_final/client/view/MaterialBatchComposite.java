@@ -24,7 +24,7 @@ import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 
-public class MaterialBatchComposite extends Composite {
+public class MaterialBatchComposite extends PageComposite {
 
 
 	interface MaterialBatchCompositeUiBinder extends
@@ -56,6 +56,12 @@ public class MaterialBatchComposite extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		initTable();
+	}
+	
+	@Override
+	public void reloadPage() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void initTable() {
@@ -200,4 +206,6 @@ public class MaterialBatchComposite extends Composite {
 		}
 		
 	}
+
+	
 }

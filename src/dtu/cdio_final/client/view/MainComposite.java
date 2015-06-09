@@ -31,11 +31,11 @@ public class MainComposite extends Composite {
 		contentPanel.add(composite);
 	}
 	
-	public void addPage(String linkText, Composite page){
+	public void addPage(String linkText, PageComposite page){
 		addPage(linkText, page, false);
 	}
 	
-	public void addPage(String linkText, Composite page, boolean firstPage){
+	public void addPage(String linkText, PageComposite page, boolean firstPage){
 		MaterialLink navItem = new MaterialLink(linkText, "blue");
 		navItem.addClickHandler(new NavClickHandler(page));
 		navBar.addWidgetSideNav(navItem);
@@ -43,15 +43,19 @@ public class MainComposite extends Composite {
 			setContent(page);
 	}
 	
-	private class NavClickHandler implements ClickHandler{
-		private final Composite page;
-		public NavClickHandler(Composite page) {
+	private class NavClickHandler implements ClickHandler
+	{
+		private final PageComposite page;
+		public NavClickHandler(PageComposite page)
+		{
 			this.page = page;
 		}
 		
 		@Override
-		public void onClick(ClickEvent e) {
+		public void onClick(ClickEvent e)
+		{
 			setContent(page);
+			page.reloadPage();
 			MaterialNavBar.hideNav();
 		}
 	}

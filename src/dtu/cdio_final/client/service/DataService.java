@@ -1,9 +1,11 @@
 package dtu.cdio_final.client.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 import dtu.cdio_final.shared.dto.MaterialDTO;
@@ -13,7 +15,7 @@ import dtu.cdio_final.shared.dto.UserDTO;
 
 public interface DataService extends RemoteService{
 	void createUser(UserDTO user);
-	List<UserDTO> getUsers();
+	List<UserDTO> getUsers(String token) throws TokenException;
 	void updateUser(UserDTO user);
 	void deleteUser(int userID);
 	
@@ -36,5 +38,6 @@ public interface DataService extends RemoteService{
 	
 	String login(int userID, String password);
 
+	HashMap<String, Object> login(int userID, String password);
 	
 }
