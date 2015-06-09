@@ -18,7 +18,6 @@
 			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialID" placeholder="Material ID"></m:MaterialTextBox></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            	<m:MaterialRow>
-			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialName" placeholder="Material Name"></m:MaterialTextBox></m:MaterialColumn>
 			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createQuantity" placeholder="Quantity"></m:MaterialTextBox></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            		<m:MaterialRow>

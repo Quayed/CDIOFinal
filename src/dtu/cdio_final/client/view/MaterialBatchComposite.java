@@ -56,8 +56,6 @@ public class MaterialBatchComposite extends PageComposite {
 	@UiField
 	MaterialTextBox createMaterialID;
 	@UiField
-	MaterialTextBox createMaterialName;
-	@UiField
 	MaterialTextBox createQuantity;
 	@UiField
 	MaterialButton createMaterialBatchButton;
@@ -250,19 +248,21 @@ public class MaterialBatchComposite extends PageComposite {
 				// Add a new row to the table, when the database query has been completed.
 				materialBatchTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterialBatch.getMbID()));
 				materialBatchTable.setWidget(numberOfRows + 1, 1, new Label("" + newMaterialBatch.getMaterialID()));
-				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("" + newMaterialBatch.getQuantity()));
-				materialBatchTable.setWidget(numberOfRows + 1, 3, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
-				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 3)).addClickHandler(new editClick());
-				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
-				materialBatchTable.setWidget(numberOfRows + 1, 4, new Label(""));
+				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("TEST"));
+//				materialsID.add(newMaterialBatch.get(numberOfRows + 1).getMaterialID());
+				materialBatchTable.setWidget(numberOfRows + 1, 3, new Label("" + newMaterialBatch.getQuantity()));
+				materialBatchTable.setWidget(numberOfRows + 1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
+				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 4)).addClickHandler(new editClick());
 				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
+				materialBatchTable.setWidget(numberOfRows + 1, 5, new Label(""));
+				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 5, "limitWidth");
 				numberOfRows++;
 				
 				// Clear the create fields
 				createMaterialID.setText("");
 				createMaterialID.backToDefault();
-				createMaterialName.setText("");
-				createMaterialName.backToDefault();
+				createMaterialBatchID.setText("");
+				createMaterialBatchID.backToDefault();
 				createQuantity.setText("");
 				createQuantity.backToDefault();
 				
