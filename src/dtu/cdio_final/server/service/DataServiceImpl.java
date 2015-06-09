@@ -270,4 +270,17 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		token = TokenHandler.getInstance().validateToken(token);
 		return token == null;
 	}
+
+	@Override
+	public void updateMaterialBatch(MaterialbatchDTO materialBatch) {
+		
+		try
+		{
+			materialBatchDao.updateMaterialBatch(materialBatch);
+		}
+		catch (DALException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

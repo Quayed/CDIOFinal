@@ -28,11 +28,13 @@ public interface DataService extends RemoteService{
 	List<FormulaCompDTO> getFormulaComps(int formulaID);
 	
 	void createMaterialBatch(MaterialbatchDTO materialBatch);
+	void updateMaterialBatch(MaterialbatchDTO materialBatch);
 	List<MaterialbatchDTO> getMaterialBatches();
 	
 	void createProductBatch(ProductbatchDTO productBatch);
 	List<ProductbatchDTO> getProductBatches();
 	
 	String login(int userID, String password);
+
 	
 }

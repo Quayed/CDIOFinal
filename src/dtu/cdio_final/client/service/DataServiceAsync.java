@@ -29,9 +29,11 @@ public interface DataServiceAsync {
 	
 	void createMaterialBatch(MaterialbatchDTO materialBatch, AsyncCallback<Void> callback);
 	void getMaterialBatches(AsyncCallback<List<MaterialbatchDTO>> callback);
+	void updateMaterialBatch(MaterialbatchDTO materialBatch, AsyncCallback<Void> asyncCallback);
 	
 	void createProductBatch(ProductbatchDTO productBatch, AsyncCallback<Void> callback);
 	void getProductBatches(AsyncCallback<List<ProductbatchDTO>> callback);
 	
 	void login(int userID, String password, AsyncCallback<String> callback);
+
 }

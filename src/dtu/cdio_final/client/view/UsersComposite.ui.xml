@@ -53,7 +53,7 @@
 			   <item>Operator</item>
 			</m:MaterialListBox>
 			<m:MaterialCheckBox text="Active" ui:field="userStatus"/>
-			<m:MaterialButton ui:field="submitButton" icon="mdi-content-create" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="submitButton" icon="mdi-action-done" waves="light" color="blue"></m:MaterialButton>
 			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
 		</div>
 	</g:HTMLPanel>

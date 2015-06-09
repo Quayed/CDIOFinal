@@ -7,7 +7,38 @@
 	</ui:style>
 	<g:HTMLPanel>
 	<m:MaterialTitle title="Material Batches" />
+	<m:MaterialCollapsible type="Popout">
+		    <m:item>
+		        <m:MaterialCollapsibleItem>
+			        <m:header><m:MaterialLink text="Create Material Batch" icon="mdi-content-add" textColor="black"/></m:header>
+			        <m:content>
+			            <g:VerticalPanel>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialBatchID" placeholder="Material Batch ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialID" placeholder="Material ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialName" placeholder="Material Name"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createQuantity" placeholder="Quantity"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            		<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createMaterialBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            </g:VerticalPanel>
+			        </m:content>
+		      	</m:MaterialCollapsibleItem>
+		    </m:item>
+		</m:MaterialCollapsible>
+
 		<g:FlexTable ui:field="materialBatchTable" styleName="bordered">
 		</g:FlexTable>
+		<div style="display:none">	
+			<g:TextBox ui:field="materialBatchID"></g:TextBox>
+			<g:TextBox ui:field="materialID"></g:TextBox>
+			<g:TextBox ui:field="materialName"></g:TextBox>
+			<g:TextBox ui:field="quantity"></g:TextBox>
+			<m:MaterialButton ui:field="submitButton" icon="mdi-action-done" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 
