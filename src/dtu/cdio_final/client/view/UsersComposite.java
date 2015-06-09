@@ -77,7 +77,7 @@ public class UsersComposite extends PageComposite {
 			@Override
 			public void onFailure(Throwable caught) {
 				super.onFailure(caught);
-
+				Window.alert(caught.getMessage());
 			}
 
 			@Override
