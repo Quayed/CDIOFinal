@@ -8,5 +8,13 @@
 		<m:MaterialTitle title="Materials" />
 		<g:FlexTable ui:field="materialsTable" styleName="bordered">
 		</g:FlexTable>
+		<div style="display:none">	
+		<m:MaterialListBox ui:field="materialID"></m:MaterialListBox>
+			<m:MaterialListBox ui:field="materialName"></m:MaterialListBox>
+			<m:MaterialListBox ui:field="provider"></m:MaterialListBox>
+			
+			<m:MaterialButton ui:field="submitButton" icon="mdi-content-create" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 
