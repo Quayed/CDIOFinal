@@ -17,7 +17,7 @@ import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 
-public class MaterialBatchComposite extends Composite {
+public class MaterialBatchComposite extends PageComposite {
 
 	private static MaterialBatchCompositeUiBinder uiBinder = GWT
 			.create(MaterialBatchCompositeUiBinder.class);
@@ -36,6 +36,12 @@ public class MaterialBatchComposite extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		initTable();
+	}
+	
+	@Override
+	public void reloadPage() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void initTable() {
@@ -90,4 +96,6 @@ public class MaterialBatchComposite extends Composite {
 			}
 		}
 	}
+
+	
 }

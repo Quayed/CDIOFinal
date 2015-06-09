@@ -2,9 +2,7 @@ package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
-import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialListBox;
-import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.List;
@@ -17,18 +15,17 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.UserDTO;
 
-public class UsersComposite extends Composite {
+public class UsersComposite extends PageComposite {
 	interface MainUiBinder extends UiBinder<Widget, UsersComposite> {
 	}
 
@@ -57,6 +54,12 @@ public class UsersComposite extends Composite {
 		this.service = service;
 		initTable();
 	}
+	
+	@Override
+	public void reloadPage()
+	{
+		initTable();
+	}
 
 	private void initTable() {
 		usersTable.setWidget(0, 0, new Label("UserID"));
@@ -70,10 +73,10 @@ public class UsersComposite extends Composite {
 		usersTable.setWidget(0, 8, new Label(""));
 		createUserButton.addStyleName("fullWidth");
 		
-		service.getUsers(new AsyncCallback<List<UserDTO>>() {
+		service.getUsers(Group13cdio_final.token, new TokenAsyncCallback<List<UserDTO>>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				super.onFailure(caught);
 
 			}
 
@@ -300,5 +303,7 @@ public class UsersComposite extends Composite {
 			return "Inactive";
 		}
 	}
+
+	
 
 }
