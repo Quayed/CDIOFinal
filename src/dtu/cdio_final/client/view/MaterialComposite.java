@@ -1,7 +1,6 @@
 package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
-import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialListBox;
 
 import java.util.List;
@@ -13,18 +12,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
-
 
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 
-public class MaterialComposite extends Composite{
+public class MaterialComposite extends PageComposite{
 
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 
@@ -43,10 +38,16 @@ public class MaterialComposite extends Composite{
 	public MaterialComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
+		
+	}
+
+	@Override
+	public void reloadPage() {
 		initTable();
 	}
 
 	private void initTable() {
+		materialsTable.clear();
 		materialsTable.setWidget(0, 0, new Label("MaterialID"));
 		materialsTable.setWidget(0, 1, new Label("Material Name"));
 		materialsTable.setWidget(0, 2, new Label("Provider"));
@@ -68,8 +69,9 @@ public class MaterialComposite extends Composite{
 					materialsTable.setWidget(i + 1, 0, new Label(Integer.toString(materials.get(i).getMaterialID())));
 					materialsTable.setWidget(i + 1, 1, new Label(materials.get(i).getMaterialName()));
 					materialsTable.setWidget(i + 1, 2, new Label(materials.get(i).getProvider()));
-					materialsTable.setWidget(i + 1, 3, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
-					((MaterialButton)materialsTable.getWidget(i + 1, 3)).addClickHandler(new editClick());
+					MaterialButton button = new MaterialButton("mdi-content-create", "blue", "", "light", "");
+					button.addClickHandler(new editClick());
+					materialsTable.setWidget(i + 1, 3, button);
 					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 3, "limitWidth");
 					materialsTable.setWidget(i + 1, 4, new Label(""));
 					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 4, "limitWidth");
@@ -114,14 +116,15 @@ public class MaterialComposite extends Composite{
 			}
 			
 			editRow = materialsTable.getCellForEvent(event).getRowIndex();
-			materialsTable.insertRow(editRow);
-			materialsTable.getRowFormatter().setVisible(editRow+1, true);
+			
+			editRow = materialsTable.insertRow(editRow);
+			materialsTable.getRowFormatter().setVisible(editRow+1, false);
 			
 			service.getMaterials(new AsyncCallback<List<MaterialDTO>>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
+					Window.alert("hejlsdffdsa");
 					
 				}
 
@@ -135,23 +138,27 @@ public class MaterialComposite extends Composite{
 						if(!containsElement(provider, materials.get(i).getProvider()))
 							provider.addItem(materials.get(i).getProvider());
 					}
-				}		
+					
+					materialID.setItemSelected(getIndexSelected(getTableLabelText(0), materialID), true);
+					materialsTable.setWidget(editRow, 0, materialID);
+					
+					materialName.setItemSelected(getIndexSelected(getTableLabelText(1), materialName), true);
+					materialsTable.setWidget(editRow, 1, materialName);
+					
+					provider.setItemSelected(getIndexSelected(getTableLabelText(2), provider), true);
+					materialsTable.setWidget(editRow, 2, provider);
+									
+					submitButton.addClickHandler(new submitClickHandler());
+					materialsTable.setWidget(editRow, 3, submitButton);
+					
+					cancelButton.addClickHandler(new cancelClickHandler());
+					materialsTable.setWidget(editRow, 4, cancelButton);
+				}
 			});
 			
-			materialID.setItemSelected(getIndexSelected(getTableLabelText(0), materialID), true);
-			materialsTable.setWidget(editRow, 0, materialID);
 			
-			materialName.setItemSelected(getIndexSelected(getTableLabelText(1), materialName), true);
-			materialsTable.setWidget(editRow, 1, materialName);
 			
-			provider.setItemSelected(getIndexSelected(getTableLabelText(2), provider), true);
-			materialsTable.setWidget(editRow, 2, provider);
-							
-			submitButton.addClickHandler(new submitClickHandler());
-			materialsTable.setWidget(editRow, 3, submitButton);
-			
-			cancelButton.addClickHandler(new cancelClickHandler());
-			materialsTable.setWidget(editRow, 4, cancelButton);
+
 		}
 		
 	}
@@ -199,6 +206,7 @@ public class MaterialComposite extends Composite{
 		}
 		
 	}
+
 	
 	
 }
