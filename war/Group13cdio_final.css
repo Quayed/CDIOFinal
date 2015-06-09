@@ -18,6 +18,14 @@ tbody :nth-child(1) .gwt-Label{
 	width: 90px !important;
 }
 
+.fullWidth{
+	width: 100% !important;
+}
+
+.fullWidth:first-child button{
+	width: 100% !important;
+}
+
 .sendButton {
   display: block;
   font-size: 16pt;
