@@ -5,6 +5,7 @@ import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialSwitch;
+import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.List;
 
@@ -34,7 +35,16 @@ public class UsersComposite extends Composite {
 
 	@UiField
 	FlexTable usersTable;
-
+	
+	
+	@UiField MaterialTextBox createUserID;
+	@UiField MaterialTextBox createUserName;
+	@UiField MaterialTextBox createUserIni;
+	@UiField MaterialTextBox createUserCPR;
+	@UiField MaterialTextBox createUserPassword;
+	@UiField MaterialListBox createUserRole;
+	@UiField MaterialButton createUserButton;
+	
 	DataServiceAsync service;
 
 	private int editRow = -1;
@@ -57,8 +67,9 @@ public class UsersComposite extends Composite {
 		usersTable.setWidget(0, 6, new Label("Status"));
 		usersTable.setWidget(0, 7, new Label(""));
 		usersTable.setWidget(0, 8, new Label(""));
+		createUserButton.addStyleName("fullWidth");
+		
 		service.getUsers(new AsyncCallback<List<UserDTO>>() {
-
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
@@ -95,7 +106,6 @@ public class UsersComposite extends Composite {
 	@UiField MaterialCheckBox userStatus;
 	@UiField MaterialButton submitButton;
 	@UiField MaterialButton cancelButton;
-	
 	
 	private class editClick implements ClickHandler{
 
