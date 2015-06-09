@@ -2,6 +2,8 @@ package dtu.cdio_final.client.view;
 
 
 
+import gwt.material.design.client.ui.MaterialCollapsible;
+import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialTitle;
 
@@ -18,6 +20,7 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
@@ -25,7 +28,7 @@ import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 
 
-public class FormulaComposite extends Composite {
+public class FormulaComposite extends PageComposite {
 	interface MainUiBinder extends UiBinder<Widget, FormulaComposite> {
 	}
 	
@@ -34,8 +37,7 @@ public class FormulaComposite extends Composite {
 	
 	@UiField FlexTable formulaTable;
 	
-	@UiField MaterialLink treeItem;
-	@UiField MaterialTitle rootItem;
+	@UiField MaterialCollapsible collapsible;
 	
 	DataServiceAsync service;
 
@@ -43,6 +45,12 @@ public class FormulaComposite extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		initTable();
+	}
+	
+	@Override
+	public void reloadPage() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void initTable() {
@@ -64,16 +72,25 @@ public class FormulaComposite extends Composite {
 				for (int i = 0; i < formulas.size(); i++) {
 //					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
 //					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
-					treeItem.setWidget(new Label(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName()));
+					MaterialCollapsibleItem mCollapsibleItem = new MaterialCollapsibleItem();
+					collapsible.addItem(mCollapsibleItem);
+					mCollapsibleItem.addHeader(new MaterialLink(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName(), "blue"));
 					
-					rootItem.setTitle("TEEEST");
+					//mCollapsibleItem.addContent(new MaterialTitle(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName()));
 					
-					DisclosurePanel disc = new DisclosurePanel("Click to disclose something:");
-				    disc.setContent(new Label("This widget is is shown and hidden<br>by the "
-				        + "disclosure panel that wraps it."));
-				    treeItem.setWidget(disc);
-				    //.add(disc);
-										
+					VerticalPanel testPanel = new VerticalPanel();
+					
+					
+					
+					FlexTable contentTable = new FlexTable();
+					contentTable.setWidget(0, 0, new Label("FormulaID"));
+					contentTable.setWidget(0, 1, new Label("FormulaName"));
+					contentTable.setWidget(0, 2, new Label("FormulaName"));
+					
+					testPanel.add(contentTable);
+					mCollapsibleItem.addContent(testPanel);
+					
+					
 //					service.getFormulaComps(formulas.get(i).getFormulaID(),new AsyncCallback<List<FormulaCompDTO>>(){
 //								
 //					formulaTable.setWidget(k + 1, 2, new Label(String.valueOf(formulaComps.get(k).getMaterialID())));
@@ -87,6 +104,8 @@ public class FormulaComposite extends Composite {
 
 		});
 	}
+
+	
 
 }
 

@@ -2,9 +2,8 @@ package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
-import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialListBox;
-import gwt.material.design.client.ui.MaterialSwitch;
+import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.List;
 
@@ -13,20 +12,20 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.UserDTO;
 
-public class UsersComposite extends Composite {
+public class UsersComposite extends PageComposite {
 	interface MainUiBinder extends UiBinder<Widget, UsersComposite> {
 	}
 
@@ -34,16 +33,31 @@ public class UsersComposite extends Composite {
 
 	@UiField
 	FlexTable usersTable;
-
+	
+	
+	@UiField MaterialTextBox createUserID;
+	@UiField MaterialTextBox createUserName;
+	@UiField MaterialTextBox createUserIni;
+	@UiField MaterialTextBox createUserCPR;
+	@UiField MaterialTextBox createUserPassword;
+	@UiField MaterialListBox createUserRole;
+	@UiField MaterialButton createUserButton;
+	
 	DataServiceAsync service;
 
 	private int editRow = -1;
-	
-	
+	private int numberOfRows = 1;
+	private UserDTO newUser;
 	
 	public UsersComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
+		initTable();
+	}
+	
+	@Override
+	public void reloadPage()
+	{
 		initTable();
 	}
 
@@ -57,12 +71,13 @@ public class UsersComposite extends Composite {
 		usersTable.setWidget(0, 6, new Label("Status"));
 		usersTable.setWidget(0, 7, new Label(""));
 		usersTable.setWidget(0, 8, new Label(""));
-		service.getUsers(new AsyncCallback<List<UserDTO>>() {
-
+		createUserButton.addStyleName("fullWidth");
+		
+		service.getUsers(Group13cdio_final.token, new TokenAsyncCallback<List<UserDTO>>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
+				super.onFailure(caught);
+				Window.alert(caught.getMessage());
 			}
 
 			@Override
@@ -80,7 +95,7 @@ public class UsersComposite extends Composite {
 					usersTable.getFlexCellFormatter().setStyleName(i + 1, 7, "limitWidth");
 					usersTable.setWidget(i + 1, 8, new Label(""));
 					usersTable.getFlexCellFormatter().setStyleName(i + 1, 8, "limitWidth");
-					
+					numberOfRows++;
 				}
 			}
 		
@@ -96,7 +111,6 @@ public class UsersComposite extends Composite {
 	@UiField MaterialButton submitButton;
 	@UiField MaterialButton cancelButton;
 	
-	
 	private class editClick implements ClickHandler{
 
 		private String getTableLabelText(int column){
@@ -108,7 +122,6 @@ public class UsersComposite extends Composite {
 			if (editRow > -1){
 				cancelButton.fireEvent(new ClickEvent(){});
 			}
-			
 			editRow = usersTable.getCellForEvent(event).getRowIndex();
 			usersTable.insertRow(editRow);
 			usersTable.getRowFormatter().setVisible(editRow+1, false);
@@ -134,19 +147,16 @@ public class UsersComposite extends Composite {
 			userStatus.setValue(getValueOfStatus(getTableLabelText(6)));
 			usersTable.setWidget(editRow, 5, userStatus);
 						
-			submitButton.addClickHandler(new submitClickHandler());
 			usersTable.setWidget(editRow, 6, submitButton);
 			
-			cancelButton.addClickHandler(new cancelClickHandler());
 			usersTable.setWidget(editRow, 7, cancelButton);
 		}
 		
 	}
 	
-	private class submitClickHandler implements ClickHandler{
+	@UiHandler("submitButton")
+	void submitClickHandler(ClickEvent event){
 
-		@Override
-		public void onClick(ClickEvent event) {
 			int userIDInt = Integer.valueOf(userID.getText());
 			int userRoleInt = userRole.getSelectedIndex() +1;
 			int userStatusInt;
@@ -156,8 +166,9 @@ public class UsersComposite extends Composite {
 				userStatusInt = 0;
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
+			Window.alert("Clicked");
 			service.updateUser(user, new AsyncCallback<Void>(){
-
+			
 				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert("Something went wrong!");
@@ -184,18 +195,61 @@ public class UsersComposite extends Composite {
 				
 			});
 		}
-		
+	
+	@UiHandler("createUserButton")
+	void createUser(ClickEvent event){
+		newUser = new UserDTO(Integer.valueOf(createUserID.getText()), createUserName.getText(), createUserIni.getText(), createUserCPR.getText(), createUserPassword.getText(), createUserRole.getSelectedIndex()+1, 1);
+		service.createUser(newUser, new AsyncCallback<Void>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Something went wrong!!");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// Add a new row to the table, when the database query has been completed.
+				usersTable.setWidget(numberOfRows + 1, 0, new Label("" + newUser.getUserID()));
+				usersTable.setWidget(numberOfRows + 1, 1, new Label(newUser.getUserName()));
+				usersTable.setWidget(numberOfRows + 1, 2, new Label(newUser.getIni()));
+				usersTable.setWidget(numberOfRows + 1, 3, new Label(newUser.getCpr()));
+				usersTable.setWidget(numberOfRows + 1, 4, new Label(newUser.getPassword()));
+				usersTable.setWidget(numberOfRows + 1, 5, new Label(roleToString(newUser.getRole())));
+				usersTable.setWidget(numberOfRows + 1, 6, new Label(statusToString(newUser.getStatus())));
+				usersTable.setWidget(numberOfRows + 1, 7, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
+				((MaterialButton)usersTable.getWidget(numberOfRows + 1, 7)).addClickHandler(new editClick());
+				usersTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 7, "limitWidth");
+				usersTable.setWidget(numberOfRows + 1, 8, new Label(""));
+				usersTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 8, "limitWidth");
+				numberOfRows++;
+				
+				// Clear the create fields
+				createUserID.setText("");
+				createUserID.backToDefault();
+				createUserName.setText("");
+				createUserName.backToDefault();
+				createUserIni.setText("");
+				createUserIni.backToDefault();
+				createUserCPR.setText("");
+				createUserCPR.backToDefault();
+				createUserPassword.setText("");
+				createUserPassword.backToDefault();
+				createUserRole.setSelectedIndex(0);
+				
+				Window.alert("The user has been created!");
+			}
+		});
 	}
 	
-	private class cancelClickHandler implements ClickHandler{
+	@UiHandler("cancelButton")
+	void cancelClickHandler(ClickEvent event){
 
-		@Override
-		public void onClick(ClickEvent event) {
+		
 			usersTable.getRowFormatter().setVisible(editRow+1, true);
 			usersTable.getRowFormatter().setVisible(editRow, false);
 			usersTable.removeRow(editRow);
 			editRow = -1;
-		}
+		
 		
 	}
 	
@@ -244,5 +298,7 @@ public class UsersComposite extends Composite {
 			return "Inactive";
 		}
 	}
+
+	
 
 }
