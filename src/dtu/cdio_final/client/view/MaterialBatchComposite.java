@@ -1,6 +1,7 @@
 package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.ArrayList;
@@ -31,9 +32,16 @@ public class MaterialBatchComposite extends PageComposite {
 
 	private static MaterialBatchCompositeUiBinder uiBinder = GWT
 			.create(MaterialBatchCompositeUiBinder.class);
+	
+	private boolean updatePermission;
+	private boolean createPermission;
+	
+	
 	private int editRow = -1;
-	private int numberOfRows = 1;
+	private int numberOfRows;
 
+	@UiField MaterialCollapsible createBox;
+	
 	@UiField FlexTable materialBatchTable;
 	@UiField MaterialButton submitButton;
 	@UiField MaterialButton cancelButton;
@@ -51,10 +59,11 @@ public class MaterialBatchComposite extends PageComposite {
 	DataServiceAsync service;
 	ArrayList<Integer> materialsID = new ArrayList<Integer>();
 
-	public MaterialBatchComposite(DataServiceAsync service) {
+	public MaterialBatchComposite(DataServiceAsync service, boolean create, boolean update) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
-		initTable();
+		this.updatePermission = update;
+		this.createPermission = create;
 	}
 
 	@Override
@@ -63,42 +72,58 @@ public class MaterialBatchComposite extends PageComposite {
 	}
 
 	private void initTable() {
+		materialBatchTable.removeAllRows();
+		numberOfRows = 1;
 		materialBatchTable.setWidget(0, 0, new Label("Material Batch ID"));
 		materialBatchTable.setWidget(0, 1, new Label("Material ID"));
 		materialBatchTable.setWidget(0, 2, new Label("Material Name"));
 		materialBatchTable.setWidget(0, 3, new Label("Quantity"));
-		materialBatchTable.setWidget(0, 4, new Label(""));
-		materialBatchTable.setWidget(0, 5, new Label(""));
+		if(updatePermission){
+			materialBatchTable.setWidget(0, 4, new Label(""));
+			materialBatchTable.setWidget(0, 5, new Label(""));
+		}
 		createMaterialBatchButton.addStyleName("fullWidth");
 
+		if(!createPermission){
+			createBox.setVisible(false);
+		}
+		
 		service.getMaterialBatches(new TokenAsyncCallback<List<MaterialbatchDTO>>() {
 
 			@Override
 			public void onSuccess(List<MaterialbatchDTO> materialBatches) {
 				for (int i = 0; i < materialBatches.size(); i++) {
-					materialBatchTable.setWidget(i + 1, 0, new Label(""
-							+ materialBatches.get(i).getMbID()));
-					materialBatchTable.setWidget(i + 1, 1, new Label(""
-							+ materialBatches.get(i).getMaterialID()));
-					materialsID.add(materialBatches.get(i).getMaterialID());
-					materialBatchTable.setWidget(i + 1, 3, new Label(""
-							+ materialBatches.get(i).getQuantity()));
-					materialBatchTable.setWidget(i + 1, 4, new MaterialButton(
-							"mdi-content-create", "blue", "", "light", ""));
-					((MaterialButton) materialBatchTable.getWidget(i + 1, 4))
-							.addClickHandler(new editClick());
-					materialBatchTable.getFlexCellFormatter().setStyleName(
-							i + 1, 4, "limitWidth");
-					materialBatchTable.setWidget(i + 1, 5, new Label(""));
-					materialBatchTable.getFlexCellFormatter().setStyleName(
-							i + 1, 5, "limitWidth");
-					numberOfRows++;
+					addRow(materialBatches.get(i));
 				}
 				service.getMaterials(new MaterialCallback(materialsID));
 
 			}
 
 		});
+	}
+	
+	private void addRow(MaterialbatchDTO materialBatch) {
+		//TODO materialName
+		materialBatchTable.setWidget(numberOfRows, 0, new Label(""
+				+ materialBatch.getMbID()));
+		materialBatchTable.setWidget(numberOfRows, 1, new Label(""
+				+ materialBatch.getMaterialID()));
+		materialsID.add(materialBatch.getMaterialID());
+		materialBatchTable.setWidget(numberOfRows, 3, new Label(""
+				+ materialBatch.getQuantity()));
+		if(updatePermission){
+		materialBatchTable.setWidget(numberOfRows, 4, new MaterialButton(
+				"mdi-content-create", "blue", "", "light", ""));
+		((MaterialButton) materialBatchTable.getWidget(numberOfRows, 4))
+				.addClickHandler(new editClick());
+		materialBatchTable.getFlexCellFormatter().setStyleName(
+				numberOfRows, 4, "limitWidth");
+		
+		materialBatchTable.setWidget(numberOfRows, 5, new Label(""));
+		materialBatchTable.getFlexCellFormatter().setStyleName(
+				numberOfRows, 5, "limitWidth");
+		}
+		numberOfRows++;
 	}
 
 	private class MaterialCallback extends TokenAsyncCallback<List<MaterialDTO>> {
@@ -113,10 +138,8 @@ public class MaterialBatchComposite extends PageComposite {
 		public void onSuccess(List<MaterialDTO> materialCallBack) {
 			for (int i = 0; i < materials.size(); i++) {
 				for (int j = 0; j < materialCallBack.size(); j++) {
-					if (materials.get(i) == materialCallBack.get(j)
-							.getMaterialID())
-						materialBatchTable.setWidget(i + 1, 2, new Label(
-								materialCallBack.get(j).getMaterialName()));
+					if (materials.get(i) == materialCallBack.get(j).getMaterialID())
+						materialBatchTable.setWidget(i + 1, 2, new Label(materialCallBack.get(j).getMaterialName()));
 				}
 			}
 		}
@@ -145,9 +168,10 @@ public class MaterialBatchComposite extends PageComposite {
 
 			materialID.setText(getTableLabelText(1));
 			materialBatchTable.setWidget(editRow, 1, materialID);
+			materialBatchTable.getFlexCellFormatter().setColSpan(editRow, 1, 2);
 
-			materialName.setText(getTableLabelText(2));
-			materialBatchTable.setText(editRow, 2, materialName.getText());
+//			materialName.setText(getTableLabelText(2));
+//			materialBatchTable.setText(editRow, 2, materialName.getText());
 
 			quantity.setText(getTableLabelText(3));
 			materialBatchTable.setWidget(editRow, 3, quantity);
@@ -212,16 +236,17 @@ public class MaterialBatchComposite extends PageComposite {
 			@Override
 			public void onSuccess(Void result) {
 				// Add a new row to the table, when the database query has been completed.
-				materialBatchTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterialBatch.getMbID()));
-				materialBatchTable.setWidget(numberOfRows + 1, 1, new Label("" + newMaterialBatch.getMaterialID()));
-				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("TEST"));
-				materialBatchTable.setWidget(numberOfRows + 1, 3, new Label("" + newMaterialBatch.getQuantity()));
-				materialBatchTable.setWidget(numberOfRows + 1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
-				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 4)).addClickHandler(new editClick());
-				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
-				materialBatchTable.setWidget(numberOfRows + 1, 5, new Label(""));
-				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 5, "limitWidth");
-				numberOfRows++;
+				addRow(newMaterialBatch);
+//				materialBatchTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterialBatch.getMbID()));
+//				materialBatchTable.setWidget(numberOfRows + 1, 1, new Label("" + newMaterialBatch.getMaterialID()));
+//				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("TEST"));
+//				materialBatchTable.setWidget(numberOfRows + 1, 3, new Label("" + newMaterialBatch.getQuantity()));
+//				materialBatchTable.setWidget(numberOfRows + 1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
+//				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 4)).addClickHandler(new editClick());
+//				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
+//				materialBatchTable.setWidget(numberOfRows + 1, 5, new Label(""));
+//				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 5, "limitWidth");
+//				numberOfRows++;
 				
 				// Clear the create fields
 				createMaterialID.setText("");

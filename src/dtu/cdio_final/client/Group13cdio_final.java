@@ -37,7 +37,7 @@ public class Group13cdio_final implements EntryPoint
 				gui.addPage("Users", new UsersComposite(service));
 				gui.addPage("Materials", new MaterialComposite(service), true);
 				gui.addPage("Fomulas", new FormulaComposite(service));
-				gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service));
+				gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service, true, true));
 				
 //			}
 //		}), true);
