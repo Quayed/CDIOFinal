@@ -7,7 +7,7 @@
 	<g:HTMLPanel>
 	
 	<m:MaterialTitle title="Materials" />
-		<m:MaterialCollapsible type="Popout">
+		<m:MaterialCollapsible type="Popout" ui:field="createBox">
 		    <m:item>
 		        <m:MaterialCollapsibleItem>
 			        <m:header><m:MaterialLink text="Create Material" icon="mdi-content-add" textColor="black"/></m:header>
@@ -29,7 +29,6 @@
 		    </m:item>
 		</m:MaterialCollapsible>
 		
-		<m:MaterialTitle title="Materials" />
 		<g:FlexTable ui:field="materialsTable" styleName="bordered">
 		</g:FlexTable>
 		<div style="display:none">	

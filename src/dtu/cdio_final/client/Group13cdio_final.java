@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.view.FormulaComposite;
+import dtu.cdio_final.client.view.LoginComposite;
 import dtu.cdio_final.client.view.MainComposite;
 import dtu.cdio_final.client.view.MaterialBatchComposite;
 import dtu.cdio_final.client.view.ProductBatchComposite;
@@ -34,11 +35,36 @@ public class Group13cdio_final implements EntryPoint
 //			@Override
 //			public void login(UserDTO user)
 //			{
-				gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
-				gui.addPage("Users", new UsersComposite(service), true);
-				gui.addPage("Materials", new MaterialComposite(service), true);
-				gui.addPage("Fomulas", new FormulaComposite(service));
-				gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+//				if(user.getRole() == 1)
+//				{
+//				gui.addPage("Users", new UsersComposite(service), true);
+//				gui.addPage("Materials", new MaterialComposite(service,false), true);
+//				//gui.addPage("Fomulas", new FormulaComposite(service,false));
+//				gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+//				gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+//				}
+//				else if (user.getRole() == 2){
+//					gui.addPage("Materials", new MaterialComposite(service,true), true);
+//					//gui.addPage("Fomulas", new FormulaComposite(service,true));
+//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+//					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+//				}
+//					
+//				else if (user.getRole() == 3){
+//					gui.addPage("Materials", new MaterialComposite(service,false), true);
+//					//gui.addPage("Fomulas", new FormulaComposite(service,false));
+//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
+//				}
+				
+					// DELETE WHEN DONE WITH TESTING.
+					gui.addPage("Users", new UsersComposite(service), true);
+					gui.addPage("Materials", new MaterialComposite(service,true), true);
+					//gui.addPage("Fomulas", new FormulaComposite(service,false));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
+				
+						
 				
 //			}
 //		}), true);

@@ -2,6 +2,7 @@ package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
+import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModal.TYPE;
 import gwt.material.design.client.ui.MaterialModalContent;
@@ -43,15 +44,15 @@ public class ProductBatchComposite extends PageComposite
 	@UiField MaterialCollapsible createBox;
 	
 	@UiField FlexTable productBatchTable;
-	@UiField MaterialButton cancelButton;
-	@UiField MaterialButton confirmButton;
-	
-	@UiField TextBox productBatchID;
-	@UiField TextBox formulaID;
-	@UiField TextBox productBatchStatus;
+//	@UiField MaterialButton cancelButton;
+//	@UiField MaterialButton confirmButton;
+//	
+//	@UiField TextBox productBatchID;
+//	@UiField TextBox formulaID;
+//	@UiField TextBox productBatchStatus;
 	
 	@UiField MaterialTextBox  createProductBatchID;
-	@UiField MaterialTextBox  createFormulaID;
+	@UiField MaterialListBox  createFormulaID;
 	@UiField MaterialButton createProductBatchButton;
 
 	ArrayList<Integer> productID;
@@ -170,6 +171,11 @@ public class ProductBatchComposite extends PageComposite
 						productBatchTable.setWidget(i + 1, 2, new Label(materialCallBack.get(j).getFormulaName()));
 				}
 			}
+			for(int i = 0; i < products.size(); i++)
+			{
+				if(!containsElement(createFormulaID, materialCallBack.get(i).getFormulaName()))
+					createFormulaID.addItem(materialCallBack.get(i).getFormulaName());
+			}
 		}
 
 	}
@@ -177,10 +183,9 @@ public class ProductBatchComposite extends PageComposite
 	@UiHandler("createProductBatchButton")
 	void createMaterialBatch(ClickEvent event){
 		int productBatchIDInt2 = Integer.valueOf(createProductBatchID.getText());
-		int productIDInt2 = Integer.valueOf(createFormulaID.getText());
+		int productIDInt2 = Integer.valueOf(createFormulaID.getSelectedIndex()+1);
 		final ProductbatchDTO newProductBatch = new ProductbatchDTO(productBatchIDInt2, productIDInt2, 1);
-		
-		
+				
 		service.createProductBatch(newProductBatch, new TokenAsyncCallback<Void>(){
 
 			@Override
@@ -191,12 +196,17 @@ public class ProductBatchComposite extends PageComposite
 				// Clear the create fields
 				createProductBatchID.setText("");
 				createProductBatchID.backToDefault();
-				createFormulaID.setText("");
-				createFormulaID.backToDefault();
 				
 				Window.alert("The product has been created!");
 			}
 		});
+	}
+	
+	private boolean containsElement(MaterialListBox box , String element){
+		for(int i = 0; i < box.getItemCount(); i++)
+			if(box.getItemText(i).equals(element))
+				return true;
+		return false;
 	}
 
 	/*

@@ -14,7 +14,7 @@
 			            <g:VerticalPanel>
 			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createProductBatchID" placeholder="Product Batch ID"></m:MaterialTextBox></m:MaterialColumn>
-			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createFormulaID" placeholder="Formula ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s4"><m:MaterialListBox ui:field="createFormulaID"></m:MaterialListBox></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createProductBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
@@ -24,16 +24,8 @@
 		      	</m:MaterialCollapsibleItem>
 		    </m:item>
 		</m:MaterialCollapsible>
-			
+		
 		<g:FlexTable ui:field="productBatchTable" styleName="bordered">
 		</g:FlexTable>
-		<div style="display:none">	
-			<g:TextBox ui:field="productBatchID"></g:TextBox>
-			<g:TextBox ui:field="formulaID"></g:TextBox>
-			<g:TextBox ui:field="formulaName"></g:TextBox>
-			<g:TextBox ui:field="productBatchStatus"></g:TextBox>
-			<m:MaterialButton ui:field="confirmButton" icon="mdi-action-done" waves="light" color="blue"></m:MaterialButton>
-			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
-		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

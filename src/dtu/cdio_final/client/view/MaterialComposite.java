@@ -1,6 +1,7 @@
 package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
 
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.MaterialDTO;
+import dtu.cdio_final.shared.dto.ProductbatchDTO;
 import dtu.cdio_final.shared.FieldVerifier;
 
 public class MaterialComposite extends PageComposite{
@@ -37,6 +39,7 @@ public class MaterialComposite extends PageComposite{
 	@UiField MaterialTextBox createMaterialName;
 	@UiField MaterialTextBox createProvider;
 	@UiField MaterialButton createMaterialButton;
+	@UiField MaterialCollapsible createBox;
 	
 	DataServiceAsync service;
 	
@@ -44,14 +47,16 @@ public class MaterialComposite extends PageComposite{
 	private int numberOfRows = 1;
 	private MaterialDTO newMaterial;
 	
+	private boolean createAccess;
 	private boolean validID;
 	private boolean validName;
 	private boolean validProvider;
 	
 	
-	public MaterialComposite(DataServiceAsync service) {
+	public MaterialComposite(DataServiceAsync service,boolean create) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
+		this.createAccess = create;
 		
 	}
 
@@ -69,6 +74,9 @@ public class MaterialComposite extends PageComposite{
 		materialsTable.setWidget(0, 4, new Label(""));
 		createMaterialButton.addStyleName("fullWidth");
 		
+		if(!createAccess){
+			createBox.setVisible(false);
+		}
 		
 		service.getMaterials(new TokenAsyncCallback<List<MaterialDTO>>() {
 			
@@ -76,22 +84,99 @@ public class MaterialComposite extends PageComposite{
 			public void onSuccess(List<MaterialDTO> materials) {
 				for (int i = 0; i < materials.size(); i++) {
 					
-					materialsTable.setWidget(i + 1, 0, new Label(Integer.toString(materials.get(i).getMaterialID())));
-					materialsTable.setWidget(i + 1, 1, new Label(materials.get(i).getMaterialName()));
-					materialsTable.setWidget(i + 1, 2, new Label(materials.get(i).getProvider()));
-					MaterialButton button = new MaterialButton("mdi-content-create", "blue", "", "light", "");
-					button.addClickHandler(new editClick());
-					materialsTable.setWidget(i + 1, 3, button);
-					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 3, "limitWidth");
-					materialsTable.setWidget(i + 1, 4, new Label(""));
-					materialsTable.getFlexCellFormatter().setStyleName(i + 1, 4, "limitWidth");
-					numberOfRows++;
+					addRow(materials.get(i));
 				}
 			}
 		});	
 		
 	}
 	
+	@UiHandler("createMaterialButton")
+	void createUser(ClickEvent event){
+		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
+
+		service.createMaterial(newMaterial, new TokenAsyncCallback<Void>(){
+
+			@Override
+			public void onSuccess(Void result) {
+				// Add a new row to the table, when the database query has been completed.
+				addRow(newMaterial);
+				
+				// Clear the create fields
+				createMaterialID.setText("");
+				createMaterialID.backToDefault();
+				createMaterialName.setText("");
+				createMaterialName.backToDefault();
+				createProvider.setText("");
+				createProvider.backToDefault();
+				Window.alert("The Material has been created!");
+			}
+		});
+	}
+	
+	@UiHandler("createMaterialID")
+	void keyUpID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createMaterialID.getText())){
+			createMaterialID.removeStyleName("invalidEntry");
+			validID = true;
+		} else{
+			createMaterialID.addStyleName("invalidEntry");
+			validID = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createMaterialName")
+	void keyUpName(KeyUpEvent e) {
+		if(FieldVerifier.isValidName(createMaterialName.getText())){
+			createMaterialName.removeStyleName("invalidEntry");
+			validName = true;
+		} else{
+			createMaterialName.addStyleName("invalidEntry");
+			validName = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createProvider")
+	void keyUpProvider(KeyUpEvent e) {
+		if(FieldVerifier.isValidProvider(createProvider.getText())){
+			createProvider.removeStyleName("invalidEntry");
+			validProvider = true;
+		} else{
+			createProvider.addStyleName("invalidEntry");
+			validProvider = false;
+		
+		}
+		checkForm();
+	}
+	
+	
+	
+	private void checkForm(){
+		if (validID && validName && validProvider){
+			createMaterialButton.setDisable(false);
+		} else{
+			createMaterialButton.setDisable(true);
+		}
+	}
+	private void addRow(MaterialDTO materials) {
+		//TODO materialName
+		
+		materialsTable.setWidget(numberOfRows + 1, 0, new Label(Integer.toString(materials.getMaterialID())));
+		materialsTable.setWidget(numberOfRows + 1, 1, new Label(materials.getMaterialName()));
+		materialsTable.setWidget(numberOfRows + 1, 2, new Label(materials.getProvider()));
+		MaterialButton button = new MaterialButton("mdi-content-create", "blue", "", "light", "");
+		button.addClickHandler(new editClick());
+		materialsTable.setWidget(numberOfRows + 1, 3, button);
+		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
+		materialsTable.setWidget(numberOfRows + 1, 4, new Label(""));
+		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
+		
+		numberOfRows++;
+	}
+	
+	/////// ALT NEDENSTÅENDE SKAL SLETTES LIGESÅ SNART DER ER LAVET DROPDOWNS BASERET PÅ KODEN.
 	@UiField MaterialListBox materialID;
 	@UiField MaterialListBox materialName;
 	@UiField MaterialListBox provider;
@@ -204,84 +289,6 @@ public class MaterialComposite extends PageComposite{
 			editRow = -1;
 		}
 		
-	}
-	
-	@UiHandler("createMaterialButton")
-	void createUser(ClickEvent event){
-		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
-
-		service.createMaterial(newMaterial, new TokenAsyncCallback<Void>(){
-
-			@Override
-			public void onSuccess(Void result) {
-				// Add a new row to the table, when the database query has been completed.
-				materialsTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterial.getMaterialID()));
-				materialsTable.setWidget(numberOfRows + 1, 1, new Label(newMaterial.getMaterialName()));
-				materialsTable.setWidget(numberOfRows + 1, 2, new Label(newMaterial.getProvider()));
-				materialsTable.setWidget(numberOfRows + 1, 3, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
-				((MaterialButton)materialsTable.getWidget(numberOfRows + 1, 3)).addClickHandler(new editClick());
-				materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
-				materialsTable.setWidget(numberOfRows + 1, 4, new Label(""));
-				materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
-				numberOfRows++;
-				
-				// Clear the create fields
-				createMaterialID.setText("");
-				createMaterialID.backToDefault();
-				createMaterialName.setText("");
-				createMaterialName.backToDefault();
-				createProvider.setText("");
-				createProvider.backToDefault();
-				Window.alert("The Material has been created!");
-			}
-		});
-	}
-	
-	@UiHandler("createMaterialID")
-	void keyUpID(KeyUpEvent e) {
-		if(FieldVerifier.isValidID(createMaterialID.getText())){
-			createMaterialID.removeStyleName("invalidEntry");
-			validID = true;
-		} else{
-			createMaterialID.addStyleName("invalidEntry");
-			validID = false;
-		}
-		checkForm();
-	}
-	
-	@UiHandler("createMaterialName")
-	void keyUpName(KeyUpEvent e) {
-		if(FieldVerifier.isValidName(createMaterialName.getText())){
-			createMaterialName.removeStyleName("invalidEntry");
-			validName = true;
-		} else{
-			createMaterialName.addStyleName("invalidEntry");
-			validName = false;
-		}
-		checkForm();
-	}
-	
-	@UiHandler("createProvider")
-	void keyUpProvider(KeyUpEvent e) {
-		if(FieldVerifier.isValidProvider(createProvider.getText())){
-			createProvider.removeStyleName("invalidEntry");
-			validProvider = true;
-		} else{
-			createProvider.addStyleName("invalidEntry");
-			validProvider = false;
-		
-		}
-		checkForm();
-	}
-	
-	
-	
-	private void checkForm(){
-		if (validID && validName && validProvider){
-			createMaterialButton.setDisable(false);
-		} else{
-			createMaterialButton.setDisable(true);
-		}
 	}
 }
 	
