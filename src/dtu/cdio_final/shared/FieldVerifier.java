@@ -150,7 +150,7 @@ public class FieldVerifier
 	}
 
 	public static boolean isValidRole(int role) {
-		if(0 < role && role > 5)
+		if(0 < role && role < 5)
 			return true;
 		return false;
 	}

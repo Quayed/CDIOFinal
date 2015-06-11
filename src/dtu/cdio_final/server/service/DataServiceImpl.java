@@ -58,7 +58,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		
 		try
 		{
-			
 			if(userDao.getUser(user.getUserID()) != null){
 				throw new ServiceException("UserID already in use");
 			}
