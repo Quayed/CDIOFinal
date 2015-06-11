@@ -7,6 +7,26 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<m:MaterialTitle title="Formulas" />
+		<m:MaterialCollapsible type="accordion">
+		    <m:item>
+		        <m:MaterialCollapsibleItem>
+				    <m:header><m:MaterialLink text="Create Formula" icon="mdi-content-add" textColor="black"></m:MaterialLink></m:header>
+				    <m:content>
+				        <g:VerticalPanel>
+				            <m:MaterialRow>
+				                <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createFormulaID" placeholder="Formula ID"/></m:MaterialColumn>
+				                <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createFormulaName" placeholder="Formula Name"/></m:MaterialColumn>
+				            </m:MaterialRow>
+		                    <g:FlexTable ui:field="componentTable" styleName="Bordered"/>
+		                    <m:MaterialRow>
+				                <m:MaterialColumn grid="s6"><m:MaterialButton ui:field="addCompButton" text="Add a component" icon="mdi-content-add" waves="light" color="blue"/></m:MaterialColumn>
+			               		<m:MaterialColumn grid="s6	"><m:MaterialButton ui:field="createFormulaButton" text="Create formula" icon="mdi-action-done" waves="light" color="blue"/></m:MaterialColumn>
+			                </m:MaterialRow>
+				        </g:VerticalPanel>
+				    </m:content>
+			     </m:MaterialCollapsibleItem>
+		    </m:item>
+		</m:MaterialCollapsible>
 		<g:FlexTable ui:field="formulaTable" styleName="bordered"/>
 		<m:MaterialCollapsible  type="accordion" ui:field="collapsible">
 		</m:MaterialCollapsible>
