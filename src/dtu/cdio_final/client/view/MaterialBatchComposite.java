@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 //import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.MaterialDTO;
 import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 
@@ -58,6 +60,9 @@ public class MaterialBatchComposite extends PageComposite {
 
 	DataServiceAsync service;
 	ArrayList<Integer> materialsID;
+	
+	private boolean validMaterialBatchID;
+	private boolean validQuantity;
 
 	public MaterialBatchComposite(DataServiceAsync service, boolean create/*, boolean update*/) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -188,6 +193,40 @@ public class MaterialBatchComposite extends PageComposite {
 		});
 	}
 	
+	@UiHandler("createMaterialBatchID")
+	void keyUpBatchID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createMaterialBatchID.getText())){
+			createMaterialBatchID.removeStyleName("invalidEntry");
+			validMaterialBatchID = true;
+		} else{
+			createMaterialBatchID.addStyleName("invalidEntry");
+			validMaterialBatchID = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createQuantity")
+	void keyUpProvider(KeyUpEvent e) {
+		if(FieldVerifier.isValidQuantity(createQuantity.getText())){
+			createQuantity.removeStyleName("invalidEntry");
+			validQuantity = true;
+		} else{
+			createQuantity.addStyleName("invalidEntry");
+			validQuantity = false;
+		
+		}
+		checkForm();
+	}
+	
+	private void checkForm(){
+		if (validMaterialBatchID && validQuantity){
+			createMaterialBatchButton.setDisable(false);
+		} else{
+			createMaterialBatchButton.setDisable(true);
+		}
+	}
+}
+	
 	/*
 	private class editClick implements ClickHandler {
 
@@ -268,4 +307,4 @@ public class MaterialBatchComposite extends PageComposite {
 		editRow = -1;
 	}
 	*/
-}
+

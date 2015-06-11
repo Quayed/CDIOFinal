@@ -33,7 +33,8 @@ public class FieldVerifier
 	private static final String CPR_PATTERN = "^\\d{10}$";
 	private static final String ID_PATTERN = "^[0-9]{1,8}$"; // 1­99999999
 	private static final String PROVIDER_PATTERN = "^[a-zA-ZæøåÆØÅ -\\+\\-_?=!\\.]{2,20}$"; //Bogstaver,tal,forskellige tegn
-
+	private static final String QUANTITY_PATTERN = "^[0-9]+(\\,[0-9]{4})?$";
+	
 	private static final int PASSWORD_MIN = 5;
 
 	public static boolean isValidName(String name)
@@ -69,6 +70,13 @@ public class FieldVerifier
 		if (provider == null)
 			return false;
 		return provider.matches(PROVIDER_PATTERN);
+	}
+	
+	public static boolean isValidQuantity(String quantity)
+	{
+		if(quantity == null)
+			return false;
+		return quantity.matches(QUANTITY_PATTERN);
 	}
 	
 	/**
