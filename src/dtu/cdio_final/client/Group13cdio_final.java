@@ -11,6 +11,7 @@ import dtu.cdio_final.client.view.FormulaComposite;
 import dtu.cdio_final.client.view.LoginComposite;
 import dtu.cdio_final.client.view.MainComposite;
 import dtu.cdio_final.client.view.MaterialBatchComposite;
+import dtu.cdio_final.client.view.ProductBatchComposite;
 import dtu.cdio_final.client.view.UsersComposite;
 import dtu.cdio_final.shared.dto.UserDTO;
 
@@ -34,6 +35,7 @@ public class Group13cdio_final implements EntryPoint
 //			@Override
 //			public void login(UserDTO user)
 //			{
+				gui.addPage("ProductBatches", new ProductBatchComposite(service), true);
 				gui.addPage("Users", new UsersComposite(service), true);
 				gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service));
 				gui.addPage("Fomulas", new FormulaComposite(service));
