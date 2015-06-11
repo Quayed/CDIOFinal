@@ -5,8 +5,8 @@
 	<ui:style>
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialTitle title="Product Batches" />
-		<m:MaterialCollapsible type="Popout">
+		<m:MaterialTitle title="Product Batches"  />
+		<m:MaterialCollapsible type="Popout" ui:field="createBox">
 		    <m:item>
 		        <m:MaterialCollapsibleItem>
 			        <m:header><m:MaterialLink text="Create Product Batch" icon="mdi-content-add" textColor="black"/></m:header>
@@ -14,7 +14,7 @@
 			            <g:VerticalPanel>
 			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createProductBatchID" placeholder="Product Batch ID"></m:MaterialTextBox></m:MaterialColumn>
-			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createFormulaID" placeholder="Product ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createFormulaID" placeholder="Formula ID"></m:MaterialTextBox></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createProductBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>

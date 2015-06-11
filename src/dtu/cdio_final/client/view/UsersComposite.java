@@ -42,6 +42,16 @@ public class UsersComposite extends PageComposite {
 	@UiField MaterialListBox createUserRole;
 	@UiField MaterialButton createUserButton;
 	
+	@UiField TextBox userID;
+	@UiField TextBox userName;
+	@UiField TextBox userIni;
+	@UiField TextBox userCPR;
+	@UiField TextBox userPassword;
+	@UiField MaterialListBox userRole;
+	@UiField MaterialCheckBox userStatus;
+	@UiField MaterialButton submitButton;
+	@UiField MaterialButton cancelButton;
+	
 	DataServiceAsync service;
 
 	private int editRow = -1;
@@ -95,15 +105,6 @@ public class UsersComposite extends PageComposite {
 		
 		});
 	}
-	@UiField TextBox userID;
-	@UiField TextBox userName;
-	@UiField TextBox userIni;
-	@UiField TextBox userCPR;
-	@UiField TextBox userPassword;
-	@UiField MaterialListBox userRole;
-	@UiField MaterialCheckBox userStatus;
-	@UiField MaterialButton submitButton;
-	@UiField MaterialButton cancelButton;
 	
 	private class editClick implements ClickHandler{
 
@@ -121,7 +122,7 @@ public class UsersComposite extends PageComposite {
 			usersTable.getRowFormatter().setVisible(editRow+1, false);
 			
 			userID.setText(getTableLabelText(0));
-			usersTable.setWidget(editRow, 0, userID);
+			usersTable.setText(editRow, 0, userID.getText());
 			
 			userName.setText(getTableLabelText(1));
 			usersTable.setWidget(editRow, 1, userName);

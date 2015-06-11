@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+//import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -33,11 +33,11 @@ public class MaterialBatchComposite extends PageComposite {
 	private static MaterialBatchCompositeUiBinder uiBinder = GWT
 			.create(MaterialBatchCompositeUiBinder.class);
 	
-	private boolean updatePermission;
-	private boolean createPermission;
+//	private boolean updateAccess;
+	private boolean createAccess;
 	
 	
-	private int editRow = -1;
+//	private int editRow = -1;
 	private int numberOfRows;
 
 	@UiField MaterialCollapsible createBox;
@@ -57,13 +57,13 @@ public class MaterialBatchComposite extends PageComposite {
 	@UiField MaterialButton createMaterialBatchButton;
 
 	DataServiceAsync service;
-	ArrayList<Integer> materialsID = new ArrayList<Integer>();
+	ArrayList<Integer> materialsID;
 
-	public MaterialBatchComposite(DataServiceAsync service, boolean create, boolean update) {
+	public MaterialBatchComposite(DataServiceAsync service, boolean create/*, boolean update*/) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
-		this.updatePermission = update;
-		this.createPermission = create;
+//		this.updatePermission = update;
+		this.createAccess = create;
 	}
 
 	@Override
@@ -72,31 +72,41 @@ public class MaterialBatchComposite extends PageComposite {
 	}
 
 	private void initTable() {
-		materialBatchTable.removeAllRows();
 		numberOfRows = 1;
+		materialsID = new ArrayList<Integer>();
 		materialBatchTable.setWidget(0, 0, new Label("Material Batch ID"));
 		materialBatchTable.setWidget(0, 1, new Label("Material ID"));
 		materialBatchTable.setWidget(0, 2, new Label("Material Name"));
 		materialBatchTable.setWidget(0, 3, new Label("Quantity"));
-		if(updatePermission){
-			materialBatchTable.setWidget(0, 4, new Label(""));
-			materialBatchTable.setWidget(0, 5, new Label(""));
-		}
 		createMaterialBatchButton.addStyleName("fullWidth");
+//		if(updatePermission){
+//			materialBatchTable.setWidget(0, 4, new Label(""));
+//			materialBatchTable.setWidget(0, 5, new Label(""));
+//		}
 
-		if(!createPermission){
+
+		if(!createAccess){
 			createBox.setVisible(false);
 		}
 		
 		service.getMaterialBatches(new TokenAsyncCallback<List<MaterialbatchDTO>>() {
-
+			
 			@Override
-			public void onSuccess(List<MaterialbatchDTO> materialBatches) {
-				for (int i = 0; i < materialBatches.size(); i++) {
+			public void onFailure(Throwable caught)
+			{
+				super.onFailure(caught);
+
+			}
+			
+			@Override
+			public void onSuccess(List<MaterialbatchDTO> materialBatches) 
+			{
+				for (int i = 0; i < materialBatches.size(); i++) 
+				{
 					addRow(materialBatches.get(i));
 				}
 				service.getMaterials(new MaterialCallback(materialsID));
-
+				
 			}
 
 		});
@@ -104,13 +114,12 @@ public class MaterialBatchComposite extends PageComposite {
 	
 	private void addRow(MaterialbatchDTO materialBatch) {
 		//TODO materialName
-		materialBatchTable.setWidget(numberOfRows, 0, new Label(""
-				+ materialBatch.getMbID()));
-		materialBatchTable.setWidget(numberOfRows, 1, new Label(""
-				+ materialBatch.getMaterialID()));
+		materialBatchTable.setWidget(numberOfRows, 0, new Label("" + materialBatch.getMbID()));
+		materialBatchTable.setWidget(numberOfRows, 1, new Label("" + materialBatch.getMaterialID() + " : "));
 		materialsID.add(materialBatch.getMaterialID());
-		materialBatchTable.setWidget(numberOfRows, 3, new Label(""
-				+ materialBatch.getQuantity()));
+		materialBatchTable.setWidget(numberOfRows, 3, new Label("" + materialBatch.getQuantity()));
+		
+		/*
 		if(updatePermission){
 		materialBatchTable.setWidget(numberOfRows, 4, new MaterialButton(
 				"mdi-content-create", "blue", "", "light", ""));
@@ -123,6 +132,7 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.getFlexCellFormatter().setStyleName(
 				numberOfRows, 5, "limitWidth");
 		}
+		*/
 		numberOfRows++;
 	}
 
@@ -135,6 +145,11 @@ public class MaterialBatchComposite extends PageComposite {
 		}
 
 		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+		}
+		
+		@Override
 		public void onSuccess(List<MaterialDTO> materialCallBack) {
 			for (int i = 0; i < materials.size(); i++) {
 				for (int j = 0; j < materialCallBack.size(); j++) {
@@ -144,14 +159,43 @@ public class MaterialBatchComposite extends PageComposite {
 			}
 		}
 	}
+	
+	@UiHandler("createMaterialBatchButton")
+	void createMaterialBatch(ClickEvent event){
+		int materialBatchIDInt2 = Integer.valueOf(createMaterialBatchID.getText());
+		int materialIDInt2 = Integer.valueOf(createMaterialID.getText());
+		double quantityDouble2 = Double.valueOf(createQuantity.getText());
+		final MaterialbatchDTO newMaterialBatch = new MaterialbatchDTO(materialBatchIDInt2, materialIDInt2, quantityDouble2);
+		
+		
+		service.createMaterialBatch(newMaterialBatch, new TokenAsyncCallback<Void>(){
 
+			@Override
+			public void onSuccess(Void result) {
+				// Add a new row to the table, when the database query has been completed.
+				addRow(newMaterialBatch);
+				
+				// Clear the create fields
+				createMaterialID.setText("");
+				createMaterialID.backToDefault();
+				createMaterialBatchID.setText("");
+				createMaterialBatchID.backToDefault();
+				createQuantity.setText("");
+				createQuantity.backToDefault();
+				
+				Window.alert("The user has been created!");
+			}
+		});
+	}
+	
+	/*
 	private class editClick implements ClickHandler {
 
 		private String getTableLabelText(int column) {
 			return ((Label) materialBatchTable.getWidget(editRow + 1, column))
 					.getText();
 		}
-
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			if (editRow > -1) {
@@ -182,7 +226,8 @@ public class MaterialBatchComposite extends PageComposite {
 		}
 
 	}
-
+	
+	
 	@UiHandler("submitButton")
 	void submitClickHandler(ClickEvent event) {
 
@@ -222,42 +267,5 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.removeRow(editRow);
 		editRow = -1;
 	}
-
-	@UiHandler("createMaterialBatchButton")
-	void createMaterialBatch(ClickEvent event){
-		int materialBatchIDInt2 = Integer.valueOf(createMaterialBatchID.getText());
-		int materialIDInt2 = Integer.valueOf(createMaterialID.getText());
-		double quantityDouble2 = Double.valueOf(createQuantity.getText());
-		final MaterialbatchDTO newMaterialBatch = new MaterialbatchDTO(materialBatchIDInt2, materialIDInt2, quantityDouble2);
-		
-		
-		service.createMaterialBatch(newMaterialBatch, new TokenAsyncCallback<Void>(){
-
-			@Override
-			public void onSuccess(Void result) {
-				// Add a new row to the table, when the database query has been completed.
-				addRow(newMaterialBatch);
-//				materialBatchTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterialBatch.getMbID()));
-//				materialBatchTable.setWidget(numberOfRows + 1, 1, new Label("" + newMaterialBatch.getMaterialID()));
-//				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("TEST"));
-//				materialBatchTable.setWidget(numberOfRows + 1, 3, new Label("" + newMaterialBatch.getQuantity()));
-//				materialBatchTable.setWidget(numberOfRows + 1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
-//				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 4)).addClickHandler(new editClick());
-//				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
-//				materialBatchTable.setWidget(numberOfRows + 1, 5, new Label(""));
-//				materialBatchTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 5, "limitWidth");
-//				numberOfRows++;
-				
-				// Clear the create fields
-				createMaterialID.setText("");
-				createMaterialID.backToDefault();
-				createMaterialBatchID.setText("");
-				createMaterialBatchID.backToDefault();
-				createQuantity.setText("");
-				createQuantity.backToDefault();
-				
-				Window.alert("The user has been created!");
-			}
-		});
-	}
+	*/
 }
