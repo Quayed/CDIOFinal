@@ -14,7 +14,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -74,11 +73,6 @@ public class UsersComposite extends PageComposite {
 		createUserButton.addStyleName("fullWidth");
 		
 		service.getUsers(Group13cdio_final.token, new TokenAsyncCallback<List<UserDTO>>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				super.onFailure(caught);
-
-			}
 
 			@Override
 			public void onSuccess(List<UserDTO> users) {
@@ -167,12 +161,7 @@ public class UsersComposite extends PageComposite {
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
 			Window.alert("Clicked");
-			service.updateUser(user, new AsyncCallback<Void>(){
-			
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("Something went wrong!");
-				}
+			service.updateUser(user, new TokenAsyncCallback<Void>(){
 
 				@Override
 				public void onSuccess(Void result) {
@@ -199,12 +188,7 @@ public class UsersComposite extends PageComposite {
 	@UiHandler("createUserButton")
 	void createUser(ClickEvent event){
 		newUser = new UserDTO(Integer.valueOf(createUserID.getText()), createUserName.getText(), createUserIni.getText(), createUserCPR.getText(), createUserPassword.getText(), createUserRole.getSelectedIndex()+1, 1);
-		service.createUser(newUser, new AsyncCallback<Void>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Something went wrong!!");
-			}
+		service.createUser(newUser, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {

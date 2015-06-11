@@ -8,16 +8,15 @@ import com.google.gwt.user.client.ui.RootPanel;
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.view.FormulaComposite;
-import dtu.cdio_final.client.view.LoginComposite;
 import dtu.cdio_final.client.view.MainComposite;
 import dtu.cdio_final.client.view.MaterialBatchComposite;
 import dtu.cdio_final.client.view.ProductBatchComposite;
+import dtu.cdio_final.client.view.MaterialComposite;
 import dtu.cdio_final.client.view.UsersComposite;
 import dtu.cdio_final.shared.dto.UserDTO;
 
 public class Group13cdio_final implements EntryPoint
 {
-
 	private final DataServiceAsync service = GWT.create(DataService.class);
 	private MainComposite gui = null;
 	public static String token = null;
@@ -38,7 +37,9 @@ public class Group13cdio_final implements EntryPoint
 				gui.addPage("ProductBatches", new ProductBatchComposite(service), true);
 				gui.addPage("Users", new UsersComposite(service), true);
 				gui.addPage("MaterialBatchComposite", new MaterialBatchComposite(service));
+				gui.addPage("Materials", new MaterialComposite(service), true);
 				gui.addPage("Fomulas", new FormulaComposite(service));
+				
 //			}
 //		}), true);
 	}

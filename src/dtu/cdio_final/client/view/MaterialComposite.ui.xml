@@ -5,8 +5,39 @@
 	<ui:style>
 	</ui:style>
 	<g:HTMLPanel>
+	
+	<m:MaterialTitle title="Materials" />
+		<m:MaterialCollapsible type="Popout">
+		    <m:item>
+		        <m:MaterialCollapsibleItem>
+			        <m:header><m:MaterialLink text="Create Material" icon="mdi-content-add" textColor="black"/></m:header>
+			        <m:content>
+			            <g:VerticalPanel>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialID" placeholder="Material ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createMaterialName" placeholder="Material Name"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createProvider" placeholder="Provider"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createMaterialButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            </g:VerticalPanel>
+			        </m:content>
+		      	</m:MaterialCollapsibleItem>
+		    </m:item>
+		</m:MaterialCollapsible>
+		
 		<m:MaterialTitle title="Materials" />
 		<g:FlexTable ui:field="materialsTable" styleName="bordered">
 		</g:FlexTable>
+		<div style="display:none">	
+		<m:MaterialListBox ui:field="materialID"></m:MaterialListBox>
+			<m:MaterialListBox ui:field="materialName"></m:MaterialListBox>
+			<m:MaterialListBox ui:field="provider"></m:MaterialListBox>	
+			<m:MaterialButton ui:field="submitButton" icon="mdi-content-create" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

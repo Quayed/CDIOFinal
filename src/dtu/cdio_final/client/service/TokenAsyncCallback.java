@@ -17,5 +17,8 @@ public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
 			Group13cdio_final.token = null;
 			Window.Location.reload();
 		}
+		else{
+			Window.alert("Something went wrong!");
+		}
 	}
 }
