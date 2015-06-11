@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -22,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.UserDTO;
 
 public class UsersComposite extends PageComposite {
@@ -57,6 +59,20 @@ public class UsersComposite extends PageComposite {
 	private int editRow = -1;
 	private int numberOfRows = 1;
 	private UserDTO newUser;
+	
+	private boolean validCreateUserID;
+	private boolean validCreateUserName;
+	private boolean validCreateUserIni;
+	private boolean validCreateUserCPR;
+	private boolean validCreateUserPassword;
+	
+	private boolean validUserID;
+	private boolean validUserName;
+	private boolean validUserIni;
+	private boolean validUserCPR;
+	private boolean validUserPassword;
+	
+	
 	
 	public UsersComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -237,6 +253,147 @@ public class UsersComposite extends PageComposite {
 		
 	}
 	
+	@UiHandler("createUserID")
+	void keyUpCreateUserID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createUserID.getText())){
+			createUserID.removeStyleName("invalidEntry");
+			validCreateUserID = true;
+		} else{
+			createUserID.addStyleName("invalidEntry");
+			validCreateUserID = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createUserName")
+	void keyUpCreateName(KeyUpEvent e) {
+		if(FieldVerifier.isValidName(createUserName.getText())){
+			createUserName.removeStyleName("invalidEntry");
+			validCreateUserName = true;
+		} else{
+			createUserName.addStyleName("invalidEntry");
+			validCreateUserName = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createUserIni")
+	void keyUpCreateUserIni(KeyUpEvent e) {
+		if(FieldVerifier.isValidInitials(createUserIni.getText())){
+			createUserIni.removeStyleName("invalidEntry");
+			validCreateUserIni = true;
+		} else{
+			createUserIni.addStyleName("invalidEntry");
+			validCreateUserIni = false;
+		
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createUserCPR")
+	void keyUpCreateUserCPR(KeyUpEvent e) {
+		if(FieldVerifier.isValidCPR(createUserCPR.getText())){
+			createUserCPR.removeStyleName("invalidEntry");
+			validCreateUserCPR = true;
+		} else{
+			createUserCPR.addStyleName("invalidEntry");
+			validCreateUserCPR = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createUserPassword")
+	void keyUpCreateUserPassword(KeyUpEvent e) {
+		if(FieldVerifier.isValidPassword(createUserPassword.getText())){
+			createUserPassword.removeStyleName("invalidEntry");
+			validCreateUserPassword = true;
+		} else{
+			createUserPassword.addStyleName("invalidEntry");
+			validCreateUserPassword = false;
+		}
+		checkForm();
+	}
+	
+	private void checkForm(){
+		if (validCreateUserID && validCreateUserName && validCreateUserIni && validCreateUserCPR && validCreateUserPassword){
+			createUserButton.setDisable(false);
+		} else{
+			createUserButton.setDisable(true);
+		}
+	}
+	
+	//virker ikke lige pt. i flextable.. !
+	@UiHandler("userID")
+	void keyUpUserID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(userID.getText())){
+			userID.removeStyleName("invalidEntry");
+			validUserID = true;
+		} else{
+			userID.addStyleName("invalidEntry");
+			validUserID = false;
+		}
+		checkEditForm();
+	}
+	
+	@UiHandler("userName")
+	void keyUpUserName(KeyUpEvent e) {
+		if(FieldVerifier.isValidName(userName.getText())){
+			userName.removeStyleName("invalidEntry");
+			validUserName = true;
+		} else{
+			userName.addStyleName("invalidEntry");
+			validUserName = false;
+		}
+		checkEditForm();
+	}
+	
+	@UiHandler("userIni")
+	void keyUpUserIni(KeyUpEvent e) {
+		if(FieldVerifier.isValidInitials(userIni.getText())){
+			userIni.removeStyleName("invalidEntry");
+			validUserIni = true;
+		} else{
+			userIni.addStyleName("invalidEntry");
+			validUserIni = false;
+		
+		}
+		checkEditForm();
+	}
+	
+	@UiHandler("userCPR")
+	void keyUpUserCPR(KeyUpEvent e) {
+		if(FieldVerifier.isValidCPR(userCPR.getText())){
+			userCPR.removeStyleName("invalidEntry");
+			validUserCPR = true;
+		} else{
+			userCPR.addStyleName("invalidEntry");
+			validUserCPR = false;
+		}
+		checkEditForm();
+	}
+	
+	@UiHandler("userPassword")
+	void keyUpUserPassword(KeyUpEvent e) {
+		if(FieldVerifier.isValidPassword(userPassword.getText())){
+			userPassword.removeStyleName("invalidEntry");
+			validUserPassword = true;
+		} else{
+			userPassword.addStyleName("invalidEntry");
+			validUserPassword = false;
+		}
+		checkEditForm();
+	}
+	
+	private void checkEditForm(){
+		if (validUserID && validUserName && validUserIni && validUserCPR && validUserPassword){
+			submitButton.setDisable(false);
+		} else{
+			submitButton.setDisable(true);
+		}
+	}
+	
+	
+
 	private String roleToString(int role){
 		if(role == 1){
 			return "Administrator";

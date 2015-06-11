@@ -13,6 +13,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -24,6 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 
@@ -48,7 +50,13 @@ public class FormulaComposite extends PageComposite {
 	
 	private int editRow = -1;
 	DataServiceAsync service;
-
+	
+	private boolean validFormulaID;
+	private boolean validFormulaName;
+	private boolean validMaterialID;
+	private boolean validNom_netto;
+	private boolean validTolerance;
+	
 	public FormulaComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
@@ -187,5 +195,59 @@ public class FormulaComposite extends PageComposite {
 		});
 	}
 
+	private boolean formulaID;
+	private boolean formulaName;
+	private boolean materialID;
+	private boolean nom_netto;
+	private boolean tolerance;
+	
+	@UiHandler("createFormulaID")
+	void keyUpFormulaID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createFormulaID.getText())){
+			createFormulaID.removeStyleName("invalidEntry");
+			validFormulaID = true;
+		} else{
+			createFormulaID.addStyleName("invalidEntry");
+			validFormulaID = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createFormulaName")
+	void keyUpFormulaName(KeyUpEvent e) {
+		if(FieldVerifier.isValidName(createFormulaName.getText())){
+			createFormulaName.removeStyleName("invalidEntry");
+			validFormulaName = true;
+		} else{
+			createFormulaName.addStyleName("invalidEntry");
+			validFormulaName = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("componentTable")
+	void keyUpProvider(KeyUpEvent e) {
+		if(FieldVerifier.isValidProvider(createProvider.getText())){
+			createProvider.removeStyleName("invalidEntry");
+			validProvider = true;
+		} else{
+			createProvider.addStyleName("invalidEntry");
+			validProvider = false;
+		
+		}
+		checkForm();
+	}
+	
+	
+	
+	private void checkForm(){
+		if (validID && validName && validProvider){
+			createMaterialButton.setDisable(false);
+		} else{
+			createMaterialButton.setDisable(true);
+		}
+	}
+}
+	
 }
 
