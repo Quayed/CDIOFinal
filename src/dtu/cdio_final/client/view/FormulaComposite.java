@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -159,8 +160,18 @@ public class FormulaComposite extends PageComposite {
 	
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
-		componentTable.setWidget(componentCounter, 1, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).setPlaceholder("Material ID");
+		MaterialTextBox textBox = new MaterialTextBox();
+		textBox.setPlaceholder("Material ID");
+		textBox.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		componentTable.setWidget(componentCounter, 1, textBox);
+		
 		componentTable.setWidget(componentCounter, 2, new MaterialTextBox());
 		((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).setPlaceholder("nom_netto");
 		componentTable.setWidget(componentCounter, 3, new MaterialTextBox());
@@ -224,30 +235,9 @@ public class FormulaComposite extends PageComposite {
 		}
 		checkForm();
 	}
-	
-	@UiHandler("componentTable")
-	void keyUpProvider(KeyUpEvent e) {
-		if(FieldVerifier.isValidProvider(createProvider.getText())){
-			createProvider.removeStyleName("invalidEntry");
-			validProvider = true;
-		} else{
-			createProvider.addStyleName("invalidEntry");
-			validProvider = false;
 		
-		}
-		checkForm();
-	}
-	
-	
 	
 	private void checkForm(){
-		if (validID && validName && validProvider){
-			createMaterialButton.setDisable(false);
-		} else{
-			createMaterialButton.setDisable(true);
-		}
+
 	}
 }
-	
-}
-

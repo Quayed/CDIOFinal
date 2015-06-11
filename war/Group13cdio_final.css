@@ -49,6 +49,6 @@ tbody :nth-child(1) .gwt-Label{
   margin: 15px 6px 6px;
 }
 
-.invalidEntry input{
+.invalidEntry input, .invalidEntry{
 	border-color: red !important;
 }
