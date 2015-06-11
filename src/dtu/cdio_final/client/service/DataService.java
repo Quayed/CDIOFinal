@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+import dtu.cdio_final.shared.ServiceException;
 import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
@@ -14,29 +15,29 @@ import dtu.cdio_final.shared.dto.ProductbatchDTO;
 import dtu.cdio_final.shared.dto.UserDTO;
 
 public interface DataService extends RemoteService{
-	void createUser(UserDTO user);
-	List<UserDTO> getUsers(String token) throws TokenException;
-	void updateUser(UserDTO user);
-	void deleteUser(int userID);
+	void createUser(UserDTO user) throws ServiceException, TokenException;
+	List<UserDTO> getUsers(String token) throws ServiceException, TokenException;
+	void updateUser(UserDTO user) throws ServiceException, TokenException;
+	void deleteUser(int userID) throws ServiceException, TokenException;
 	
-	void createMaterial(MaterialDTO material);
-	List<MaterialDTO> getMaterials();
-	void updateMaterial(MaterialDTO material);
+	void createMaterial(MaterialDTO material) throws ServiceException, TokenException;
+	List<MaterialDTO> getMaterials() throws ServiceException, TokenException;
+	void updateMaterial(MaterialDTO material) throws ServiceException, TokenException;
 	
-	void createFormula(FormulaDTO formula);
-	List<FormulaDTO> getFormulas();
+	void createFormula(FormulaDTO formula) throws ServiceException, TokenException;
+	List<FormulaDTO> getFormulas() throws ServiceException, TokenException;
 	
-	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components);
+	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException, TokenException;
 	
-	void createFormulaComp(FormulaCompDTO formulaComp);
-	List<FormulaCompDTO> getFormulaComps(int formulaID);
+	void createFormulaComp(FormulaCompDTO formulaComp) throws ServiceException, TokenException;
+	List<FormulaCompDTO> getFormulaComps(int formulaID) throws ServiceException, TokenException;
 	
-	void createMaterialBatch(MaterialbatchDTO materialBatch);
-	void updateMaterialBatch(MaterialbatchDTO materialBatch);
-	List<MaterialbatchDTO> getMaterialBatches();
+	void createMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
+	void updateMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
+	List<MaterialbatchDTO> getMaterialBatches() throws ServiceException, TokenException;
 	
-	void createProductBatch(ProductbatchDTO productBatch);
-	List<ProductbatchDTO> getProductBatches();
+	void createProductBatch(ProductbatchDTO productBatch) throws ServiceException, TokenException;
+	List<ProductbatchDTO> getProductBatches() throws ServiceException, TokenException;
 	
-	HashMap<String, Object> login(int userID, String password);
+	HashMap<String, Object> login(int userID, String password) throws ServiceException, TokenException;
 }

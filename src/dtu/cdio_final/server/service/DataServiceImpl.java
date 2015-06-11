@@ -19,6 +19,7 @@ import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.shared.ServiceException;
 import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.TokenHandler;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
@@ -39,7 +40,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	private final IProductbatchDAO productBathcDao = new ProductbatchDAO();
 	
 	@Override
-	public void createUser(UserDTO user)
+	public void createUser(UserDTO user) throws ServiceException
 	{
 		try
 		{
@@ -47,12 +48,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<UserDTO> getUsers(String token) throws TokenException
+	public List<UserDTO> getUsers(String token) throws TokenException, ServiceException
 	{
 		if(!validateToken(token))
 			throw new TokenException();
@@ -64,13 +65,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public void updateUser(UserDTO user)
+	public void updateUser(UserDTO user) throws ServiceException
 	{
 		try
 		{
@@ -78,12 +79,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void deleteUser(int userID)
+	public void deleteUser(int userID) throws ServiceException
 	{	
 		try
 		{
@@ -93,12 +94,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void createMaterial(MaterialDTO material)
+	public void createMaterial(MaterialDTO material) throws ServiceException
 	{
 		try
 		{
@@ -106,12 +107,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<MaterialDTO> getMaterials()
+	public List<MaterialDTO> getMaterials() throws ServiceException
 	{
 		List<MaterialDTO> result = null; 
 		try
@@ -120,13 +121,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public void updateMaterial(MaterialDTO material)
+	public void updateMaterial(MaterialDTO material) throws ServiceException
 	{
 		try
 		{
@@ -134,12 +135,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void createFormula(FormulaDTO formula)
+	public void createFormula(FormulaDTO formula) throws ServiceException
 	{
 		try
 		{
@@ -147,12 +148,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<FormulaDTO> getFormulas()
+	public List<FormulaDTO> getFormulas() throws ServiceException
 	{
 		List<FormulaDTO> result = null; 
 		try
@@ -161,13 +162,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public void createFormulaComp(FormulaCompDTO formulaComp)
+	public void createFormulaComp(FormulaCompDTO formulaComp) throws ServiceException
 	{
 		try
 		{
@@ -175,12 +176,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<FormulaCompDTO> getFormulaComps(int formulaID)
+	public List<FormulaCompDTO> getFormulaComps(int formulaID) throws ServiceException
 	{
 		List<FormulaCompDTO> result = null; 
 		try
@@ -189,13 +190,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public void createMaterialBatch(MaterialbatchDTO materialBatch)
+	public void createMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException
 	{
 		try
 		{
@@ -203,12 +204,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<MaterialbatchDTO> getMaterialBatches()
+	public List<MaterialbatchDTO> getMaterialBatches() throws ServiceException
 	{
 		List<MaterialbatchDTO> result = null; 
 		try
@@ -217,13 +218,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public void createProductBatch(ProductbatchDTO productBatch)
+	public void createProductBatch(ProductbatchDTO productBatch) throws ServiceException
 	{
 		try
 		{
@@ -231,12 +232,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public List<ProductbatchDTO> getProductBatches()
+	public List<ProductbatchDTO> getProductBatches() throws ServiceException
 	{
 		List<ProductbatchDTO> result = null; 
 		try
@@ -245,13 +246,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return result;
 	}
 
 	@Override
-	public HashMap<String, Object> login(int userID, String password)
+	public HashMap<String, Object> login(int userID, String password) throws ServiceException
 	{
 		//TODO: update to use tokens
 		//TODO: update to use hashing
@@ -273,7 +274,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		catch (DALException e)
 		{
 			System.err.println("Invalid login or password");
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return null;
 	}
@@ -287,7 +288,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void updateMaterialBatch(MaterialbatchDTO materialBatch) {
+	public void updateMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException {
 		
 		try
 		{
@@ -295,24 +296,22 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		catch (DALException e)
 		{
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) {
+	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException {
 		try {
 			formulaDao.createFormula(formula);
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}	
 		for(FormulaCompDTO component : components){
 			try {
 				formulaCompDao.createFormulaComp(component);
 			} catch (DALException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new ServiceException(e);
 			}
 		}
 	}

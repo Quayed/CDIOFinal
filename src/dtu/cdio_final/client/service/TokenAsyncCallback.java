@@ -4,6 +4,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.shared.ServiceException;
 import dtu.cdio_final.shared.TokenException;
 
 public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
@@ -16,6 +17,9 @@ public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
 			Window.alert(((TokenException)caught).getMessage());
 			Group13cdio_final.token = null;
 			Window.Location.reload();
+		}
+		else if(caught instanceof ServiceException){
+			Window.alert(caught.getMessage());
 		}
 		else{
 			Window.alert("Something went wrong!");
