@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -23,6 +24,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 
 
@@ -32,7 +35,7 @@ public class FormulaComposite extends PageComposite {
 	
 	
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
-	private int rowCounter = 2;
+	private int componentCounter = 2;
 	@UiField FlexTable formulaTable;
 	
 	@UiField MaterialCollapsible collapsible;
@@ -72,7 +75,7 @@ public class FormulaComposite extends PageComposite {
 		formulaTable.setWidget(0, 0, new Label("FormulaID"));
 		formulaTable.setWidget(0, 1, new Label("FormulaName"));
 		
-		service.getFormulas(new AsyncCallback<List<FormulaDTO>>() {
+		service.getFormulas(new TokenAsyncCallback<List<FormulaDTO>>() {
 			
 			@Override
 			public void onFailure(Throwable caught) {
@@ -123,26 +126,46 @@ public class FormulaComposite extends PageComposite {
 		@Override
 		public void onClick(ClickEvent event) {
 			componentTable.removeRow(componentTable.getCellForEvent(event).getRowIndex());
-			rowCounter--;
+			componentCounter--;
 		}	
 	}
 	
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
-		componentTable.setWidget(rowCounter, 1, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 1)).setPlaceholder("Material ID");
-		componentTable.setWidget(rowCounter, 2, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 2)).setPlaceholder("nom_netto");
-		componentTable.setWidget(rowCounter, 3, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 3)).setPlaceholder("Tolerance");
-		componentTable.setWidget(rowCounter, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
-		((MaterialButton)componentTable.getWidget(rowCounter, 4)).addClickHandler(new removeComponent());
-		rowCounter++;
+		componentTable.setWidget(componentCounter, 1, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).setPlaceholder("Material ID");
+		componentTable.setWidget(componentCounter, 2, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).setPlaceholder("nom_netto");
+		componentTable.setWidget(componentCounter, 3, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).setPlaceholder("Tolerance");
+		componentTable.setWidget(componentCounter, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
+		((MaterialButton)componentTable.getWidget(componentCounter, 4)).addClickHandler(new removeComponent());
+		componentCounter++;
 	}
 	
 	@UiHandler("createFormulaButton")
 	void createFormula(ClickEvent event){
-		
+		List<FormulaCompDTO> components = null;
+		FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
+		for(int i = 1; i < componentCounter; i++){
+			components.add(new FormulaCompDTO(formula.getFormulaID(), 
+					Integer.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).getText()), 
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).getText()),
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).getText())));
+		}
+		service.createFormualWithComponents(formula, components, new TokenAsyncCallback<Void>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Something went wrong!");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				
+			}
+			
+		});
 	}
 
 }
