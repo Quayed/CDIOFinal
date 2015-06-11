@@ -66,6 +66,7 @@ public class MaterialComposite extends PageComposite{
 	}
 
 	private void initTable() {
+		numberOfRows = 1;
 		materialsTable.clear();
 		materialsTable.setWidget(0, 0, new Label("MaterialID"));
 		materialsTable.setWidget(0, 1, new Label("Material Name"));
@@ -166,17 +167,18 @@ public class MaterialComposite extends PageComposite{
 		materialsTable.setWidget(numberOfRows + 1, 0, new Label(Integer.toString(materials.getMaterialID())));
 		materialsTable.setWidget(numberOfRows + 1, 1, new Label(materials.getMaterialName()));
 		materialsTable.setWidget(numberOfRows + 1, 2, new Label(materials.getProvider()));
-		MaterialButton button = new MaterialButton("mdi-content-create", "blue", "", "light", "");
-		button.addClickHandler(new editClick());
-		materialsTable.setWidget(numberOfRows + 1, 3, button);
-		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
-		materialsTable.setWidget(numberOfRows + 1, 4, new Label(""));
-		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
-		
+//		MaterialButton button = new MaterialButton("mdi-content-create", "blue", "", "light", "");
+//		button.addClickHandler(new editClick());
+//		materialsTable.setWidget(numberOfRows + 1, 3, button);
+//		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 3, "limitWidth");
+//		materialsTable.setWidget(numberOfRows + 1, 4, new Label(""));
+//		materialsTable.getFlexCellFormatter().setStyleName(numberOfRows + 1, 4, "limitWidth");
 		numberOfRows++;
 	}
 	
 	/////// ALT NEDENSTÅENDE SKAL SLETTES LIGESÅ SNART DER ER LAVET DROPDOWNS BASERET PÅ KODEN.
+	
+	/*
 	@UiField MaterialListBox materialID;
 	@UiField MaterialListBox materialName;
 	@UiField MaterialListBox provider;
@@ -290,5 +292,6 @@ public class MaterialComposite extends PageComposite{
 		}
 		
 	}
+	*/
 }
 	

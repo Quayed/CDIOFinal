@@ -4,8 +4,6 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
-import gwt.material.design.client.ui.MaterialModal.TYPE;
-import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.ArrayList;
@@ -18,17 +16,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.FormulaDTO;
-import dtu.cdio_final.shared.dto.MaterialDTO;
-import dtu.cdio_final.shared.dto.MaterialbatchDTO;
 import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
 public class ProductBatchComposite extends PageComposite
@@ -36,7 +30,6 @@ public class ProductBatchComposite extends PageComposite
 	interface ProductBatchCompositeUiBinder extends UiBinder<Widget, ProductBatchComposite> {}
 	
 	private static ProductBatchCompositeUiBinder uiBinder = GWT.create(ProductBatchCompositeUiBinder.class);
-//	private int editRow = -1;
 
 	private boolean createAccess;
 	
@@ -44,12 +37,6 @@ public class ProductBatchComposite extends PageComposite
 	@UiField MaterialCollapsible createBox;
 	
 	@UiField FlexTable productBatchTable;
-//	@UiField MaterialButton cancelButton;
-//	@UiField MaterialButton confirmButton;
-//	
-//	@UiField TextBox productBatchID;
-//	@UiField TextBox formulaID;
-//	@UiField TextBox productBatchStatus;
 	
 	@UiField MaterialTextBox  createProductBatchID;
 	@UiField MaterialListBox  createFormulaID;
@@ -58,7 +45,6 @@ public class ProductBatchComposite extends PageComposite
 	ArrayList<Integer> productID;
 	private DataServiceAsync service;
 	private ModalComposite modal = null;
-	//ArrayList<Integer> materialsID = new ArrayList<Integer>();
 
 	public ProductBatchComposite(DataServiceAsync service, boolean create)
 	{
@@ -105,22 +91,14 @@ public class ProductBatchComposite extends PageComposite
 				{
 					addRow(productBatches.get(i));
 					
-//					if(productBatches.get(i).getStatus() == 1)
-//					{
-//						productBatchTable.setWidget(i +1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", "") );
-//						((MaterialButton)productBatchTable.getWidget(i + 1, 4)).addClickHandler(new editClick());
-//					}
-//					productBatchTable.getFlexCellFormatter().setStyleName(i + 1, 4, "limitWidth");
 				}
 				service.getFormulas(new MaterialCallback(productID));
-
 			}
 
 		});
 	}
 
 	private void addRow(ProductbatchDTO productBatches) {
-		//TODO materialName
 		
 		productBatchTable.setWidget(numberOfRows, 0, new Label(""	+ productBatches.getPbID()));
 		productBatchTable.setWidget(numberOfRows, 1, new Label(""	+ productBatches.getFormulaID()));
@@ -160,7 +138,7 @@ public class ProductBatchComposite extends PageComposite
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			super.onFailure(caught);
 		}
 
 		@Override
@@ -208,50 +186,4 @@ public class ProductBatchComposite extends PageComposite
 				return true;
 		return false;
 	}
-
-	/*
-	private class editClick implements ClickHandler
-	{
-		@Override
-		public void onClick(ClickEvent event)
-		{
-			int eventRow = productBatchTable.getCellForEvent(event).getRowIndex();
-			String batch = ((Label)productBatchTable.getWidget(eventRow, 0)).getText();
-			String message = "Are you sure you want to delete Product Batch: " + batch;
-			modal = new ModalComposite("Delete Batch", message);
-			modal.addClickHandler(new ModalClickHandler());
-			MaterialModal.showModal(true, modal , TYPE.FIXED_FOOTER);
-			
-//			if (editRow > -1)
-//			{
-//				cancelButton.fireEvent(new ClickEvent(){});
-//			}
-//			
-//			editRow = productBatchTable.getCellForEvent(event).getRowIndex();
-//			productBatchTable.insertRow(editRow);
-//			productBatchTable.getRowFormatter().setVisible(editRow+1, false);
-//			
-//			productBatchID.setText(getTableLabelText(0));
-//			productBatchTable.setWidget(editRow, 0, new Label("Are you sure you want to delete Batch: " + getTableLabelText(0)));
-//			
-//			confirmButton.addClickHandler(new cancelClickHandler());
-//			productBatchTable.setWidget(editRow, 1, confirmButton);
-//			
-//			cancelButton.addClickHandler(new cancelClickHandler());
-//			productBatchTable.setWidget(editRow, 2, cancelButton);
-		}
-	}
-	
-	private class cancelClickHandler implements ClickHandler
-	{
-		@Override
-		public void onClick(ClickEvent event)
-		{
-			productBatchTable.getRowFormatter().setVisible(editRow+1, true);
-			productBatchTable.getRowFormatter().setVisible(editRow, false);
-			productBatchTable.removeRow(editRow);
-			editRow = -1;
-		}
-	}
-	*/
 }
