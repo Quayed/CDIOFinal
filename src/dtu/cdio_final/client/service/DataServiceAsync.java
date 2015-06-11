@@ -24,6 +24,7 @@ public interface DataServiceAsync {
 	
 	void createFormula(FormulaDTO formula, AsyncCallback<Void> callback);
 	void getFormulas(AsyncCallback<List<FormulaDTO>> callback);
+	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components, AsyncCallback<Void> callback);
 	
 	void createFormulaComp(FormulaCompDTO formulaComp, AsyncCallback<Void> callback);
 	void getFormulaComps(int formulaID,AsyncCallback<List<FormulaCompDTO>> callback);

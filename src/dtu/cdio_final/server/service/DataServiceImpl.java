@@ -298,4 +298,22 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) {
+		try {
+			formulaDao.createFormula(formula);
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		for(FormulaCompDTO component : components){
+			try {
+				formulaCompDao.createFormulaComp(component);
+			} catch (DALException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

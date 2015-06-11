@@ -26,6 +26,8 @@ public interface DataService extends RemoteService{
 	void createFormula(FormulaDTO formula);
 	List<FormulaDTO> getFormulas();
 	
+	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components);
+	
 	void createFormulaComp(FormulaCompDTO formulaComp);
 	List<FormulaCompDTO> getFormulaComps(int formulaID);
 	
