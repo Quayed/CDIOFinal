@@ -31,6 +31,8 @@ public class FieldVerifier
 	private static final String NAME_PATTERN = "^[a-zA-ZæøåÆØÅ -]{2,20}$";
 	private static final String INI_PATTERN = "^[a-zA-ZæøåÆØÅ]{2,4}$";
 	private static final String CPR_PATTERN = "^\\d{10}$";
+	private static final String ID_PATTERN = "^[0-9]{1,8}$"; // 1­99999999
+	private static final String PROVIDER_PATTERN = "^[a-zA-ZæøåÆØÅ -\\+\\-_?=!\\.]{2,20}$"; //Bogstaver,tal,forskellige tegn
 
 	private static final int PASSWORD_MIN = 5;
 
@@ -55,6 +57,20 @@ public class FieldVerifier
 		return ini.matches(INI_PATTERN);
 	}
 
+	public static boolean isValidID(String id)
+	{		
+			if (id == null || id.equals("0"))
+				return false;
+			return id.matches(ID_PATTERN);
+	}
+	
+	public static boolean isValidProvider(String provider)
+	{
+		if (provider == null)
+			return false;
+		return provider.matches(PROVIDER_PATTERN);
+	}
+	
 	/**
 	 * Checks if the given password matches the criteria
 	 * @param pass The password to check
