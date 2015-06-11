@@ -17,7 +17,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -36,6 +35,7 @@ public class FormulaComposite extends PageComposite {
 	
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 	private int componentCounter = 2;
+	
 	@UiField FlexTable formulaTable;
 	
 	@UiField MaterialCollapsible collapsible;
@@ -62,6 +62,10 @@ public class FormulaComposite extends PageComposite {
 	}
 
 	private void initTable() {
+		formulaTable.clear();
+		
+		
+		componentTable.clear();
 		componentTable.setWidget(0, 1, new Label("Formula Components:"));
 		componentTable.setWidget(1, 1, new MaterialTextBox());
 		((MaterialTextBox)componentTable.getWidget(1, 1)).setPlaceholder("Material ID");
@@ -72,48 +76,15 @@ public class FormulaComposite extends PageComposite {
 		componentTable.setWidget(1, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
 		((MaterialButton)componentTable.getWidget(1, 4)).addClickHandler(new removeComponent());
 		//treeItem.setWidget(new Label("FormulaID423"));
-		formulaTable.setWidget(0, 0, new Label("FormulaID"));
-		formulaTable.setWidget(0, 1, new Label("FormulaName"));
 		
 		service.getFormulas(new TokenAsyncCallback<List<FormulaDTO>>() {
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
 
 			@Override
 			public void onSuccess(List<FormulaDTO> formulas ) {
 
 				for (int i = 0; i < formulas.size(); i++) {
-//					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
-//					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
-					MaterialCollapsibleItem mCollapsibleItem = new MaterialCollapsibleItem();
-					collapsible.addItem(mCollapsibleItem);
-					mCollapsibleItem.addHeader(new MaterialLink(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName(), "blue"));
-					
-					//mCollapsibleItem.addContent(new MaterialTitle(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName()));
-					
-					
-					
-					VerticalPanel testPanel = new VerticalPanel();
-					
-					FlexTable contentTable = new FlexTable();
-					contentTable.setWidget(0, 0, new Label("FormulaID"));
-					contentTable.setWidget(0, 1, new Label("FormulaName"));
-					contentTable.setWidget(0, 2, new Label("FormulaName"));
-					
-					testPanel.add(contentTable);
-					mCollapsibleItem.addContent(testPanel);
-					
-					
-//					service.getFormulaComps(formulas.get(i).getFormulaID(),new AsyncCallback<List<FormulaCompDTO>>(){
-//								
-//					formulaTable.setWidget(k + 1, 2, new Label(String.valueOf(formulaComps.get(k).getMaterialID())));
-//					formulaTable.setWidget(k + 1, 3, new Label(String.valueOf(formulaComps.get(k).getNomNetto())));
-//					formulaTable.setWidget(k + 1, 4, new Label(String.valueOf(formulaComps.get(k).getTolerance())));
-
+					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
+					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
 
 				}
 				
@@ -122,6 +93,18 @@ public class FormulaComposite extends PageComposite {
 		});
 	}
 
+	private void onSuccess(){
+		
+		formulaTable.getFlexCellFormatter().setColSpan(0, 0, 2);
+
+		FlexTable contentTable = new FlexTable();
+		contentTable.setWidget(0, 0, new Label("FormulaID"));
+		contentTable.setWidget(0, 1, new Label("FormulaName"));
+		contentTable.setWidget(0, 2, new Label("FormulaName"));
+		
+		formulaTable.setWidget(2, 0, contentTable);
+	}
+	
 	private class removeComponent implements ClickHandler{
 		@Override
 		public void onClick(ClickEvent event) {
