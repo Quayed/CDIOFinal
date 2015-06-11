@@ -13,10 +13,9 @@ import dtu.cdio_final.shared.dto.ProductbatchDTO;
 import dtu.cdio_final.shared.dto.UserDTO;
 
 public interface DataServiceAsync {
-	void createUser(UserDTO user, AsyncCallback<Void> callback);
+	void createUser(String token, UserDTO user, AsyncCallback<Void> callback);
 	void getUsers(String token, AsyncCallback<List<UserDTO>> callback);
-	void updateUser(UserDTO user, AsyncCallback<Void> callback);
-	void deleteUser(int userID, AsyncCallback<Void> callback);
+	void updateUser(String token, UserDTO user, AsyncCallback<Void> callback);
 	
 	void createMaterial(MaterialDTO material, AsyncCallback<Void> callback);
 	void getMaterials(AsyncCallback<List<MaterialDTO>> callback);

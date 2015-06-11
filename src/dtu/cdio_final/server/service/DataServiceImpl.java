@@ -19,6 +19,7 @@ import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.ServiceException;
 import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.TokenHandler;
@@ -40,10 +41,27 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	private final IProductbatchDAO productBathcDao = new ProductbatchDAO();
 	
 	@Override
-	public void createUser(UserDTO user) throws ServiceException
+	public void createUser(String token, UserDTO user) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+user.getUserID()) &&
+			FieldVerifier.isValidCPR(user.getCpr()) &&
+			FieldVerifier.isValidName(user.getUserName()) &&
+			FieldVerifier.isValidInitials(user.getIni()) &&
+			FieldVerifier.isValidPassword(user.getPassword()) &&
+			FieldVerifier.isValidRole(user.getRole())
+		);
+		
+		user.setStatus(1);
+		
 		try
 		{
+			
+			if(userDao.getUser(user.getUserID()) != null){
+				throw new ServiceException("UserID already in use");
+			}
 			userDao.createUser(user);
 		}
 		catch (DALException e)
@@ -53,26 +71,36 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<UserDTO> getUsers(String token) throws TokenException, ServiceException
+	public List<UserDTO> getUsers(String token) throws ServiceException, TokenException
 	{
-		if(!validateToken(token))
-			throw new TokenException();
+		validateToken(token);
 			
-		List<UserDTO> result = null; 
+		List<UserDTO> users; 
 		try
 		{
-			result = userDao.getUserList();
+			users = userDao.getUserList();
 		}
 		catch (DALException e)
 		{
 			throw new ServiceException(e);
 		}
-		return result;
+		return users;
 	}
 
 	@Override
-	public void updateUser(UserDTO user) throws ServiceException
+	public void updateUser(String token, UserDTO user) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+user.getUserID()) &&
+			FieldVerifier.isValidCPR(user.getCpr()) &&
+			FieldVerifier.isValidName(user.getUserName()) &&
+			FieldVerifier.isValidInitials(user.getIni()) &&
+			FieldVerifier.isValidPassword(user.getPassword()) &&
+			FieldVerifier.isValidRole(user.getRole()) &&
+			FieldVerifier.isValidUserStatus(user.getStatus())
+		);
 		try
 		{
 			userDao.updateUser(user);
@@ -84,22 +112,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void deleteUser(int userID) throws ServiceException
-	{	
-		try
-		{
-			UserDTO user = userDao.getUser(userID);
-			user.setStatus(0);
-			userDao.updateUser(user);
-		}
-		catch (DALException e)
-		{
-			throw new ServiceException(e);
-		}
-	}
-
-	@Override
-	public void createMaterial(MaterialDTO material) throws ServiceException
+	public void createMaterial(MaterialDTO material) throws ServiceException, TokenException
 	{
 		try
 		{
@@ -279,12 +292,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		return null;
 	}
 	
-	private boolean validateToken(String token)
+	private void validateToken(String token) throws TokenException
 	{
 		//override
-		return true;
 //		token = TokenHandler.getInstance().validateToken(token);
 //		return !(token == null);
+//		if(token == null)
+//			throw new TokenException();
 	}
 
 	@Override
@@ -313,6 +327,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			} catch (DALException e) {
 				throw new ServiceException(e);
 			}
+		}
+	}
+	
+	private void invalidArguments(boolean validation) throws ServiceException{
+		if(!validation){
+			throw new ServiceException("Invalid Arguments");
 		}
 	}
 }

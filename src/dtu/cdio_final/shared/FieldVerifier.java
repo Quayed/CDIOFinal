@@ -148,4 +148,16 @@ public class FieldVerifier
 
 		return results;
 	}
+
+	public static boolean isValidRole(int role) {
+		if(0 < role && role > 5)
+			return true;
+		return false;
+	}
+
+	public static boolean isValidUserStatus(int status) {
+		if(status == 0 || status == 1)
+			return true;
+		return true;
+	}
 }

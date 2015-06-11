@@ -177,7 +177,7 @@ public class UsersComposite extends PageComposite {
 				userStatusInt = 0;
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
-			service.updateUser(user, new TokenAsyncCallback<Void>(){
+			service.updateUser(Group13cdio_final.token, user, new TokenAsyncCallback<Void>(){
 
 				@Override
 				public void onSuccess(Void result) {
@@ -204,7 +204,7 @@ public class UsersComposite extends PageComposite {
 	@UiHandler("createUserButton")
 	void createUser(ClickEvent event){
 		newUser = new UserDTO(Integer.valueOf(createUserID.getText()), createUserName.getText(), createUserIni.getText(), createUserCPR.getText(), createUserPassword.getText(), createUserRole.getSelectedIndex()+1, 1);
-		service.createUser(newUser, new TokenAsyncCallback<Void>(){
+		service.createUser(Group13cdio_final.token, newUser, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {

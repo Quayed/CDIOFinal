@@ -15,10 +15,9 @@ import dtu.cdio_final.shared.dto.ProductbatchDTO;
 import dtu.cdio_final.shared.dto.UserDTO;
 
 public interface DataService extends RemoteService{
-	void createUser(UserDTO user) throws ServiceException, TokenException;
+	void createUser(String token, UserDTO user) throws ServiceException, TokenException;
 	List<UserDTO> getUsers(String token) throws ServiceException, TokenException;
-	void updateUser(UserDTO user) throws ServiceException, TokenException;
-	void deleteUser(int userID) throws ServiceException, TokenException;
+	void updateUser(String token, UserDTO user) throws ServiceException, TokenException;
 	
 	void createMaterial(MaterialDTO material) throws ServiceException, TokenException;
 	List<MaterialDTO> getMaterials() throws ServiceException, TokenException;
