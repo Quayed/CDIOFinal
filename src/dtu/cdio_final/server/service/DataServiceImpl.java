@@ -185,7 +185,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		List<FormulaCompDTO> result = null; 
 		try
 		{
-			result = formulaCompDao.getFormulaCompList();
+			result = formulaCompDao.getFormulaCompList(formulaID);
 		}
 		catch (DALException e)
 		{

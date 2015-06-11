@@ -46,7 +46,7 @@ public class FormulaComposite extends PageComposite {
 	@UiField MaterialButton addCompButton;
 	@UiField MaterialButton createFormulaButton;
 	
-	
+	private int editRow = -1;
 	DataServiceAsync service;
 
 	public FormulaComposite(DataServiceAsync service) {
@@ -81,28 +81,64 @@ public class FormulaComposite extends PageComposite {
 
 			@Override
 			public void onSuccess(List<FormulaDTO> formulas ) {
-
+				formulaTable.setWidget(0, 0, new Label("Formula ID"));
+				formulaTable.setWidget(0, 1, new Label("Formula Name"));
 				for (int i = 0; i < formulas.size(); i++) {
 					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
 					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
-
 				}
-				
+				formulaTable.addClickHandler(new tableClickHandler());
 			}
 
 		});
 	}
 
-	private void onSuccess(){
-		
-		formulaTable.getFlexCellFormatter().setColSpan(0, 0, 2);
-
+	private class tableClickHandler implements ClickHandler{		
 		FlexTable contentTable = new FlexTable();
-		contentTable.setWidget(0, 0, new Label("FormulaID"));
-		contentTable.setWidget(0, 1, new Label("FormulaName"));
-		contentTable.setWidget(0, 2, new Label("FormulaName"));
 		
-		formulaTable.setWidget(2, 0, contentTable);
+		tableClickHandler(){
+			contentTable.setWidget(0, 0, new Label("Material ID"));
+			contentTable.setWidget(0, 1, new Label("Nom_netto"));
+			contentTable.setWidget(0, 2, new Label("Tolerance"));
+		}
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			if(formulaTable.getCellForEvent(event).getRowIndex() == 0){
+				return;
+			}
+			if(editRow == -1){
+				editRow = formulaTable.getCellForEvent(event).getRowIndex();
+				showComponents();
+			} else if(editRow == formulaTable.getCellForEvent(event).getRowIndex()){
+				formulaTable.removeRow(editRow+1);
+				editRow = -1;
+			} else{
+				formulaTable.removeRow(editRow+1);
+				editRow = formulaTable.getCellForEvent(event).getRowIndex();
+				showComponents();
+			}
+		}
+		
+		private void showComponents(){
+			formulaTable.insertRow(editRow+1);
+			formulaTable.getFlexCellFormatter().setColSpan(editRow+1, 0, 2);
+			service.getFormulaComps(Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
+
+				@Override
+				public void onSuccess(List<FormulaCompDTO> result) {
+					for(int i = 0; i < result.size(); i++){
+						contentTable.setWidget(i+1, 0, new Label(String.valueOf(result.get(i).getMaterialID())));
+						contentTable.setWidget(i+1, 1, new Label(String.valueOf(result.get(i).getNomNetto())));
+						contentTable.setWidget(i+1, 2, new Label(String.valueOf(result.get(i).getTolerance())));
+					}
+					formulaTable.setWidget(editRow+1, 1, contentTable);
+				}
+			
+			});
+		}
+
+		
 	}
 	
 	private class removeComponent implements ClickHandler{
@@ -145,7 +181,7 @@ public class FormulaComposite extends PageComposite {
 
 			@Override
 			public void onSuccess(Void result) {
-				
+				// TODO implement this method.
 			}
 			
 		});
