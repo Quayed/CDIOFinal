@@ -9,6 +9,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.MaterialDTO;
+import dtu.cdio_final.shared.FieldVerifier;
 
 public class MaterialComposite extends PageComposite{
 
@@ -42,6 +44,10 @@ public class MaterialComposite extends PageComposite{
 	private int numberOfRows = 1;
 	private MaterialDTO newMaterial;
 	
+	private boolean validID;
+	private boolean validName;
+	private boolean validProvider;
+	
 	
 	public MaterialComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -62,6 +68,7 @@ public class MaterialComposite extends PageComposite{
 		materialsTable.setWidget(0, 3, new Label(""));
 		materialsTable.setWidget(0, 4, new Label(""));
 		createMaterialButton.addStyleName("fullWidth");
+		
 		
 		service.getMaterials(new TokenAsyncCallback<List<MaterialDTO>>() {
 			
@@ -202,8 +209,8 @@ public class MaterialComposite extends PageComposite{
 	@UiHandler("createMaterialButton")
 	void createUser(ClickEvent event){
 		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
-		service.createMaterial(newMaterial, new TokenAsyncCallback<Void>(){
 
+		service.createMaterial(newMaterial, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {
@@ -225,9 +232,56 @@ public class MaterialComposite extends PageComposite{
 				createMaterialName.backToDefault();
 				createProvider.setText("");
 				createProvider.backToDefault();
-				Window.alert("The user has been created!");
+				Window.alert("The Material has been created!");
 			}
 		});
+	}
+	
+	@UiHandler("createMaterialID")
+	void keyUpID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createMaterialID.getText())){
+			createMaterialID.removeStyleName("invalidEntry");
+			validID = true;
+		} else{
+			createMaterialID.addStyleName("invalidEntry");
+			validID = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createMaterialName")
+	void keyUpName(KeyUpEvent e) {
+		if(FieldVerifier.isValidName(createMaterialName.getText())){
+			createMaterialName.removeStyleName("invalidEntry");
+			validName = true;
+		} else{
+			createMaterialName.addStyleName("invalidEntry");
+			validName = false;
+		}
+		checkForm();
+	}
+	
+	@UiHandler("createProvider")
+	void keyUpProvider(KeyUpEvent e) {
+		if(FieldVerifier.isValidProvider(createProvider.getText())){
+			createProvider.removeStyleName("invalidEntry");
+			validProvider = true;
+		} else{
+			createProvider.addStyleName("invalidEntry");
+			validProvider = false;
+		
+		}
+		checkForm();
+	}
+	
+	
+	
+	private void checkForm(){
+		if (validID && validName && validProvider){
+			createMaterialButton.setDisable(false);
+		} else{
+			createMaterialButton.setDisable(true);
+		}
 	}
 }
 	

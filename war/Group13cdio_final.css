@@ -48,3 +48,7 @@ tbody :nth-child(1) .gwt-Label{
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.invalidEntry input{
+	border-color: red !important;
+}

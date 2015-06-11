@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialModalContent>
+			<m:MaterialTitle ui:field="modalText" title="Modal Header" description="Put your text here"/>
+		</m:MaterialModalContent>
+				
+		<m:MaterialModalFooter align="right">
+			<m:MaterialButton ui:field="btnAgree" waves="green" type="flat" text="Agree" />
+			<m:MaterialButton ui:field="btnDisagree" waves="red" type="flat" text="Disagree" />
+		</m:MaterialModalFooter>
+	</g:HTMLPanel>
+</ui:UiBinder> 

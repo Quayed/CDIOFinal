@@ -1,0 +1,39 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialTitle title="Product Batches"  />
+		<m:MaterialCollapsible type="Popout" ui:field="createBox">
+		    <m:item>
+		        <m:MaterialCollapsibleItem>
+			        <m:header><m:MaterialLink text="Create Product Batch" icon="mdi-content-add" textColor="black"/></m:header>
+			        <m:content>
+			            <g:VerticalPanel>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createProductBatchID" placeholder="Product Batch ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s4"><m:MaterialTextBox ui:field="createFormulaID" placeholder="Formula ID"></m:MaterialTextBox></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            	<m:MaterialRow>
+			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createProductBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
+			            	</m:MaterialRow>
+			            </g:VerticalPanel>
+			        </m:content>
+		      	</m:MaterialCollapsibleItem>
+		    </m:item>
+		</m:MaterialCollapsible>
+			
+		<g:FlexTable ui:field="productBatchTable" styleName="bordered">
+		</g:FlexTable>
+		<div style="display:none">	
+			<g:TextBox ui:field="productBatchID"></g:TextBox>
+			<g:TextBox ui:field="formulaID"></g:TextBox>
+			<g:TextBox ui:field="formulaName"></g:TextBox>
+			<g:TextBox ui:field="productBatchStatus"></g:TextBox>
+			<m:MaterialButton ui:field="confirmButton" icon="mdi-action-done" waves="light" color="blue"></m:MaterialButton>
+			<m:MaterialButton ui:field="cancelButton" icon="mdi-content-clear" waves="light" color="blue"></m:MaterialButton>>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
