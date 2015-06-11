@@ -13,7 +13,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -128,12 +127,6 @@ public class MaterialComposite extends PageComposite{
 			service.getMaterials(new TokenAsyncCallback<List<MaterialDTO>>() {
 
 				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("hejlsdffdsa");
-					
-				}
-
-				@Override
 				public void onSuccess(List<MaterialDTO> materials) {
 					for(int i = 0; i < materials.size(); i++){
 						if(!containsElement(materialID, Integer.toString((materials.get(i).getMaterialID()))))
@@ -176,13 +169,7 @@ public class MaterialComposite extends PageComposite{
 			final String materialNameSelected = materialName.getItemText(materialName.getSelectedIndex());
 			final String providerSelected = provider.getItemText(provider.getSelectedIndex());
 			MaterialDTO material = new MaterialDTO(materialIDInt, materialNameSelected , providerSelected);
-			service.updateMaterial(material, new AsyncCallback<Void>(){
-			
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("Something went wrong!");
-				}
+			service.updateMaterial(material, new TokenAsyncCallback<Void>(){
 
 				@Override
 				public void onSuccess(Void result) {
@@ -215,12 +202,8 @@ public class MaterialComposite extends PageComposite{
 	@UiHandler("createMaterialButton")
 	void createUser(ClickEvent event){
 		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
-		service.createMaterial(newMaterial, new AsyncCallback<Void>(){
+		service.createMaterial(newMaterial, new TokenAsyncCallback<Void>(){
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Something went wrong!!");
-			}
 
 			@Override
 			public void onSuccess(Void result) {

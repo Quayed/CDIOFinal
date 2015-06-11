@@ -34,30 +34,19 @@ public class MaterialBatchComposite extends PageComposite {
 	private int editRow = -1;
 	private int numberOfRows = 1;
 
-	@UiField
-	FlexTable materialBatchTable;
-	@UiField
-	MaterialButton submitButton;
-	@UiField
-	MaterialButton cancelButton;
+	@UiField FlexTable materialBatchTable;
+	@UiField MaterialButton submitButton;
+	@UiField MaterialButton cancelButton;
 
-	@UiField
-	TextBox materialBatchID;
-	@UiField
-	TextBox materialID;
-	@UiField
-	TextBox materialName;
-	@UiField
-	TextBox quantity;
+	@UiField TextBox materialBatchID;
+	@UiField TextBox materialID;
+	@UiField TextBox materialName;
+	@UiField TextBox quantity;
 
-	@UiField
-	MaterialTextBox createMaterialBatchID;
-	@UiField
-	MaterialTextBox createMaterialID;
-	@UiField
-	MaterialTextBox createQuantity;
-	@UiField
-	MaterialButton createMaterialBatchButton;
+	@UiField MaterialTextBox createMaterialBatchID;
+	@UiField MaterialTextBox createMaterialID;
+	@UiField MaterialTextBox createQuantity;
+	@UiField MaterialButton createMaterialBatchButton;
 
 	DataServiceAsync service;
 	ArrayList<Integer> materialsID = new ArrayList<Integer>();
@@ -70,8 +59,7 @@ public class MaterialBatchComposite extends PageComposite {
 
 	@Override
 	public void reloadPage() {
-		// TODO Auto-generated method stub
-
+		initTable();
 	}
 
 	private void initTable() {
@@ -159,7 +147,7 @@ public class MaterialBatchComposite extends PageComposite {
 			materialBatchTable.setWidget(editRow, 1, materialID);
 
 			materialName.setText(getTableLabelText(2));
-			materialBatchTable.setWidget(editRow, 2, materialName);
+			materialBatchTable.setText(editRow, 2, materialName.getText());
 
 			quantity.setText(getTableLabelText(3));
 			materialBatchTable.setWidget(editRow, 3, quantity);
@@ -217,7 +205,6 @@ public class MaterialBatchComposite extends PageComposite {
 		int materialIDInt2 = Integer.valueOf(createMaterialID.getText());
 		double quantityDouble2 = Double.valueOf(createQuantity.getText());
 		final MaterialbatchDTO newMaterialBatch = new MaterialbatchDTO(materialBatchIDInt2, materialIDInt2, quantityDouble2);
-		// todo insert : , createMaterialName.getText(),
 		
 		
 		service.createMaterialBatch(newMaterialBatch, new TokenAsyncCallback<Void>(){
@@ -228,7 +215,6 @@ public class MaterialBatchComposite extends PageComposite {
 				materialBatchTable.setWidget(numberOfRows + 1, 0, new Label("" + newMaterialBatch.getMbID()));
 				materialBatchTable.setWidget(numberOfRows + 1, 1, new Label("" + newMaterialBatch.getMaterialID()));
 				materialBatchTable.setWidget(numberOfRows + 1, 2, new Label("TEST"));
-//				materialsID.add(newMaterialBatch.get(numberOfRows + 1).getMaterialID());
 				materialBatchTable.setWidget(numberOfRows + 1, 3, new Label("" + newMaterialBatch.getQuantity()));
 				materialBatchTable.setWidget(numberOfRows + 1, 4, new MaterialButton("mdi-content-create", "blue", "", "light", ""));
 				((MaterialButton)materialBatchTable.getWidget(numberOfRows + 1, 4)).addClickHandler(new editClick());

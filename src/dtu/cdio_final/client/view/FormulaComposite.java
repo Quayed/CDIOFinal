@@ -16,13 +16,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.service.DataServiceAsync;
+import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 
 
@@ -32,7 +34,8 @@ public class FormulaComposite extends PageComposite {
 	
 	
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
-	private int rowCounter = 2;
+	private int componentCounter = 2;
+	
 	@UiField FlexTable formulaTable;
 	
 	@UiField MaterialCollapsible collapsible;
@@ -43,7 +46,7 @@ public class FormulaComposite extends PageComposite {
 	@UiField MaterialButton addCompButton;
 	@UiField MaterialButton createFormulaButton;
 	
-	
+	private int editRow = -1;
 	DataServiceAsync service;
 
 	public FormulaComposite(DataServiceAsync service) {
@@ -59,6 +62,10 @@ public class FormulaComposite extends PageComposite {
 	}
 
 	private void initTable() {
+		formulaTable.clear();
+		
+		
+		componentTable.clear();
 		componentTable.setWidget(0, 1, new Label("Formula Components:"));
 		componentTable.setWidget(1, 1, new MaterialTextBox());
 		((MaterialTextBox)componentTable.getWidget(1, 1)).setPlaceholder("Material ID");
@@ -69,80 +76,115 @@ public class FormulaComposite extends PageComposite {
 		componentTable.setWidget(1, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
 		((MaterialButton)componentTable.getWidget(1, 4)).addClickHandler(new removeComponent());
 		//treeItem.setWidget(new Label("FormulaID423"));
-		formulaTable.setWidget(0, 0, new Label("FormulaID"));
-		formulaTable.setWidget(0, 1, new Label("FormulaName"));
 		
-		service.getFormulas(new AsyncCallback<List<FormulaDTO>>() {
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
+		service.getFormulas(new TokenAsyncCallback<List<FormulaDTO>>() {
 
 			@Override
 			public void onSuccess(List<FormulaDTO> formulas ) {
-
+				formulaTable.setWidget(0, 0, new Label("Formula ID"));
+				formulaTable.setWidget(0, 1, new Label("Formula Name"));
 				for (int i = 0; i < formulas.size(); i++) {
-//					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
-//					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
-					MaterialCollapsibleItem mCollapsibleItem = new MaterialCollapsibleItem();
-					collapsible.addItem(mCollapsibleItem);
-					mCollapsibleItem.addHeader(new MaterialLink(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName(), "blue"));
-					
-					//mCollapsibleItem.addContent(new MaterialTitle(formulas.get(i).getFormulaID() + "\t" + formulas.get(i).getFormulaName()));
-					
-					
-					
-					VerticalPanel testPanel = new VerticalPanel();
-					
-					FlexTable contentTable = new FlexTable();
-					contentTable.setWidget(0, 0, new Label("FormulaID"));
-					contentTable.setWidget(0, 1, new Label("FormulaName"));
-					contentTable.setWidget(0, 2, new Label("FormulaName"));
-					
-					testPanel.add(contentTable);
-					mCollapsibleItem.addContent(testPanel);
-					
-					
-//					service.getFormulaComps(formulas.get(i).getFormulaID(),new AsyncCallback<List<FormulaCompDTO>>(){
-//								
-//					formulaTable.setWidget(k + 1, 2, new Label(String.valueOf(formulaComps.get(k).getMaterialID())));
-//					formulaTable.setWidget(k + 1, 3, new Label(String.valueOf(formulaComps.get(k).getNomNetto())));
-//					formulaTable.setWidget(k + 1, 4, new Label(String.valueOf(formulaComps.get(k).getTolerance())));
-
-
+					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
+					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
 				}
-				
+				formulaTable.addClickHandler(new tableClickHandler());
 			}
 
 		});
 	}
 
+	private class tableClickHandler implements ClickHandler{		
+		FlexTable contentTable = new FlexTable();
+		
+		tableClickHandler(){
+			contentTable.setWidget(0, 0, new Label("Material ID"));
+			contentTable.setWidget(0, 1, new Label("Nom_netto"));
+			contentTable.setWidget(0, 2, new Label("Tolerance"));
+		}
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			if(formulaTable.getCellForEvent(event).getRowIndex() == 0){
+				return;
+			}
+			if(editRow == -1){
+				editRow = formulaTable.getCellForEvent(event).getRowIndex();
+				showComponents();
+			} else if(editRow == formulaTable.getCellForEvent(event).getRowIndex()){
+				formulaTable.removeRow(editRow+1);
+				editRow = -1;
+			} else{
+				formulaTable.removeRow(editRow+1);
+				editRow = formulaTable.getCellForEvent(event).getRowIndex();
+				showComponents();
+			}
+		}
+		
+		private void showComponents(){
+			formulaTable.insertRow(editRow+1);
+			formulaTable.getFlexCellFormatter().setColSpan(editRow+1, 0, 2);
+			service.getFormulaComps(Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
+
+				@Override
+				public void onSuccess(List<FormulaCompDTO> result) {
+					for(int i = 0; i < result.size(); i++){
+						contentTable.setWidget(i+1, 0, new Label(String.valueOf(result.get(i).getMaterialID())));
+						contentTable.setWidget(i+1, 1, new Label(String.valueOf(result.get(i).getNomNetto())));
+						contentTable.setWidget(i+1, 2, new Label(String.valueOf(result.get(i).getTolerance())));
+					}
+					formulaTable.setWidget(editRow+1, 1, contentTable);
+				}
+			
+			});
+		}
+
+		
+	}
+	
 	private class removeComponent implements ClickHandler{
 		@Override
 		public void onClick(ClickEvent event) {
 			componentTable.removeRow(componentTable.getCellForEvent(event).getRowIndex());
-			rowCounter--;
+			componentCounter--;
 		}	
 	}
 	
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
-		componentTable.setWidget(rowCounter, 1, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 1)).setPlaceholder("Material ID");
-		componentTable.setWidget(rowCounter, 2, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 2)).setPlaceholder("nom_netto");
-		componentTable.setWidget(rowCounter, 3, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(rowCounter, 3)).setPlaceholder("Tolerance");
-		componentTable.setWidget(rowCounter, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
-		((MaterialButton)componentTable.getWidget(rowCounter, 4)).addClickHandler(new removeComponent());
-		rowCounter++;
+		componentTable.setWidget(componentCounter, 1, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).setPlaceholder("Material ID");
+		componentTable.setWidget(componentCounter, 2, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).setPlaceholder("nom_netto");
+		componentTable.setWidget(componentCounter, 3, new MaterialTextBox());
+		((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).setPlaceholder("Tolerance");
+		componentTable.setWidget(componentCounter, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
+		((MaterialButton)componentTable.getWidget(componentCounter, 4)).addClickHandler(new removeComponent());
+		componentCounter++;
 	}
 	
 	@UiHandler("createFormulaButton")
 	void createFormula(ClickEvent event){
-		
+		List<FormulaCompDTO> components = null;
+		FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
+		for(int i = 1; i < componentCounter; i++){
+			components.add(new FormulaCompDTO(formula.getFormulaID(), 
+					Integer.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).getText()), 
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).getText()),
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).getText())));
+		}
+		service.createFormualWithComponents(formula, components, new TokenAsyncCallback<Void>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Something went wrong!");
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// TODO implement this method.
+			}
+			
+		});
 	}
 
 }

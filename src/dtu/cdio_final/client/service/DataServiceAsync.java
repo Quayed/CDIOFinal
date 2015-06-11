@@ -25,7 +25,7 @@ public interface DataServiceAsync {
 	void createFormula(FormulaDTO formula, AsyncCallback<Void> callback);
 	void getFormulas(AsyncCallback<List<FormulaDTO>> callback);
 	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components, AsyncCallback<Void> callback);
-	
+
 	void createFormulaComp(FormulaCompDTO formulaComp, AsyncCallback<Void> callback);
 	void getFormulaComps(int formulaID,AsyncCallback<List<FormulaCompDTO>> callback);
 	
@@ -37,4 +37,5 @@ public interface DataServiceAsync {
 	void getProductBatches(AsyncCallback<List<ProductbatchDTO>> callback);
 	
 	void login(int userID, String password, AsyncCallback<HashMap<String, Object>> callback);
+
 }
