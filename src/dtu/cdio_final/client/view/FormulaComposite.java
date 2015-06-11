@@ -140,7 +140,7 @@ public class FormulaComposite extends PageComposite {
 						contentTable.setWidget(i+1, 1, new Label(String.valueOf(result.get(i).getNomNetto())));
 						contentTable.setWidget(i+1, 2, new Label(String.valueOf(result.get(i).getTolerance())));
 					}
-					formulaTable.setWidget(editRow+1, 1, contentTable);
+					formulaTable.setWidget(editRow+1, 0, contentTable);
 				}
 			
 			});
