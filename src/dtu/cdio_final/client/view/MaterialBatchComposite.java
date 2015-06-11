@@ -104,6 +104,7 @@ public class MaterialBatchComposite extends PageComposite {
 					materialBatchTable.setWidget(i + 1, 5, new Label(""));
 					materialBatchTable.getFlexCellFormatter().setStyleName(
 							i + 1, 5, "limitWidth");
+					numberOfRows++;
 				}
 				service.getMaterials(new MaterialCallback(materialsID));
 
