@@ -34,11 +34,11 @@ public class Group13cdio_final implements EntryPoint
 //			@Override
 //			public void login(UserDTO user)
 //			{
-				gui.addPage("ProductBatches", new ProductBatchComposite(service), true);
+				gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
 				gui.addPage("Users", new UsersComposite(service), true);
 				gui.addPage("Materials", new MaterialComposite(service), true);
 				gui.addPage("Fomulas", new FormulaComposite(service));
-				gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true, true));
+				gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
 				
 //			}
 //		}), true);
