@@ -2,9 +2,6 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-	
-	</ui:style>
 	<g:HTMLPanel>
 	<m:MaterialTitle title="Material Batches" />
 	<m:MaterialCollapsible type="Popout">
@@ -20,7 +17,7 @@
 			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createQuantity" placeholder="Quantity"></m:MaterialTextBox></m:MaterialColumn>
 			            	</m:MaterialRow>
-			            		<m:MaterialRow>
+			            	<m:MaterialRow>
 			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createMaterialBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            </g:VerticalPanel>
@@ -28,9 +25,7 @@
 		      	</m:MaterialCollapsibleItem>
 		    </m:item>
 		</m:MaterialCollapsible>
-
-		<g:FlexTable ui:field="materialBatchTable" styleName="bordered">
-		</g:FlexTable>
+		<g:FlexTable ui:field="materialBatchTable" styleName="bordered"/>
 		<div style="display:none">	
 			<g:TextBox ui:field="materialBatchID"></g:TextBox>
 			<g:TextBox ui:field="materialID"></g:TextBox>

@@ -160,7 +160,6 @@ public class UsersComposite extends PageComposite {
 				userStatusInt = 0;
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
-			Window.alert("Clicked");
 			service.updateUser(user, new TokenAsyncCallback<Void>(){
 
 				@Override
