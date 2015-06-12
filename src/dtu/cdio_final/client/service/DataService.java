@@ -19,9 +19,8 @@ public interface DataService extends RemoteService{
 	List<UserDTO> getUsers(String token) throws ServiceException, TokenException;
 	void updateUser(String token, UserDTO user) throws ServiceException, TokenException;
 	
-	void createMaterial(MaterialDTO material) throws ServiceException, TokenException;
-	List<MaterialDTO> getMaterials() throws ServiceException, TokenException;
-	void updateMaterial(MaterialDTO material) throws ServiceException, TokenException;
+	void createMaterial(String token, MaterialDTO material) throws ServiceException, TokenException;
+	List<MaterialDTO> getMaterials(String token) throws ServiceException, TokenException;
 	
 	void createFormula(FormulaDTO formula) throws ServiceException, TokenException;
 	List<FormulaDTO> getFormulas() throws ServiceException, TokenException;

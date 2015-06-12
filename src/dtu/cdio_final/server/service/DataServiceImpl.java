@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.server.dal.daoimpl.FormulaCompDAO;
 import dtu.cdio_final.server.dal.daoimpl.FormulaDAO;
@@ -111,10 +112,21 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void createMaterial(MaterialDTO material) throws ServiceException, TokenException
+	public void createMaterial(String token, MaterialDTO material) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+material.getMaterialID()) &&
+			FieldVerifier.isValidName(material.getMaterialName()) &&
+			FieldVerifier.isValidName(material.getProvider())
+		);
+		
 		try
 		{
+			if(userDao.getUser(material.getMaterialID()) != null){
+				throw new ServiceException("MaterialID already exsists");
+			}
 			materialDao.createMaterial(material);
 		}
 		catch (DALException e)
@@ -124,8 +136,10 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<MaterialDTO> getMaterials() throws ServiceException
+	public List<MaterialDTO> getMaterials(String token) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
 		List<MaterialDTO> result = null; 
 		try
 		{
@@ -136,19 +150,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			throw new ServiceException(e);
 		}
 		return result;
-	}
-
-	@Override
-	public void updateMaterial(MaterialDTO material) throws ServiceException
-	{
-		try
-		{
-			materialDao.updateMaterial(material);
-		}
-		catch (DALException e)
-		{
-			throw new ServiceException(e);
-		}
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
@@ -103,7 +104,7 @@ public class MaterialBatchComposite extends PageComposite {
 				{
 					addRow(materialBatches.get(i));
 				}
-				service.getMaterials(new MaterialCallback(materialsID));
+				service.getMaterials(Group13cdio_final.token, new MaterialCallback(materialsID));
 				
 			}
 

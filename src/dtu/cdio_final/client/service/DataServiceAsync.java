@@ -17,9 +17,8 @@ public interface DataServiceAsync {
 	void getUsers(String token, AsyncCallback<List<UserDTO>> callback);
 	void updateUser(String token, UserDTO user, AsyncCallback<Void> callback);
 	
-	void createMaterial(MaterialDTO material, AsyncCallback<Void> callback);
-	void getMaterials(AsyncCallback<List<MaterialDTO>> callback);
-	void updateMaterial(MaterialDTO material, AsyncCallback<Void> callback);
+	void createMaterial(String token, MaterialDTO material, AsyncCallback<Void> callback);
+	void getMaterials(String token, AsyncCallback<List<MaterialDTO>> callback);
 	
 	void createFormula(FormulaDTO formula, AsyncCallback<Void> callback);
 	void getFormulas(AsyncCallback<List<FormulaDTO>> callback);
