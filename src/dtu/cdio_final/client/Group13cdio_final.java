@@ -57,10 +57,10 @@ public class Group13cdio_final implements EntryPoint
 //					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
 //				}
 				
-					// DELETE WHEN DONE WITH TESTING.
+					// DELETE BELOW WHEN DONE WITH TESTING.
 					gui.addPage("Users", new UsersComposite(service), true);
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
-					//gui.addPage("Fomulas", new FormulaComposite(service,false));
+					gui.addPage("Fomulas", new FormulaComposite(service,true));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
 					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
 				

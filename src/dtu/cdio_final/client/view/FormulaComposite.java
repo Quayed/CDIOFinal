@@ -6,6 +6,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialLink;
+import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
+import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
 
 public class FormulaComposite extends PageComposite {
@@ -51,34 +53,36 @@ public class FormulaComposite extends PageComposite {
 	@UiField FlexTable componentTable;
 	@UiField MaterialButton addCompButton;
 	@UiField MaterialButton createFormulaButton;
+	@UiField MaterialCollapsible createBox;
 	
 	private int editRow = -1;
+	private int numberOfRows;
 	DataServiceAsync service;
+	private boolean createAccess;
 	
 	private boolean validFormulaID;
 	private boolean validFormulaName;
 	private final ArrayList<Boolean> validComps = new ArrayList<Boolean>();
 	
-	public FormulaComposite(DataServiceAsync service) {
+	public FormulaComposite(DataServiceAsync service, boolean create) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
-		
+		this.createAccess = create;
 	}
 	
 	@Override
-	public void reloadPage() {
-		// TODO Auto-generated method stub
+	public void reloadPage() 
+	{
 		initTable();
 	}
 
 	private void initTable() {
+		numberOfRows = 1;
 		formulaTable.clear();
 		
 		componentTable.clear();
 		componentTable.setWidget(0, 1, new Label("Formula Components:"));
-		
-		MaterialTextBox textBoxMaterialID = new MaterialTextBox();
-		textBoxMaterialID.setPlaceholder("Material ID");
+		MaterialListBox textBoxMaterialID = new MaterialListBox();
 		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
 		componentTable.setWidget(1, 1, textBoxMaterialID);
 		
@@ -92,9 +96,9 @@ public class FormulaComposite extends PageComposite {
 		textBoxTolerance.addKeyUpHandler(new ToleranceKeyUp(textBoxTolerance, componentIndexCounter));
 		componentTable.setWidget(1, 3, textBoxTolerance);
 		
-		componentTable.setWidget(1, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
-		((MaterialButton)componentTable.getWidget(1, 4)).addClickHandler(new removeComponent());
-		//treeItem.setWidget(new Label("FormulaID423"));
+		if(!createAccess){
+			createBox.setVisible(false);
+		}
 		
 		service.getFormulas(Group13cdio_final.token, new TokenAsyncCallback<List<FormulaDTO>>() {
 
@@ -102,9 +106,10 @@ public class FormulaComposite extends PageComposite {
 			public void onSuccess(List<FormulaDTO> formulas ) {
 				formulaTable.setWidget(0, 0, new Label("Formula ID"));
 				formulaTable.setWidget(0, 1, new Label("Formula Name"));
-				for (int i = 0; i < formulas.size(); i++) {
-					formulaTable.setWidget(i + 1, 0, new Label("" + formulas.get(i).getFormulaID()));
-					formulaTable.setWidget(i + 1, 1, new Label(formulas.get(i).getFormulaName()));
+				for (int i = 0; i < formulas.size(); i++)
+				{
+					addRow(formulas.get(i));
+					
 				}
 				formulaTable.addClickHandler(new tableClickHandler());
 			}
@@ -160,6 +165,14 @@ public class FormulaComposite extends PageComposite {
 		
 	}
 	
+	private void addRow(FormulaDTO formulas) {
+		formulaTable.setWidget(numberOfRows, 0, new Label("" + formulas.getFormulaID()));
+		formulaTable.setWidget(numberOfRows, 1, new Label(formulas.getFormulaName()));
+				
+		numberOfRows++;
+	
+	}
+	
 	private class removeComponent implements ClickHandler{
 		@Override
 		public void onClick(ClickEvent event) {
@@ -168,10 +181,11 @@ public class FormulaComposite extends PageComposite {
 		}	
 	}
 	
+	
+	
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
-		MaterialTextBox textBoxMaterialID = new MaterialTextBox();
-		textBoxMaterialID.setPlaceholder("Material ID");
+		MaterialListBox textBoxMaterialID = new MaterialListBox();
 		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
 		componentTable.setWidget(componentCounter, 1, textBoxMaterialID);
 		
@@ -258,28 +272,23 @@ public class FormulaComposite extends PageComposite {
 	
 	private class MaterialIDKeyUp implements KeyUpHandler{
 		
-		private final MaterialTextBox textBoxMaterialID;
+		private final MaterialListBox textBoxMaterialID;
 		private int index;
 		
-		private MaterialIDKeyUp(MaterialTextBox textbox, int componentIndex){
+		private MaterialIDKeyUp(MaterialListBox textbox, int componentIndex){
 			this.textBoxMaterialID = textbox;
 			this.index = componentIndex;
 			
 			validComps.add(index, false);
 			componentIndexCounter++;
 		}
-		
+
 		@Override
 		public void onKeyUp(KeyUpEvent event) {
-			if(FieldVerifier.isValidID(textBoxMaterialID.getText())){
-				textBoxMaterialID.removeStyleName("invalidEntry");
-				validComps.set(index, true);
-			} else{
-				textBoxMaterialID.addStyleName("invalidEntry");
-				validComps.set(index, false);
-			}
-			checkForm();
+			// TODO Auto-generated method stub
+			
 		}
+		
 	};
 		
 private class Nom_NettoKeyUp implements KeyUpHandler{

@@ -7,7 +7,7 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<m:MaterialTitle title="Formulas" />
-		<m:MaterialCollapsible type="accordion">
+		<m:MaterialCollapsible type="Popout" ui:field="createBox">
 		    <m:item>
 		        <m:MaterialCollapsibleItem>
 				    <m:header><m:MaterialLink text="Create Formula" icon="mdi-content-add" textColor="black"></m:MaterialLink></m:header>
