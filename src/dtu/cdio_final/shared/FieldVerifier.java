@@ -33,7 +33,9 @@ public class FieldVerifier
 	private static final String CPR_PATTERN = "^\\d{10}$";
 	private static final String ID_PATTERN = "^[0-9]{1,8}$"; // 1­99999999
 	private static final String PROVIDER_PATTERN = "^[a-zA-ZæøåÆØÅ -\\+\\-_?=!\\.]{2,20}$"; //Bogstaver,tal,forskellige tegn
-	private static final String QUANTITY_PATTERN = "^[0-9]+(\\.[0-9]{4})?$";
+	private static final String QUANTITY_PATTERN = "^[0-9]+(\\.[0-9]{1,4})?$";
+	private static final String TOLERANCE_PATTERN = "^[0-9]+(\\.[0-9]{1,2})?$";
+	
 	
 	private static final int PASSWORD_MIN = 5;
 
@@ -112,7 +114,7 @@ public class FieldVerifier
 	/** tolerance i området 0,1 ­ 10,0 % */
 	public static boolean isValidTolerance(double tolerance)
 	{
-		if(Double.toString(tolerance).matches(QUANTITY_PATTERN))
+		if(Double.toString(tolerance).matches(TOLERANCE_PATTERN))
 			if (tolerance >= 0.1 && tolerance <= 10)
 				return true;
 
