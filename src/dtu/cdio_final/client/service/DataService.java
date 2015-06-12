@@ -33,8 +33,8 @@ public interface DataService extends RemoteService{
 	void createMaterialBatch(String token, MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
 	List<MaterialbatchDTO> getMaterialBatches(String token) throws ServiceException, TokenException;
 	
-	void createProductBatch(ProductbatchDTO productBatch) throws ServiceException, TokenException;
-	List<ProductbatchDTO> getProductBatches() throws ServiceException, TokenException;
+	void createProductBatch(String token, ProductbatchDTO productBatch) throws ServiceException, TokenException;
+	List<ProductbatchDTO> getProductBatches(String token) throws ServiceException, TokenException;
 	
 	HashMap<String, Object> login(int userID, String password) throws ServiceException, TokenException;
 }

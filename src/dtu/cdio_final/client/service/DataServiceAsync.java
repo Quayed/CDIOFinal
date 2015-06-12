@@ -30,8 +30,8 @@ public interface DataServiceAsync {
 	void createMaterialBatch(String token, MaterialbatchDTO materialBatch, AsyncCallback<Void> callback);
 	void getMaterialBatches(String token, AsyncCallback<List<MaterialbatchDTO>> callback);
 	
-	void createProductBatch(ProductbatchDTO productBatch, AsyncCallback<Void> callback);
-	void getProductBatches(AsyncCallback<List<ProductbatchDTO>> callback);
+	void createProductBatch(String token, ProductbatchDTO productBatch, AsyncCallback<Void> callback);
+	void getProductBatches(String token, AsyncCallback<List<ProductbatchDTO>> callback);
 	
 	void login(int userID, String password, AsyncCallback<HashMap<String, Object>> callback);
 

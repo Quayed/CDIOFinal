@@ -254,10 +254,25 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void createProductBatch(ProductbatchDTO productBatch) throws ServiceException
+	public void createProductBatch(String token, ProductbatchDTO productBatch) throws ServiceException, TokenException
 	{
+		
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+productBatch.getPbID()) &&
+			FieldVerifier.isValidID(""+productBatch.getFormulaID())
+		);
+		
 		try
 		{
+			if(productBathcDao.getProductbatch(productBatch.getPbID()) != null){
+				throw new ServiceException("ProductBatchID already exsists");
+			}
+			if(formulaDao.getFormula(productBatch.getFormulaID()) == null){
+				throw new ServiceException("MaterialID don't exsists");
+			}
+			productBatch.setStatus(1);
 			productBathcDao.createProductbatch(productBatch);
 		}
 		catch (DALException e)
@@ -267,8 +282,10 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<ProductbatchDTO> getProductBatches() throws ServiceException
+	public List<ProductbatchDTO> getProductBatches(String token) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
 		List<ProductbatchDTO> productBatches; 
 		try
 		{

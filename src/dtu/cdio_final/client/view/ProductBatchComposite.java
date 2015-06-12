@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.FormulaDTO;
@@ -74,7 +75,7 @@ public class ProductBatchComposite extends PageComposite
 			createBox.setVisible(false);
 		}
 		
-		service.getProductBatches(new TokenAsyncCallback<List<ProductbatchDTO>>()
+		service.getProductBatches(Group13cdio_final.token, new TokenAsyncCallback<List<ProductbatchDTO>>()
 				{
 
 			@Override
@@ -164,7 +165,7 @@ public class ProductBatchComposite extends PageComposite
 		int productIDInt2 = Integer.valueOf(createFormulaID.getSelectedIndex()+1);
 		final ProductbatchDTO newProductBatch = new ProductbatchDTO(productBatchIDInt2, productIDInt2, 1);
 				
-		service.createProductBatch(newProductBatch, new TokenAsyncCallback<Void>(){
+		service.createProductBatch(Group13cdio_final.token, newProductBatch, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {
