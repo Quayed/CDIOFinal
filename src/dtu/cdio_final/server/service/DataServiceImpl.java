@@ -124,7 +124,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		
 		try
 		{
-			if(userDao.getUser(material.getMaterialID()) != null){
+			if(materialDao.getMaterial(material.getMaterialID()) != null){
 				throw new ServiceException("MaterialID already exsists");
 			}
 			materialDao.createMaterial(material);
@@ -140,7 +140,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	{
 		validateToken(token);
 		
-		List<MaterialDTO> result = null; 
+		List<MaterialDTO> result; 
 		try
 		{
 			result = materialDao.getMaterialList();
@@ -236,18 +236,21 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<MaterialbatchDTO> getMaterialBatches(String token) throws ServiceException
+	public List<MaterialbatchDTO> getMaterialBatches(String token) throws ServiceException, TokenException
 	{
-		List<MaterialbatchDTO> result = null; 
+		
+		validateToken(token);
+		
+		List<MaterialbatchDTO> materialBatches;
 		try
 		{
-			result = materialBatchDao.getMaterialBatchList();
+			materialBatches = materialBatchDao.getMaterialBatchList();
 		}
 		catch (DALException e)
 		{
 			throw new ServiceException(e);
 		}
-		return result;
+		return materialBatches;
 	}
 
 	@Override
@@ -266,16 +269,32 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public List<ProductbatchDTO> getProductBatches() throws ServiceException
 	{
-		List<ProductbatchDTO> result = null; 
+		List<ProductbatchDTO> productBatches; 
 		try
 		{
-			result = productBathcDao.getProductbatchList();
+			productBatches = productBathcDao.getProductbatchList();
 		}
 		catch (DALException e)
 		{
 			throw new ServiceException(e);
 		}
-		return result;
+		return productBatches;
+	}
+
+	@Override
+	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException {
+		try {
+			formulaDao.createFormula(formula);
+		} catch (DALException e) {
+			throw new ServiceException(e);
+		}	
+		for(FormulaCompDTO component : components){
+			try {
+				formulaCompDao.createFormulaComp(component);
+			} catch (DALException e) {
+				throw new ServiceException(e);
+			}
+		}
 	}
 
 	@Override
@@ -313,22 +332,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 //		return !(token == null);
 //		if(token == null)
 //			throw new TokenException();
-	}
-
-	@Override
-	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException {
-		try {
-			formulaDao.createFormula(formula);
-		} catch (DALException e) {
-			throw new ServiceException(e);
-		}	
-		for(FormulaCompDTO component : components){
-			try {
-				formulaCompDao.createFormulaComp(component);
-			} catch (DALException e) {
-				throw new ServiceException(e);
-			}
-		}
 	}
 	
 	private void invalidArguments(boolean validation) throws ServiceException{
