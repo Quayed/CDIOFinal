@@ -8,6 +8,7 @@ import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialTextBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -38,6 +39,7 @@ public class FormulaComposite extends PageComposite {
 	
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 	private int componentCounter = 2;
+	private int componentIndexCounter = 0;
 	
 	@UiField FlexTable formulaTable;
 	
@@ -54,9 +56,7 @@ public class FormulaComposite extends PageComposite {
 	
 	private boolean validFormulaID;
 	private boolean validFormulaName;
-	private boolean validMaterialID;
-	private boolean validNom_netto;
-	private boolean validTolerance;
+	private final ArrayList<Boolean> validComps = new ArrayList<Boolean>();
 	
 	public FormulaComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -73,15 +73,24 @@ public class FormulaComposite extends PageComposite {
 	private void initTable() {
 		formulaTable.clear();
 		
-		
 		componentTable.clear();
 		componentTable.setWidget(0, 1, new Label("Formula Components:"));
-		componentTable.setWidget(1, 1, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(1, 1)).setPlaceholder("Material ID");
-		componentTable.setWidget(1, 2, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(1, 2)).setPlaceholder("nom_netto");
-		componentTable.setWidget(1, 3, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(1, 3)).setPlaceholder("Tolerance");
+		
+		MaterialTextBox textBoxMaterialID = new MaterialTextBox();
+		textBoxMaterialID.setPlaceholder("Material ID");
+		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
+		componentTable.setWidget(1, 1, textBoxMaterialID);
+		
+		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
+		textBoxNom_Netto.setPlaceholder("nom_netto");
+		textBoxNom_Netto.addKeyUpHandler(new Nom_NettoKeyUp(textBoxNom_Netto, componentIndexCounter));
+		componentTable.setWidget(1, 2, textBoxNom_Netto);
+		
+		MaterialTextBox textBoxTolerance = new MaterialTextBox();
+		textBoxTolerance.setPlaceholder("Tolerance");
+		textBoxTolerance.addKeyUpHandler(new ToleranceKeyUp(textBoxTolerance, componentIndexCounter));
+		componentTable.setWidget(1, 3, textBoxTolerance);
+		
 		componentTable.setWidget(1, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
 		((MaterialButton)componentTable.getWidget(1, 4)).addClickHandler(new removeComponent());
 		//treeItem.setWidget(new Label("FormulaID423"));
@@ -160,24 +169,25 @@ public class FormulaComposite extends PageComposite {
 	
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
-		MaterialTextBox textBox = new MaterialTextBox();
-		textBox.setPlaceholder("Material ID");
-		textBox.addKeyUpHandler(new KeyUpHandler() {
-			
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		componentTable.setWidget(componentCounter, 1, textBox);
+		MaterialTextBox textBoxMaterialID = new MaterialTextBox();
+		textBoxMaterialID.setPlaceholder("Material ID");
+		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
+		componentTable.setWidget(componentCounter, 1, textBoxMaterialID);
 		
-		componentTable.setWidget(componentCounter, 2, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).setPlaceholder("nom_netto");
-		componentTable.setWidget(componentCounter, 3, new MaterialTextBox());
-		((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).setPlaceholder("Tolerance");
-		componentTable.setWidget(componentCounter, 4, new MaterialButton("mdi-content-clear", "blue", "", "light", ""));
-		((MaterialButton)componentTable.getWidget(componentCounter, 4)).addClickHandler(new removeComponent());
+		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
+		textBoxNom_Netto.setPlaceholder("nom_netto");
+		textBoxNom_Netto.addKeyUpHandler(new Nom_NettoKeyUp(textBoxNom_Netto, componentIndexCounter));
+		componentTable.setWidget(componentCounter, 2, textBoxNom_Netto);
+		
+		MaterialTextBox textBoxTolerance = new MaterialTextBox();
+		textBoxTolerance.setPlaceholder("Tolerance");
+		textBoxTolerance.addKeyUpHandler(new ToleranceKeyUp(textBoxTolerance, componentIndexCounter));
+		componentTable.setWidget(componentCounter, 3, textBoxTolerance);
+		
+		MaterialButton componentTableButton = new MaterialButton("mdi-content-clear", "blue", "", "light", "");
+		componentTableButton.addClickHandler(new removeComponent());
+		componentTable.setWidget(componentCounter, 4, componentTableButton);
+		
 		componentCounter++;
 	}
 	
@@ -206,12 +216,6 @@ public class FormulaComposite extends PageComposite {
 		});
 	}
 
-	private boolean formulaID;
-	private boolean formulaName;
-	private boolean materialID;
-	private boolean nom_netto;
-	private boolean tolerance;
-	
 	@UiHandler("createFormulaID")
 	void keyUpFormulaID(KeyUpEvent e) {
 		if(FieldVerifier.isValidID(createFormulaID.getText())){
@@ -235,9 +239,97 @@ public class FormulaComposite extends PageComposite {
 		}
 		checkForm();
 	}
-		
 	
 	private void checkForm(){
+		if(validFormulaID && validFormulaName){
+			int falses = 0;
+			for(int i = 0; i < componentIndexCounter; i++)
+				if(!validComps.get(i).booleanValue())
+					falses++;
+					
+					if(falses == 0){
+						createFormulaButton.setDisable(false);
+					}
+		} else {
+			createFormulaButton.setDisable(true);
+			}
+		}
+	
+	private class MaterialIDKeyUp implements KeyUpHandler{
+		
+		private final MaterialTextBox textBoxMaterialID;
+		private int index;
+		
+		private MaterialIDKeyUp(MaterialTextBox textbox, int componentIndex){
+			this.textBoxMaterialID = textbox;
+			this.index = componentIndex;
+			
+			validComps.add(index, false);
+			componentIndexCounter++;
+		}
+		
+		@Override
+		public void onKeyUp(KeyUpEvent event) {
+			if(FieldVerifier.isValidID(textBoxMaterialID.getText())){
+				textBoxMaterialID.removeStyleName("invalidEntry");
+				validComps.set(index, true);
+			} else{
+				textBoxMaterialID.addStyleName("invalidEntry");
+				validComps.set(index, false);
+			}
+			checkForm();
+		}
+	};
+		
+private class Nom_NettoKeyUp implements KeyUpHandler{
+		
+		private final MaterialTextBox textBoxNom_Netto;
+		private int index;
+		
+		private Nom_NettoKeyUp(MaterialTextBox textbox, int componentIndex){
+			this.textBoxNom_Netto = textbox;
+			this.index = componentIndex;
 
-	}
+			validComps.add(index, false);
+			componentIndexCounter++;
+		}
+		
+		@Override
+		public void onKeyUp(KeyUpEvent event) {
+			if(FieldVerifier.isValidNomNetto(Double.valueOf((textBoxNom_Netto.getText())))){
+				textBoxNom_Netto.removeStyleName("invalidEntry");
+				validComps.set(index, true);
+			} else{
+				textBoxNom_Netto.addStyleName("invalidEntry");
+				validComps.set(index, false);
+			}
+			checkForm();
+		}
+	};
+	
+private class ToleranceKeyUp implements KeyUpHandler{
+		
+		private final MaterialTextBox textBoxTolerance;
+		private int index;
+		
+		private ToleranceKeyUp(MaterialTextBox textbox, int componentIndex){
+			this.textBoxTolerance = textbox;
+			this.index = componentIndex;
+			
+			validComps.add(index, false);
+			componentIndexCounter++;
+		}
+		
+		@Override
+		public void onKeyUp(KeyUpEvent event) {
+			if(FieldVerifier.isValidTolerance(Double.valueOf((textBoxTolerance.getText())))){
+				textBoxTolerance.removeStyleName("invalidEntry");
+				validComps.set(index, true);
+			} else{
+				textBoxTolerance.addStyleName("invalidEntry");
+				validComps.set(index, false);
+			}
+			checkForm();
+		}
+	};	
 }
