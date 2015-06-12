@@ -209,10 +209,24 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void createMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException
+	public void createMaterialBatch(String token, MaterialbatchDTO materialBatch) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+materialBatch.getMbID()) &&
+			FieldVerifier.isValidID(""+materialBatch.getMaterialID()) &&
+			FieldVerifier.isValidQuantity(Double.toString(materialBatch.getQuantity()))
+		);
+		
 		try
 		{
+			if(materialBatchDao.getMaterialBatch(materialBatch.getMbID()) != null){
+				throw new ServiceException("MaterialBatchID already exsists");
+			}
+			if(materialDao.getMaterial(materialBatch.getMaterialID()) == null){
+				throw new ServiceException("MaterialID don't exsists");
+			}
 			materialBatchDao.createMaterialBatch(materialBatch);
 		}
 		catch (DALException e)
@@ -222,7 +236,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public List<MaterialbatchDTO> getMaterialBatches() throws ServiceException
+	public List<MaterialbatchDTO> getMaterialBatches(String token) throws ServiceException
 	{
 		List<MaterialbatchDTO> result = null; 
 		try
@@ -299,19 +313,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 //		return !(token == null);
 //		if(token == null)
 //			throw new TokenException();
-	}
-
-	@Override
-	public void updateMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException {
-		
-		try
-		{
-			materialBatchDao.updateMaterialBatch(materialBatch);
-		}
-		catch (DALException e)
-		{
-			throw new ServiceException(e);
-		}
 	}
 
 	@Override

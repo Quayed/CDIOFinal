@@ -27,9 +27,8 @@ public interface DataServiceAsync {
 	void createFormulaComp(FormulaCompDTO formulaComp, AsyncCallback<Void> callback);
 	void getFormulaComps(int formulaID,AsyncCallback<List<FormulaCompDTO>> callback);
 	
-	void createMaterialBatch(MaterialbatchDTO materialBatch, AsyncCallback<Void> callback);
-	void getMaterialBatches(AsyncCallback<List<MaterialbatchDTO>> callback);
-	void updateMaterialBatch(MaterialbatchDTO materialBatch, AsyncCallback<Void> asyncCallback);
+	void createMaterialBatch(String token, MaterialbatchDTO materialBatch, AsyncCallback<Void> callback);
+	void getMaterialBatches(String token, AsyncCallback<List<MaterialbatchDTO>> callback);
 	
 	void createProductBatch(ProductbatchDTO productBatch, AsyncCallback<Void> callback);
 	void getProductBatches(AsyncCallback<List<ProductbatchDTO>> callback);

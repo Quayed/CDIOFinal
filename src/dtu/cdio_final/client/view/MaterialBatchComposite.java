@@ -88,7 +88,7 @@ public class MaterialBatchComposite extends PageComposite {
 			createBox.setVisible(false);
 		}
 		
-		service.getMaterialBatches(new TokenAsyncCallback<List<MaterialbatchDTO>>() {
+		service.getMaterialBatches(Group13cdio_final.token, new TokenAsyncCallback<List<MaterialbatchDTO>>() {
 			
 			@Override
 			public void onFailure(Throwable caught)
@@ -157,7 +157,7 @@ public class MaterialBatchComposite extends PageComposite {
 		final MaterialbatchDTO newMaterialBatch = new MaterialbatchDTO(materialBatchIDInt2, materialIDInt2, quantityDouble2);
 		
 		
-		service.createMaterialBatch(newMaterialBatch, new TokenAsyncCallback<Void>(){
+		service.createMaterialBatch(Group13cdio_final.token, newMaterialBatch, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {

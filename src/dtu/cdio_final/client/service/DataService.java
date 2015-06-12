@@ -30,9 +30,8 @@ public interface DataService extends RemoteService{
 	void createFormulaComp(FormulaCompDTO formulaComp) throws ServiceException, TokenException;
 	List<FormulaCompDTO> getFormulaComps(int formulaID) throws ServiceException, TokenException;
 	
-	void createMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
-	void updateMaterialBatch(MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
-	List<MaterialbatchDTO> getMaterialBatches() throws ServiceException, TokenException;
+	void createMaterialBatch(String token, MaterialbatchDTO materialBatch) throws ServiceException, TokenException;
+	List<MaterialbatchDTO> getMaterialBatches(String token) throws ServiceException, TokenException;
 	
 	void createProductBatch(ProductbatchDTO productBatch) throws ServiceException, TokenException;
 	List<ProductbatchDTO> getProductBatches() throws ServiceException, TokenException;
