@@ -20,12 +20,9 @@ public interface DataServiceAsync {
 	void createMaterial(String token, MaterialDTO material, AsyncCallback<Void> callback);
 	void getMaterials(String token, AsyncCallback<List<MaterialDTO>> callback);
 	
-	void createFormula(FormulaDTO formula, AsyncCallback<Void> callback);
-	void getFormulas(AsyncCallback<List<FormulaDTO>> callback);
-	void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components, AsyncCallback<Void> callback);
-
-	void createFormulaComp(FormulaCompDTO formulaComp, AsyncCallback<Void> callback);
-	void getFormulaComps(int formulaID,AsyncCallback<List<FormulaCompDTO>> callback);
+	void createFormualWithComponents(String token, FormulaDTO formula, List<FormulaCompDTO> components, AsyncCallback<Void> callback);
+	void getFormulas(String token, AsyncCallback<List<FormulaDTO>> callback);
+	void getFormulaComps(String token, int formulaID,AsyncCallback<List<FormulaCompDTO>> callback);
 	
 	void createMaterialBatch(String token, MaterialbatchDTO materialBatch, AsyncCallback<Void> callback);
 	void getMaterialBatches(String token, AsyncCallback<List<MaterialbatchDTO>> callback);

@@ -153,59 +153,65 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void createFormula(FormulaDTO formula) throws ServiceException
-	{
-		try
-		{
+	public void createFormualWithComponents(String token, FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException, TokenException {
+		
+		validateToken(token);
+		
+		invalidArguments(
+			FieldVerifier.isValidID(""+formula.getFormulaID()) &&
+			FieldVerifier.isValidName(formula.getFormulaName()) &&
+			components != null
+		);
+		
+		// TODO need component verify and exsists verify
+		
+		try {
 			formulaDao.createFormula(formula);
-		}
-		catch (DALException e)
-		{
+		} catch (DALException e) {
 			throw new ServiceException(e);
+		}	
+		for(FormulaCompDTO component : components){
+			try {
+				formulaCompDao.createFormulaComp(component);
+			} catch (DALException e) {
+				throw new ServiceException(e);
+			}
 		}
 	}
-
+	
 	@Override
-	public List<FormulaDTO> getFormulas() throws ServiceException
+	public List<FormulaDTO> getFormulas(String token) throws ServiceException, TokenException
 	{
-		List<FormulaDTO> result = null; 
+		validateToken(token);
+		
+		List<FormulaDTO> formulas; 
 		try
 		{
-			result = formulaDao.getFormulaList();
+			formulas = formulaDao.getFormulaList();
 		}
 		catch (DALException e)
 		{
 			throw new ServiceException(e);
 		}
-		return result;
+		return formulas;
 	}
-
+	
 	@Override
-	public void createFormulaComp(FormulaCompDTO formulaComp) throws ServiceException
+	public List<FormulaCompDTO> getFormulaComps(String token, int formulaID) throws ServiceException, TokenException
 	{
+		validateToken(token);
+		
+		
+		List<FormulaCompDTO> formulaComps; 
 		try
 		{
-			formulaCompDao.createFormulaComp(formulaComp);
+			formulaComps = formulaCompDao.getFormulaCompList(formulaID);
 		}
 		catch (DALException e)
 		{
 			throw new ServiceException(e);
 		}
-	}
-
-	@Override
-	public List<FormulaCompDTO> getFormulaComps(int formulaID) throws ServiceException
-	{
-		List<FormulaCompDTO> result = null; 
-		try
-		{
-			result = formulaCompDao.getFormulaCompList(formulaID);
-		}
-		catch (DALException e)
-		{
-			throw new ServiceException(e);
-		}
-		return result;
+		return formulaComps;
 	}
 
 	@Override
@@ -296,22 +302,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			throw new ServiceException(e);
 		}
 		return productBatches;
-	}
-
-	@Override
-	public void createFormualWithComponents(FormulaDTO formula, List<FormulaCompDTO> components) throws ServiceException {
-		try {
-			formulaDao.createFormula(formula);
-		} catch (DALException e) {
-			throw new ServiceException(e);
-		}	
-		for(FormulaCompDTO component : components){
-			try {
-				formulaCompDao.createFormulaComp(component);
-			} catch (DALException e) {
-				throw new ServiceException(e);
-			}
-		}
 	}
 
 	@Override

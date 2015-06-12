@@ -93,7 +93,7 @@ public class ProductBatchComposite extends PageComposite
 					addRow(productBatches.get(i));
 					
 				}
-				service.getFormulas(new MaterialCallback(productID));
+				service.getFormulas(Group13cdio_final.token, new MaterialCallback(productID));
 			}
 
 		});

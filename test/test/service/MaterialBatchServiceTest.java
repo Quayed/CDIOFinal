@@ -50,7 +50,7 @@ public class MaterialBatchServiceTest {
 	@AfterClass
 	public static void after(){
 		try {
-			Connector.doUpdate("DELETE FROM material_batch WHERE mb_id = 87");
+			Connector.doUpdate("DELETE FROM materialbatch WHERE mb_id = 87");
 		} catch (SQLException e) {}
 	}
 

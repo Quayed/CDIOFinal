@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
@@ -95,7 +96,7 @@ public class FormulaComposite extends PageComposite {
 		((MaterialButton)componentTable.getWidget(1, 4)).addClickHandler(new removeComponent());
 		//treeItem.setWidget(new Label("FormulaID423"));
 		
-		service.getFormulas(new TokenAsyncCallback<List<FormulaDTO>>() {
+		service.getFormulas(Group13cdio_final.token, new TokenAsyncCallback<List<FormulaDTO>>() {
 
 			@Override
 			public void onSuccess(List<FormulaDTO> formulas ) {
@@ -141,7 +142,7 @@ public class FormulaComposite extends PageComposite {
 		private void showComponents(){
 			formulaTable.insertRow(editRow+1);
 			formulaTable.getFlexCellFormatter().setColSpan(editRow+1, 0, 2);
-			service.getFormulaComps(Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
+			service.getFormulaComps(Group13cdio_final.token, Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
 
 				@Override
 				public void onSuccess(List<FormulaCompDTO> result) {
@@ -201,7 +202,7 @@ public class FormulaComposite extends PageComposite {
 					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).getText()),
 					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).getText())));
 		}
-		service.createFormualWithComponents(formula, components, new TokenAsyncCallback<Void>(){
+		service.createFormualWithComponents(Group13cdio_final.token, formula, components, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
