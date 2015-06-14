@@ -4,12 +4,14 @@ import ase.ase.State;
 
 public class Controller {
 	private State currentState;
-	private ILogic logic;
+	private IDAL dal;
+	private IWeightHandler weightHandler;
 
-	Controller(ILogic logic) {
-		this.logic = logic;
+	Controller(IDAL dal, IWeightHandler weightHandler) {
+		this.dal = dal;
+		this.weightHandler = weightHandler;
 		currentState = State.ENTER_USER_ID;
-		State.initialize(logic);
+		State.initialize(dal, weightHandler);
 		start();
 	}
 

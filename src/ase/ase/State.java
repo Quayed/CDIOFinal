@@ -9,17 +9,17 @@ public enum State {
 	ENTER_USER_ID {
 		@Override
 		State entry() {
-			logic.connect();
+			dal.connect();
+			.connect();
 
 			try {
-				//userID = Integer.parseInt(in);
+				// userID = Integer.parseInt(in);
 			} catch (NumberFormatException e) {
 				System.out.println("Not a number");
 				return ENTER_USER_ID;
 			}
 			return CONFIRM;
 		}
-
 
 	},
 	CONFIRM {
@@ -37,11 +37,13 @@ public enum State {
 
 		}
 	};
-	static void initialize(ILogic logic) {
-		State.logic = logic;
+	static void initialize(IDAL dal, IWeightHandler weightHandler) {
+		State.dal = dal;
+		State.weightHandler = weightHandler;
 	}
 
 	abstract State entry();
 
-	private static ILogic logic;
+	private static IDAL dal;
+	private static IWeightHandler weightHandler;
 }
