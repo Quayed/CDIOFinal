@@ -7,7 +7,7 @@ import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
 import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
 
-public interface ILogic {
+public interface IDAL {
 
 	IUserDAO getUserDao();
 

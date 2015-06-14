@@ -1,19 +1,18 @@
 package ase.ase;
 
-import ase.shared.SocketHandler;
 import dtu.cdio_final.server.dal.daoimpl.*;
 import dtu.cdio_final.server.dal.daointerfaces.*;
+import dtu.cdio_final.server.dal.connector.*;
 
-public class Logic implements ILogic {
+public class DAL implements IDAL {
 	private IUserDAO userDao;
 	private IMaterialDAO materialDao;
 	private IFormulaDAO formulaDao;
 	private IFormulaCompDAO formulaCompDao;
 	private IMaterialBatchDAO materialBatchDao;
 	private IProductbatchDAO productBathcDao;
-	private SocketHandler socketHandler;
 
-	public Logic() {
+	public DAL() {
 		userDao = new UserDAO();
 		materialDao = new MaterialDAO();
 		formulaDao = new FormulaDAO();
@@ -22,7 +21,7 @@ public class Logic implements ILogic {
 		productBathcDao = new ProductbatchDAO();
 	}
 
-	public Logic(IUserDAO userDao, IMaterialDAO materialDao, IFormulaDAO formulaDao, IFormulaCompDAO formulaCompDao, IMaterialBatchDAO materialBatchDao, IProductbatchDAO productBathcDao) {
+	public DAL(IUserDAO userDao, IMaterialDAO materialDao, IFormulaDAO formulaDao, IFormulaCompDAO formulaCompDao, IMaterialBatchDAO materialBatchDao, IProductbatchDAO productBathcDao) {
 		this.userDao = userDao;
 		this.materialDao = materialDao;
 		this.formulaDao = formulaDao;
@@ -63,6 +62,7 @@ public class Logic implements ILogic {
 
 	@Override
 	public void connect() {
-		socketHandler.
+		Connector.connect(server, port, database, username, password);
 	}
+
 }
