@@ -1,71 +1,97 @@
 package ase.ase;
 
 import java.io.IOException;
-import java.net.Socket;
 
 import ase.shared.SocketHandler;
 
 public class WeightHandler implements IWeightHandler {
-	SocketHandler weightSocket;
+	private SocketHandler weightSocket;
 
-	@Override
-	public void connect() {
-		Socket socket;
-		try {
-			socket = new Socket("localhost", 3033);
-			weightSocket = new SocketHandler(socket);
-		} catch (IOException e) {
-			System.out.println("WeightHandler socket error!");
-		}
+	public WeightHandler() {
+		connect();
 	}
-
+	
 	@Override
-	public String dialog(String message) throws WeightException {
-		String input = null;
-		try {
-			weightSocket.println(message);
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void connect(){
+		while(weightSocket == null){
+			System.out.println("try connect");
+			try {
+				weightSocket = new SocketHandler("localhost", 8000);
+				return;
+			} catch (IOException e) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+				}
+			}
 		}
-		try {
-			input = weightSocket.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return input;
-	}
-
-	@Override
-	public boolean confirm(String message) throws WeightException {
-		String input = null;
-		try {
-			weightSocket.println(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			input = weightSocket.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		boolean answer = true;
-		if (input == "0")
-			answer = false;
-		return answer;
 	}
 
 	@Override
 	public void instruction(String message) throws WeightException {
+		rm20(message);
+	}
+	
+	@Override
+	public String dialog(String message) throws WeightException {
+		return rm20(message);
+	}
+
+	@Override
+	public boolean confirm(String message) throws WeightException {
+		String input = rm20(message);
+
+		if (input.equals("0"))
+			return false;
+		
+		return true;
+	}
+
+	private String rm20(String message) throws WeightException {
 		try {
-			weightSocket.println(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
+			weightSocket.println("RM20 8 \""+message+"\" \"\" \"&3\"");
 			weightSocket.readLine();
+			String msg = weightSocket.readLine();
+			return msg.substring(8, msg.length()-1);
 		} catch (IOException e) {
-			e.printStackTrace();
+			weightSocket = null;
+			throw new WeightException();
 		}
 	}
 
+	@Override
+	public double getWeight() throws WeightException {
+		try {
+			weightSocket.println("S");
+			String msg = weightSocket.readLine();
+			if(msg.substring(8, 9).equals("-"))
+				return -Double.parseDouble(msg.substring(9, msg.length()-3));
+			
+			else
+				return Double.parseDouble(msg.substring(9, msg.length()-3));
+			
+		} catch (IOException e) {
+			weightSocket = null;
+			throw new WeightException();
+		}
+	}
+	
+	@Override
+	public double tare() throws WeightException {
+		try {
+			weightSocket.println("T");
+			String msg = weightSocket.readLine();
+			System.out.println(msg);
+			if(msg.substring(8, 9).equals("-")){
+				return -Double.parseDouble(msg.substring(9, msg.length()-3));
+			}
+			else{
+				return Double.parseDouble(msg.substring(9, msg.length()-3));
+			}
+		} catch (IOException e) {
+			weightSocket = null;
+			throw new WeightException();
+		}
+	}
+	
 }
