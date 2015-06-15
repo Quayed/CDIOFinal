@@ -41,12 +41,11 @@ Copied from https://github.com/GwtMaterialDesign/gwt-material-demo -->
 	</ui:style>	
 	<g:HTMLPanel >
 			<main>
-				<m:MaterialNavBar wave="blue" ui:field="navBar" name="myNavBar" sideBar="fixed" color="blue darken-1"  align="right" >
+			    <m:MaterialNavBar wave="blue" ui:field="navBar" name="myNavBar" sideBar="fixed" color="blue darken-1"  align="right" >
 					<m:sidebaritem>
 						<m:MaterialTitle color="blue" description="Group 13" title="CDIO Final" ></m:MaterialTitle>
 					</m:sidebaritem>
 				</m:MaterialNavBar>
-	
 				<g:HTMLPanel ui:field="contentPanel" addStyleNames="{style.panel} container z-depth-2">				
 				</g:HTMLPanel>
 			</main>	

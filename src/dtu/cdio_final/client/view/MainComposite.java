@@ -1,5 +1,6 @@
 package dtu.cdio_final.client.view;
 
+import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBar;
 
@@ -8,9 +9,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import dtu.cdio_final.client.Group13cdio_final;
 
 public class MainComposite extends Composite {
 	interface MainUiBinder extends UiBinder<Widget, MainComposite> {
@@ -21,9 +26,10 @@ public class MainComposite extends Composite {
 	@UiField MaterialNavBar navBar;
 	
 	@UiField HTMLPanel contentPanel;
-		
+			
 	public MainComposite() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
 	}
 	
 	private void setContent(Composite composite){
@@ -41,6 +47,19 @@ public class MainComposite extends Composite {
 		navBar.addWidgetSideNav(navItem);
 		if(firstPage)
 			setContent(page);
+	}
+	
+	public void login(){
+		MaterialButton loginButton =new MaterialButton("Logout", "red", "light");
+		loginButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Group13cdio_final.logout();
+			}
+			
+		});
+		navBar.addWidget(loginButton);
 	}
 	
 	private class NavClickHandler implements ClickHandler

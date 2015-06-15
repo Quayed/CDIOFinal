@@ -18,8 +18,8 @@ import dtu.cdio_final.shared.dto.UserDTO;
 
 public class Group13cdio_final implements EntryPoint
 {
-	private final DataServiceAsync service = GWT.create(DataService.class);
-	private MainComposite gui = null;
+	private final static DataServiceAsync service = GWT.create(DataService.class);
+	private static MainComposite gui = null;
 	public static String token = null;
 	
 	public void onModuleLoad()
@@ -30,44 +30,103 @@ public class Group13cdio_final implements EntryPoint
 		RootPanel.get().add(gui);	
 		
 
-//		gui.addPage("Login", new LoginComposite(service, new LoginEvent() {
-//			
-//			@Override
-//			public void login(UserDTO user)
-//			{
-//				if(user.getRole() == 1)
-//				{
-//				gui.addPage("Users", new UsersComposite(service), true);
-//				gui.addPage("Materials", new MaterialComposite(service,false), true);
-//				//gui.addPage("Fomulas", new FormulaComposite(service,false));
-//				gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-//				gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
-//				}
-//				else if (user.getRole() == 2){
-//					gui.addPage("Materials", new MaterialComposite(service,true), true);
-//					//gui.addPage("Fomulas", new FormulaComposite(service,true));
-//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-//					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
-//				}
-//					
-//				else if (user.getRole() == 3){
-//					gui.addPage("Materials", new MaterialComposite(service,false), true);
-//					//gui.addPage("Fomulas", new FormulaComposite(service,false));
-//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
-//				}
-				
-					// DELETE BELOW WHEN DONE WITH TESTING.
+		gui.addPage("Login", new LoginComposite(service, new LoginEvent() {			
+			@Override
+			public void login(UserDTO user)
+			{
+				if(user.getRole() == 1)
+				{
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Users", new UsersComposite(service), true);
+					gui.addPage("Materials", new MaterialComposite(service, false), true);
+					gui.addPage("Fomulas", new FormulaComposite(service, false));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+					
+				}
+				else if (user.getRole() == 2){
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,true));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+				}
+					
+				else if (user.getRole() == 3){
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
+					gui.addPage("Materials", new MaterialComposite(service,false), true);
+					gui.addPage("Fomulas", new FormulaComposite(service,false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
+				}
 				
-						
+					// DELETE BELOW WHEN DONE WITH TESTING.
+//					gui.addPage("Users", new UsersComposite(service), true);
+//					gui.addPage("Materials", new MaterialComposite(service,true), true);
+//					gui.addPage("Fomulas", new FormulaComposite(service,true));
+//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
 				
-//			}
-//		}), true);
+			}
+		}), true);
+	}
+	
+	public static void logout(){
+		gui = new MainComposite();
+		RootPanel.get().clear();
+		RootPanel.get().add(gui);
+		token = null;
+		gui.addPage("Login", new LoginComposite(service, new LoginEvent() {			
+			@Override
+			public void login(UserDTO user)
+			{
+				if(user.getRole() == 1)
+				{
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
+					gui.addPage("Users", new UsersComposite(service), true);
+					gui.addPage("Materials", new MaterialComposite(service, false), true);
+					gui.addPage("Fomulas", new FormulaComposite(service, false));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+				}
+				else if (user.getRole() == 2){
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
+					gui.addPage("Materials", new MaterialComposite(service,true), true);
+					gui.addPage("Fomulas", new FormulaComposite(service,true));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+				}
+					
+				else if (user.getRole() == 3){
+					gui = new MainComposite();
+					RootPanel.get().clear();
+					RootPanel.get().add(gui);
+					gui.addPage("Materials", new MaterialComposite(service,false), true);
+					gui.addPage("Fomulas", new FormulaComposite(service,false));
+					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
+				}
+				
+					// DELETE BELOW WHEN DONE WITH TESTING.
+//					gui.addPage("Users", new UsersComposite(service), true);
+//					gui.addPage("Materials", new MaterialComposite(service,true), true);
+//					gui.addPage("Fomulas", new FormulaComposite(service,true));
+//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
+//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
+				
+			}
+		}), true);
 	}
 	
 	public interface LoginEvent
