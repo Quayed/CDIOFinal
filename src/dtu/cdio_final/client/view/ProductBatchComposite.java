@@ -14,6 +14,7 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
+import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.FormulaDTO;
 import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
@@ -47,6 +49,8 @@ public class ProductBatchComposite extends PageComposite
 
 	ArrayList<Integer> productID;
 	Map<Integer, String> formulaNames;
+	
+	private boolean validPbID = false;
 	
 	public ProductBatchComposite(DataServiceAsync service, boolean create)
 	{
@@ -127,6 +131,9 @@ public class ProductBatchComposite extends PageComposite
 	
 	@UiHandler("createProductBatchButton")
 	void createMaterialBatch(ClickEvent event){
+		if (!checkForm())
+			return;
+		
 		int productBatchIDInt2 = Integer.valueOf(createProductBatchID.getText());
 		int productIDInt2 = Integer.valueOf(createFormulaID.getSelectedIndex()+1);
 		final ProductbatchDTO newProductBatch = new ProductbatchDTO(productBatchIDInt2, productIDInt2, 1);
@@ -146,4 +153,27 @@ public class ProductBatchComposite extends PageComposite
 			}
 		});
 	}
+
+	private boolean checkForm(){
+		if (validPbID){
+			createProductBatchButton.setDisable(false);
+			return true;
+		} else{
+			createProductBatchButton.setDisable(true);
+			return false;
+		}
+	}
+	
+	@UiHandler("createProductBatchID")
+	void keyUpID(KeyUpEvent e) {
+		if(FieldVerifier.isValidID(createProductBatchID.getText())){
+			createProductBatchID.removeStyleName("invalidEntry");
+			validPbID = true;
+		} else{
+			createProductBatchID.addStyleName("invalidEntry");
+			validPbID = false;
+		}
+		checkForm();
+	}
+	
 }
