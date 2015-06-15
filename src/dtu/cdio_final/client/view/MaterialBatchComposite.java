@@ -134,7 +134,7 @@ public class MaterialBatchComposite extends PageComposite {
 	
 	@UiHandler("createMaterialBatchButton")
 	void createMaterialBatch(ClickEvent event){
-		if(checkForm())
+		if(!checkForm())
 			return;
 		
 		int materialBatchIDInt2 = Integer.valueOf(createMaterialBatchID.getText());

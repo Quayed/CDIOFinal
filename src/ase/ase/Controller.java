@@ -1,5 +1,6 @@
 package ase.ase;
 
+import ase.ase.IWeightHandler.WeightException;
 import ase.ase.State;
 
 public class Controller {
@@ -10,12 +11,25 @@ public class Controller {
 	Controller(IDAL dal, IWeightHandler weightHandler) {
 		this.dal = dal;
 		this.weightHandler = weightHandler;
-		currentState = State.ENTER_USER_ID;
 		State.initialize(dal, weightHandler);
 		start();
 	}
 
-	private void start() {
+	protected void start() {
+		while (true) {
+			currentState = State.START;
+			try {
+				fsm();
+			} catch (WeightException e) {
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	private void fsm() throws WeightException {
 		while (true) {
 			currentState = currentState.entry();
 		}
