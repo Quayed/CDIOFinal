@@ -1,5 +1,7 @@
 package dtu.cdio_final.client.service;
 
+import gwt.material.design.client.ui.MaterialToast;
+
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -14,12 +16,13 @@ public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
 	{
 		if(caught instanceof TokenException)
 		{
-			Window.alert(((TokenException)caught).getMessage());
+//			Window.alert(((TokenException)caught).getMessage()); // DEN RETURNERE BARE NULL.
+			Window.alert("You were inactive too long, and will have to login in again."); //TODO POPS UP TWICE. IT SHOULDT 
 			Group13cdio_final.token = null;
 			Window.Location.reload();
 		}
 		else if(caught instanceof ServiceException){
-			Window.alert(caught.getMessage());
+			MaterialToast.alert(caught.getMessage());
 		}
 		else{
 			Window.alert(caught.getMessage());
