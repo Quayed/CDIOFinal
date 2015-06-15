@@ -9,8 +9,8 @@ public enum State {
 		@Override
 		State entry() throws WeightException {
 			// CONNECT/RECONNECT
-			dal.connect();
 			weightHandler.connect();
+			dal.connect();
 			// RESET
 			formulaBatch = null;
 			material = null;

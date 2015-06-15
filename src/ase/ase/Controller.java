@@ -31,7 +31,11 @@ public class Controller {
 
 	private void fsm() throws WeightException {
 		while (true) {
-			currentState = currentState.entry();
+			try {
+				currentState = currentState.entry();
+			} catch (Exception e) {
+				State.INVALID_DATABASE.entry();
+			}
 		}
 	}
 
