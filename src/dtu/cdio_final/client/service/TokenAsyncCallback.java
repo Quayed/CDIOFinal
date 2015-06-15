@@ -22,7 +22,7 @@ public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
 			Window.alert(caught.getMessage());
 		}
 		else{
-			Window.alert("Something went wrong!");
+			Window.alert(caught.getMessage());
 		}
 	}
 }

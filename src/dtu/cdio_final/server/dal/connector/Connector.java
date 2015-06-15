@@ -12,7 +12,6 @@ public class Connector {
 	private static Connector instance;
 
 	private Connection conn;
-	private Statement stm;
 
 	private Connector(String server, int port, String database, String username, String password) throws SQLException {
 		try {
@@ -23,7 +22,6 @@ public class Connector {
 			conn = (Connection) DriverManager.getConnection("jdbc:mysql://" + server + ":" + port + "/" + database, username,
 					password);
 
-			stm = conn.createStatement();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			throw new SQLException(e);
 		}
@@ -53,11 +51,11 @@ public class Connector {
 	
 	// methods for SQL
 	public static ResultSet doQuery(String cmd) throws SQLException {
-		return getInstance().stm.executeQuery(cmd);
+		return getInstance().conn.createStatement().executeQuery(cmd);
 	}
 
 	public static int doUpdate(String cmd) throws SQLException {
-		return getInstance().stm.executeUpdate(cmd);
+		return getInstance().conn.createStatement().executeUpdate(cmd);
 	}
 
 	public static PreparedStatement prepare(String sql) throws SQLException {
