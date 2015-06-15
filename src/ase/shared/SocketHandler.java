@@ -19,23 +19,26 @@ public class SocketHandler {
 	public SocketHandler(SocketHandler socketHandler, int port) throws IOException {
 		this(new Socket(socketHandler.socket.getInetAddress(), port));
 	}
-	
+
 	public SocketHandler(Socket socket) throws IOException {
 		this.socket = socket;
 		this.out = new DataOutputStream(socket.getOutputStream());
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
-	
+
 	public void print(String msg) throws IOException {
 		out.writeBytes(msg);
 	}
 
 	public void println(String msg) throws IOException {
+		System.out.println("c: " + msg);
 		print(msg + "\r\n");
 	}
 
 	public String readLine() throws IOException {
-		return in.readLine();
+		String readLine = in.readLine();
+		System.out.println("s: " + readLine);
+		return readLine;
 	}
 
 	public final void disconnect() {
