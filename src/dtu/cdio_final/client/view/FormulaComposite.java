@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -40,10 +41,10 @@ public class FormulaComposite extends PageComposite {
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 	private int componentCounter = 2;
 	private int componentIndexCounter = 0;
-	
+	private HandlerRegistration tableHandler;
 	@UiField FlexTable formulaTable;
 	
-	
+	private tableClickHandler myTableClickHandler = new tableClickHandler();
 	@UiField MaterialTextBox createFormulaID;
 	@UiField MaterialTextBox createFormulaName;
 	@UiField FlexTable componentTable;
@@ -51,7 +52,7 @@ public class FormulaComposite extends PageComposite {
 	@UiField MaterialButton createFormulaButton;
 	@UiField MaterialCollapsible createBox;
 	
-	private int editRow = -1;
+	private static int editRow = -1;
 	private int numberOfRows;
 	DataServiceAsync service;
 	private boolean createAccess;
@@ -71,6 +72,7 @@ public class FormulaComposite extends PageComposite {
 	@Override
 	public void reloadPage() 
 	{
+//		editRow = -1;
 		numberOfRows = 1;
 		formulaTable.removeAllRows();
 		for(int i = componentCounter-1; i > 1; i--){
@@ -108,7 +110,10 @@ public class FormulaComposite extends PageComposite {
 					addRow(formulas.get(i));
 					
 				}
-				formulaTable.addClickHandler(new tableClickHandler());
+				if (tableHandler != null){
+					tableHandler.removeHandler();
+				}
+				tableHandler = formulaTable.addClickHandler(myTableClickHandler);
 			}
 
 		});
@@ -147,6 +152,8 @@ public class FormulaComposite extends PageComposite {
 			} else if(editRow == formulaTable.getCellForEvent(event).getRowIndex()){
 				formulaTable.removeRow(editRow+1);
 				editRow = -1;
+			} else if(editRow+1 == formulaTable.getCellForEvent(event).getRowIndex()){
+				return;
 			} else{
 				formulaTable.removeRow(editRow+1);
 				editRow = formulaTable.getCellForEvent(event).getRowIndex();
