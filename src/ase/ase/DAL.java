@@ -11,6 +11,7 @@ public class DAL implements IDAL {
 	private IFormulaCompDAO formulaCompDao;
 	private IMaterialBatchDAO materialBatchDao;
 	private IProductbatchDAO productBathcDao;
+	private IProductbatchCompDAO productBatchCompDao;
 
 	public DAL() {
 		userDao = new UserDAO();
@@ -21,13 +22,15 @@ public class DAL implements IDAL {
 		productBathcDao = new ProductbatchDAO();
 	}
 
-	public DAL(IUserDAO userDao, IMaterialDAO materialDao, IFormulaDAO formulaDao, IFormulaCompDAO formulaCompDao, IMaterialBatchDAO materialBatchDao, IProductbatchDAO productBathcDao) {
+	public DAL(IUserDAO userDao, IMaterialDAO materialDao, IFormulaDAO formulaDao, IFormulaCompDAO formulaCompDao, IMaterialBatchDAO materialBatchDao, IProductbatchDAO productBathcDao,
+			IProductbatchCompDAO productBatchCompDao) {
 		this.userDao = userDao;
 		this.materialDao = materialDao;
 		this.formulaDao = formulaDao;
 		this.formulaCompDao = formulaCompDao;
 		this.materialBatchDao = materialBatchDao;
 		this.productBathcDao = productBathcDao;
+		this.productBatchCompDao = productBatchCompDao;
 	}
 
 	@Override
@@ -51,8 +54,13 @@ public class DAL implements IDAL {
 	}
 
 	@Override
-	public IProductbatchDAO getProductBathcDao() {
+	public IProductbatchDAO getProductBatchDao() {
 		return productBathcDao;
+	}
+
+	@Override
+	public IProductbatchCompDAO getProductBatchCompDao() {
+		return productBatchCompDao;
 	}
 
 	@Override

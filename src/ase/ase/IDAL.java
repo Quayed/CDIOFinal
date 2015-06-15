@@ -1,11 +1,6 @@
 package ase.ase;
 
-import dtu.cdio_final.server.dal.daointerfaces.IFormulaCompDAO;
-import dtu.cdio_final.server.dal.daointerfaces.IFormulaDAO;
-import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
-import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
-import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
-import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
+import dtu.cdio_final.server.dal.daointerfaces.*;
 
 public interface IDAL {
 
@@ -17,7 +12,9 @@ public interface IDAL {
 
 	IFormulaCompDAO getFormulaCompDao();
 
-	IProductbatchDAO getProductBathcDao();
+	IProductbatchDAO getProductBatchDao();
+
+	IProductbatchCompDAO getProductBatchCompDao();
 
 	IMaterialBatchDAO getMaterialBatchDao();
 
