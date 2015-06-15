@@ -1,5 +1,7 @@
 package ase.ase;
 
+import java.util.List;
+
 import ase.ase.IWeightHandler.WeightException;
 import dtu.cdio_final.server.dal.daointerfaces.*;
 import dtu.cdio_final.shared.dto.*;
@@ -37,6 +39,12 @@ public enum State {
 				e.printStackTrace();
 				return ENTER_USER_ID;
 			}
+			
+			if(user == null){
+				// no user
+				return ENTER_USER_ID;
+			}
+			
 			// RETURN NEXT STATE
 			return CONFIRM_OPERATOR;
 		}
@@ -55,8 +63,9 @@ public enum State {
 			}
 
 			// RETURN NEXT STATE
-			if (!input)
+			if (input)
 				return ENTER_PRODUCTBATCH_ID;
+			
 			return ENTER_USER_ID;
 		}
 	},
@@ -83,6 +92,8 @@ public enum State {
 			// GET PRODUCTBATCH-ENTITY AND FORMULA-ENTITY FROM DATABASE
 			try {
 				productBatch = dal.getProductBatchDao().getProductbatch(productBID);
+				if(productBatch == null)
+					return ENTER_PRODUCTBATCH_ID;
 				formula = dal.getFormulaDao().getFormula(State.productBatch.getFormulaID());
 			} catch (DALException e) {
 				e.printStackTrace();
@@ -166,9 +177,20 @@ public enum State {
 		State entry() {
 			String input = "";
 			int materialBatchID;
+			
+			try {
+				List<FormulaCompDTO> comps = dal.getFormulaCompDao().getFormulaCompList(productBatch.getFormulaID());
+				for(FormulaCompDTO comp : comps){
+					
+				}
+					
+			} catch (DALException e) {
 
+			}
+			
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			try {
+				
 				// IMPLEMENT AUTO-GET-NEXT MATERIAL
 				material = dal.getMaterialDao().getMaterial(0);
 				materialBatch = dal.getMaterialBatchDao().getMaterialBatch(0);
