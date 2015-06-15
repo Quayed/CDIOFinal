@@ -2,6 +2,7 @@ package dtu.cdio_final.server.dal.daointerfaces;
 
 import java.util.List;
 
+import dtu.cdio_final.shared.dto.MaterialDTO;
 import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
 public interface IProductbatchDAO {
@@ -12,4 +13,6 @@ public interface IProductbatchDAO {
 	void createProductbatch(ProductbatchDTO produktbatch) throws DALException;
 
 	void updateProductbatch(ProductbatchDTO produktbatch) throws DALException;
+
+	MaterialDTO getNextMaterial(int pbID) throws DALException;
 }
