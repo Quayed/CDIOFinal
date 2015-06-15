@@ -1,5 +1,6 @@
 package ase.ase;
 
+import dtu.cdio_final.server.dal.daointerfaces.DALException;
 import ase.ase.IWeightHandler.WeightException;
 import ase.ase.State;
 
@@ -33,8 +34,11 @@ public class Controller {
 		while (true) {
 			try {
 				currentState = currentState.entry();
-			} catch (Exception e) {
-				State.INVALID_DATABASE.entry();
+			} catch (DALException e) {
+				try {
+					State.INVALID_DATABASE.entry();
+				} catch (DALException e1) {
+				}
 			}
 		}
 	}

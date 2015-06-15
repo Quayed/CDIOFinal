@@ -58,15 +58,11 @@ public class MaterialComposite extends PageComposite{
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		this.createAccess = create;
-		
+		reloadPage();
 	}
 
 	@Override
 	public void reloadPage() {
-		initTable();
-	}
-
-	private void initTable() {
 		numberOfRows = 1;
 		materialsTable.clear();
 		materialsTable.setWidget(0, 0, new Label("MaterialID"));
