@@ -70,7 +70,7 @@ public class DAL implements IDAL {
 
 	@Override
 	public void connect() {
-		Connector.connect(server, port, database, username, password);
+		
 	}
 
 }
