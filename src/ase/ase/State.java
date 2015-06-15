@@ -5,18 +5,37 @@ import dtu.cdio_final.server.dal.daointerfaces.*;
 import dtu.cdio_final.shared.dto.*;
 
 public enum State {
-	ENTER_USER_ID {
+	START {
 		@Override
 		State entry() throws WeightException {
 			// CONNECT/RECONNECT
 			dal.connect();
 			weightHandler.connect();
 			// RESET
-			State.user = null;
-			State.formula = null;
-			State.productBatch = null;
-			String input = "";
+			formulaBatch = null;
+			material = null;
+			materialBatch = null;
+			formula = null;
+			formulaComp = null;
+			user = null;
+			productBatch = null;
+			containerWeight = 0;
+			nettoWeight = 0;
+			return ENTER_USER_ID;
+		}
+	},
+	INVALID_DATABASE {
+		@Override
+		State entry() throws WeightException {
+			weightHandler.instruction("Database error!");
+			throw new WeightException();
+		}
+	},
+	ENTER_USER_ID {
+		@Override
+		State entry() throws WeightException {
 			// VARIABLES
+			String input = "";
 			int userID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
 			input = weightHandler.dialog("Enter User ID");
@@ -32,7 +51,7 @@ public enum State {
 				if (user == null)
 					return ENTER_USER_ID;
 			} catch (DALException e) {
-				return ENTER_USER_ID;
+				return INVALID_DATABASE;
 			}
 			// RETURN NEXT STATE
 			return CONFIRM_OPERATOR;
@@ -76,7 +95,7 @@ public enum State {
 				productBatch.setStatus(2); // set productbatch status to "under production"
 				dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
 			} catch (DALException e) {
-				return ENTER_USER_ID;
+				return INVALID_DATABASE;
 			}
 			// RETURN NEXT STATE
 			return START_PROCESS;
@@ -97,7 +116,7 @@ public enum State {
 					dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
 					return ENTER_PRODUCTBATCH_ID;
 				} catch (DALException e) {
-					return ENTER_USER_ID;
+					return INVALID_DATABASE;
 				}
 			}
 			// RETURN NEXT STATE
@@ -164,7 +183,7 @@ public enum State {
 				if (materialBatch == null)
 					return ENTER_MATERIALBATCH_ID;
 			} catch (DALException e) {
-				return ENTER_USER_ID;
+				return INVALID_DATABASE;
 			}
 			// VALIDATE MATERIALBATCH ID
 			if (materialBatchID != State.materialBatch.getMbID())
@@ -215,7 +234,12 @@ public enum State {
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			try {
 				dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
+				pbCompDTO = dal.getProductBatchCompDao().getProductbatchComp(pbCompDTO.getPbID(), pbCompDTO.getMbID());
 			} catch (DALException e) {
+				return INVALID_DATABASE;
+			}
+			// VALIDATE PRODUCTBATCH COMPONENT
+			if (pbCompDTO == null) {
 				return CLEAR_WEIGHT;
 			}
 			return ENTER_USER_ID; // UPDATE STATUS

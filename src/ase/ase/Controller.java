@@ -17,7 +17,7 @@ public class Controller {
 
 	protected void start() {
 		while (true) {
-			currentState = State.ENTER_USER_ID;
+			currentState = State.START;
 			try {
 				fsm();
 			} catch (WeightException e) {
