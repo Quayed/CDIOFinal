@@ -4,6 +4,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
+import gwt.material.design.client.ui.MaterialToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +17,10 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataServiceAsync;
@@ -155,7 +154,7 @@ public class MaterialBatchComposite extends PageComposite {
 				createQuantity.setText("");
 				createQuantity.backToDefault();
 				
-				Window.alert("The user has been created!");
+				MaterialToast.alert("The user has been created!");
 			}
 		});
 	}

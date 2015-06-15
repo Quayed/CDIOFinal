@@ -4,6 +4,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
+import gwt.material.design.client.ui.MaterialToast;
 
 import java.util.List;
 
@@ -190,7 +191,7 @@ public class UsersComposite extends PageComposite {
 						
 					}
 					cancelButton.fireEvent(new ClickEvent(){});
-					Window.alert("User has been updated!");
+					MaterialToast.alert("User has been updated!");
 					
 				}
 				
@@ -232,7 +233,7 @@ public class UsersComposite extends PageComposite {
 				createUserPassword.backToDefault();
 				createUserRole.setSelectedIndex(0);
 				
-				Window.alert("The user has been created!");
+				MaterialToast.alert("The user has been created!");
 			}
 		});
 	}

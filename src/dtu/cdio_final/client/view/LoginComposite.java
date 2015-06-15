@@ -3,6 +3,7 @@ package dtu.cdio_final.client.view;
 import java.util.HashMap;
 
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialToast;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -65,7 +66,7 @@ public class LoginComposite extends PageComposite
 						}
 						else
 						{
-							Window.alert("failure");
+							MaterialToast.alert("Wrong login information");
 						}
 					}
 				});
@@ -73,7 +74,7 @@ public class LoginComposite extends PageComposite
 		catch (NumberFormatException e2)
 		{
 			//thrown if the userID field is empty, or contains "non-integer" values
-			Window.alert("userID should be a number");
+			MaterialToast.alert("UserID should be a number");
 		}
 	}
 	@Override
