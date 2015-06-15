@@ -29,6 +29,7 @@ import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
+import dtu.cdio_final.shared.dto.MaterialDTO;
 
 
 public class FormulaComposite extends PageComposite {
@@ -42,7 +43,6 @@ public class FormulaComposite extends PageComposite {
 	
 	@UiField FlexTable formulaTable;
 	
-	@UiField MaterialCollapsible collapsible;
 	
 	@UiField MaterialTextBox createFormulaID;
 	@UiField MaterialTextBox createFormulaName;
@@ -59,7 +59,8 @@ public class FormulaComposite extends PageComposite {
 	private boolean validFormulaID;
 	private boolean validFormulaName;
 	private final ArrayList<Boolean> validComps = new ArrayList<Boolean>();
-	
+	private List<MaterialDTO> materials;
+	private MaterialListBox textBoxMaterialID;
 	public FormulaComposite(DataServiceAsync service, boolean create) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
@@ -71,13 +72,16 @@ public class FormulaComposite extends PageComposite {
 	public void reloadPage() 
 	{
 		numberOfRows = 1;
-		formulaTable.clear();
-		
-		componentTable.clear();
+		formulaTable.removeAllRows();
+		for(int i = componentCounter-1; i > 1; i--){
+			componentTable.removeRow(i);
+		}
 		componentTable.setWidget(0, 1, new Label("Formula Components:"));
-		MaterialListBox textBoxMaterialID = new MaterialListBox();
+		componentCounter = 2;
+		
+		textBoxMaterialID = new MaterialListBox();
 		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
-		componentTable.setWidget(1, 1, textBoxMaterialID);
+		
 		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
 		textBoxNom_Netto.setPlaceholder("nom_netto");
@@ -108,6 +112,19 @@ public class FormulaComposite extends PageComposite {
 			}
 
 		});
+		
+		service.getMaterials(Group13cdio_final.token, new TokenAsyncCallback<List<MaterialDTO>>(){
+
+			@Override
+			public void onSuccess(List<MaterialDTO> result) {
+				materials = result;
+				
+				for(MaterialDTO material : materials){
+					textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
+				}
+				componentTable.setWidget(1, 1, textBoxMaterialID);
+			}
+		});	
 	}
 
 	private class tableClickHandler implements ClickHandler{		
@@ -180,6 +197,9 @@ public class FormulaComposite extends PageComposite {
 	void addComponent(ClickEvent event){
 		MaterialListBox textBoxMaterialID = new MaterialListBox();
 		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
+		for(MaterialDTO material : materials){
+			textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
+		}
 		componentTable.setWidget(componentCounter, 1, textBoxMaterialID);
 		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();

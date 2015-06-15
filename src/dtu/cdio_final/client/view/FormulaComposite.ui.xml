@@ -28,7 +28,5 @@
 		    </m:item>
 		</m:MaterialCollapsible>
 		<g:FlexTable ui:field="formulaTable" styleName="bordered"/>
-		<m:MaterialCollapsible  type="accordion" ui:field="collapsible">
-		</m:MaterialCollapsible>
 	</g:HTMLPanel>
 </ui:UiBinder> 
