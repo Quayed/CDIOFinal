@@ -5,6 +5,7 @@ import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialTextBox;
+import gwt.material.design.client.ui.MaterialToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +14,10 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -149,7 +148,7 @@ public class ProductBatchComposite extends PageComposite
 				createProductBatchID.setText("");
 				createProductBatchID.backToDefault();
 				
-				Window.alert("The product has been created!");
+				MaterialToast.alert("The product has been created!");
 			}
 		});
 	}
