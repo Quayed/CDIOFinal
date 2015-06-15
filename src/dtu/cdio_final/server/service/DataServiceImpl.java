@@ -335,10 +335,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	private void validateToken(String token) throws TokenException
 	{
 		//override
-//		token = TokenHandler.getInstance().validateToken(token);
-//		return !(token == null);
-//		if(token == null)
-//			throw new TokenException();
+		token = TokenHandler.getInstance().validateToken(token);
+		if(token == null)
+			throw new TokenException();
 	}
 	
 	private void invalidArguments(boolean validation) throws ServiceException{

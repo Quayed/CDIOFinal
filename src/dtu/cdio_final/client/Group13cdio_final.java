@@ -51,6 +51,7 @@ public class Group13cdio_final implements EntryPoint
 					gui = new MainComposite();
 					RootPanel.get().clear();
 					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,true));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
@@ -61,6 +62,7 @@ public class Group13cdio_final implements EntryPoint
 					gui = new MainComposite();
 					RootPanel.get().clear();
 					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Materials", new MaterialComposite(service,false), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
@@ -92,6 +94,7 @@ public class Group13cdio_final implements EntryPoint
 					gui = new MainComposite();
 					RootPanel.get().clear();
 					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Users", new UsersComposite(service), true);
 					gui.addPage("Materials", new MaterialComposite(service, false), true);
 					gui.addPage("Fomulas", new FormulaComposite(service, false));
@@ -102,6 +105,7 @@ public class Group13cdio_final implements EntryPoint
 					gui = new MainComposite();
 					RootPanel.get().clear();
 					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,true));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
@@ -112,6 +116,7 @@ public class Group13cdio_final implements EntryPoint
 					gui = new MainComposite();
 					RootPanel.get().clear();
 					RootPanel.get().add(gui);
+					gui.login();
 					gui.addPage("Materials", new MaterialComposite(service,false), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
