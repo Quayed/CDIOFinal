@@ -4,8 +4,6 @@ package dtu.cdio_final.client.view;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
-import gwt.material.design.client.ui.MaterialCollapsibleItem;
-import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
 
@@ -23,7 +21,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dtu.cdio_final.client.Group13cdio_final;
@@ -32,7 +29,6 @@ import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;
-import dtu.cdio_final.shared.dto.ProductbatchDTO;
 
 
 public class FormulaComposite extends PageComposite {
@@ -68,15 +64,12 @@ public class FormulaComposite extends PageComposite {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		this.createAccess = create;
+		reloadPage();
 	}
 	
 	@Override
 	public void reloadPage() 
 	{
-		initTable();
-	}
-
-	private void initTable() {
 		numberOfRows = 1;
 		formulaTable.clear();
 		

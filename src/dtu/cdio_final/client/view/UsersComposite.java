@@ -77,16 +77,12 @@ public class UsersComposite extends PageComposite {
 	public UsersComposite(DataServiceAsync service) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
-		initTable();
+		reloadPage();
 	}
 	
 	@Override
 	public void reloadPage()
 	{
-		initTable();
-	}
-
-	private void initTable() {
 		usersTable.setWidget(0, 0, new Label("UserID"));
 		usersTable.setWidget(0, 1, new Label("Name"));
 		usersTable.setWidget(0, 2, new Label("Ini"));

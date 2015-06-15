@@ -53,6 +53,7 @@ public class ProductBatchComposite extends PageComposite
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		this.createAccess = create;
+		reloadPage();
 	}
 	
 	@Override
