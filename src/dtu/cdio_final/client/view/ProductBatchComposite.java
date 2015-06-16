@@ -100,7 +100,7 @@ public class ProductBatchComposite extends PageComposite
 		productID.add(productBatches.getFormulaID());
 		productBatchTable.setWidget(numberOfRows, 0, new Label("" + productBatches.getPbID()));
 		productBatchTable.setWidget(numberOfRows, 1, new Label("" + formulaNames.get(productBatches.getFormulaID())));
-		productBatchTable.setWidget(numberOfRows, 2, new Label("" + productBatches.getStatus()));
+		productBatchTable.setWidget(numberOfRows, 2, new Label(statusToString(productBatches.getStatus())));
 		
 		numberOfRows++;
 	}
@@ -173,6 +173,26 @@ public class ProductBatchComposite extends PageComposite
 			validPbID = false;
 		}
 		checkForm();
+	}
+	
+	private String statusToString(int status){
+		if(status == 1)
+		{
+			return "Created";
+		} 
+		else if (status == 2)
+		{
+			
+			return "In progress";
+		}
+		else if (status == 3)
+		{
+			return "Done";
+		}
+		else
+		{
+			return "";
+		}
 	}
 	
 }
