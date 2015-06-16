@@ -61,6 +61,8 @@ public class ProductbatchDAO implements IProductbatchDAO {
 			ResultSet rs = ps.executeQuery();
 			if (!rs.first()) {
 				return null;
+			} else if(rs.getInt("material_id") == 0){
+				return null;
 			} else {
 				return new MaterialDTO(rs.getInt("material_id"), rs.getString("material_name"), rs.getString("provider"));
 			}

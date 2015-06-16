@@ -45,10 +45,9 @@ public class WeightHandler implements IWeightHandler {
 	@Override
 	public boolean confirm(String message) throws WeightException {
 		String input = rm20(message);
-		//rm20 c
-		if (input.equals("0"))
+		// rm20 c
+		if (input.equals("C"))
 			return false;
-
 		return true;
 	}
 
@@ -57,7 +56,13 @@ public class WeightHandler implements IWeightHandler {
 			weightSocket.println("RM20 8 \"" + message + "\" \"\" \"&3\"");
 			weightSocket.readLine();
 			String msg = weightSocket.readLine();
-			return msg.substring(8, msg.length() - 1);
+			if (msg.contains("RM20 C"))
+				return "C";
+			if (msg.contains("RM20 B"))
+				return "B";
+			if (msg.length() > 9)
+				return msg.substring(8, msg.length() - 1);
+			return msg;
 		} catch (IOException e) {
 			weightSocket = null;
 			throw new WeightException();
@@ -92,6 +97,24 @@ public class WeightHandler implements IWeightHandler {
 			} else {
 				return Double.parseDouble(msg.substring(9, msg.length() - 3));
 			}
+		} catch (IOException e) {
+			weightSocket = null;
+			throw new WeightException();
+		}
+	}
+
+	@Override
+	public double weigh() throws WeightException {
+		try {
+			weightSocket.println("ST 1");
+			weightSocket.readLine();
+			String msg = weightSocket.readLine();
+			weightSocket.println("ST 0");
+			weightSocket.readLine();
+			if (msg.substring(8, 9).equals("-"))
+				return -Double.parseDouble(msg.substring(9, msg.length() - 3));
+			else
+				return Double.parseDouble(msg.substring(9, msg.length() - 3));
 		} catch (IOException e) {
 			weightSocket = null;
 			throw new WeightException();

@@ -12,6 +12,7 @@ public enum State {
 			weightHandler.connect();
 			dal.connect();
 			// RESET
+
 			formulaComp = null;
 			material = null;
 			materialBatch = null;
@@ -61,7 +62,7 @@ public enum State {
 			// VARIABLES
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
-			input = weightHandler.confirm("Confirm " + State.user.getUserName());
+			input = weightHandler.confirm("Confirm User: " + State.user.getIni());
 			// VALIDATE CONFIRMATION
 			if (!input)
 				return ENTER_USER_ID;
@@ -88,6 +89,8 @@ public enum State {
 			productBatch = dal.getProductBatchDao().getProductbatch(productBID); // get productbatch from database
 			if (productBatch == null)
 				return ENTER_PRODUCTBATCH_ID;
+			if (productBatch.getStatus() != 1)
+				return ENTER_PRODUCTBATCH_ID;
 			// UPDATE STATUS
 			productBatch.setStatus(2); // set productbatch status to "under production"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
@@ -103,7 +106,7 @@ public enum State {
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
 			formula = dal.getFormulaDao().getFormula(State.productBatch.getFormulaID()); // get formula from database
-			input = weightHandler.confirm("Confirm " + formula.getFormulaName());
+			input = weightHandler.confirm("Confirm: " + formula.getFormulaName());
 			// VALIDATE CONFIRMATION
 			if (!input) {
 				productBatch.setStatus(1); // set productbatch status to "created"
@@ -111,7 +114,8 @@ public enum State {
 				return ENTER_PRODUCTBATCH_ID;
 			}
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
-
+			if (material == null)
+				return ENTER_PRODUCTBATCH_ID;
 			// RETURN NEXT STATE
 			return CLEAR_WEIGHT;
 		}
@@ -135,6 +139,20 @@ public enum State {
 			State.containerWeight = weightHandler.getWeight();
 			weightHandler.tare();
 			// RETURN NEXT STATE
+			return FIND_MATERIAL;
+		}
+
+	},
+	FIND_MATERIAL {
+		@Override
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
+			String string = ("Find " + material.getMaterialID() + " " + material.getMaterialName());
+			if (string.length() > 24)
+				string = string.substring(0, 24);
+			weightHandler.instruction(string);
+			// RETURN NEXT STATE
 			return ENTER_MATERIALBATCH_ID;
 		}
 
@@ -146,8 +164,7 @@ public enum State {
 			String input = "";
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			weightHandler.instruction("Find material " + material.getMaterialID());
-			input = weightHandler.dialog("Enter batch ID for material");
+			input = weightHandler.dialog("Enter Materialbatch ID");
 			// VALIDATE INPUT TYPE
 			try {
 				materialBatchID = Integer.parseInt(input);
@@ -161,6 +178,9 @@ public enum State {
 			// VALIDATE MATERIALBATCH ID
 			if (materialBatchID != State.materialBatch.getMbID())
 				return ENTER_MATERIALBATCH_ID;
+			formulaComp = dal.getFormulaCompDao().getFormulaComp(State.productBatch.getFormulaID(), material.getMaterialID()); // get formula from database
+			if (materialBatch.getQuantity() < formulaComp.getNomNetto())
+				return ENTER_MATERIALBATCH_ID;
 			// RETURN NEXT STATE
 			return WEIGHING;
 		}
@@ -172,10 +192,10 @@ public enum State {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+
 			weightHandler.instruction("Fill container at " + formulaComp.getNomNetto() + "kg");
-			weight = weightHandler.getWeight();
+			weight = weightHandler.weigh();
 			// CALCULATE TOLERANCE
-			formulaComp = dal.getFormulaCompDao().getFormulaComp(State.productBatch.getFormulaID(), material.getMaterialID()); // get formula from database
 			double tolerance = 10;
 			// double tolerance = State.formulaComp.getNomNetto() * 0.01 * State.formulaComp.getTolerance();
 			if (weight < State.formulaComp.getNomNetto() - tolerance || weight > State.formulaComp.getNomNetto() + tolerance)
@@ -184,7 +204,6 @@ public enum State {
 			// RETURN NEXT STATE
 			return BRUTTO_CONTROL;
 		}
-
 	},
 	BRUTTO_CONTROL {
 		@Override
@@ -194,12 +213,23 @@ public enum State {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
 			weightHandler.instruction("Remove container");
 			weight = weightHandler.getWeight();
+			System.out.println("BC " + State.containerWeight);
+			System.out.println("BC " + State.nettoWeight);
+			System.out.println("BC " + weight);
 			// VALIDATE BRUTTO CONTROL
 			if (weight != -State.containerWeight)
-				return CLEAR_WEIGHT;
+				return INVALID_WEIGHING;
 			return REGISTER_PRODUCTBATCH_COMP;
 		}
-
+	},
+	INVALID_WEIGHING {
+		@Override
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			weightHandler.instruction("Invalid weighing, re-do!");
+			// RETURN NEXT STATE
+			return CLEAR_WEIGHT;
+		}
 	},
 	REGISTER_PRODUCTBATCH_COMP {
 		@Override
@@ -216,7 +246,25 @@ public enum State {
 			}
 			productBatch.setStatus(3); // set productbatch status to "done"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
-			return ENTER_USER_ID; // UPDATE STATUS
+			return PRODUCTION_DONE; // UPDATE STATUS
+		}
+	},
+	NEXT_WEIGHING {
+		@Override
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			weightHandler.instruction("Productbatch registered");
+			// RETURN NEXT STATE
+			return CLEAR_WEIGHT;
+		}
+	},
+	PRODUCTION_DONE {
+		@Override
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			weightHandler.instruction("Production done!");
+			// RETURN NEXT STATE
+			return ENTER_USER_ID;
 		}
 
 	},
