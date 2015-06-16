@@ -81,7 +81,7 @@ public class MaterialBatchComposite extends PageComposite {
 		materialNames = new HashMap<Integer, String>();
 		materialBatchTable.setWidget(0, 0, new Label("Material Batch ID"));
 		materialBatchTable.setWidget(0, 1, new Label("Material ID"));
-		materialBatchTable.setWidget(0, 2, new Label("Quantity"));
+		materialBatchTable.setWidget(0, 2, new Label("Quantity(KG)"));
 		createMaterialBatchButton.addStyleName("fullWidth");
 
 		if(!createAccess){
@@ -127,7 +127,7 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchesID.add(materialBatch.getMaterialID());
 		materialBatchTable.setWidget(numberOfRows, 0, new Label("" + materialBatch.getMbID()));
 		materialBatchTable.setWidget(numberOfRows, 1, new Label("" + materialNames.get(materialBatch.getMaterialID())));
-		materialBatchTable.setWidget(numberOfRows, 2, new Label("" + materialBatch.getQuantity()));
+		materialBatchTable.setWidget(numberOfRows, 2, new Label("" + materialBatch.getQuantity() + " kg"));
 		
 		numberOfRows++;
 	}
