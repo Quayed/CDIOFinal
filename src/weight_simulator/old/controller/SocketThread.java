@@ -1,4 +1,4 @@
-package weight_simulator.controller;
+package weight_simulator.old.controller;
 
 import java.io.BufferedReader;
 import java.io.DataOutput;

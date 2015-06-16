@@ -1,6 +1,6 @@
-package weight_simulator.boundary;
+package weight_simulator.old.boundary;
 
-import weight_simulator.data.WeightDTO;
+import weight_simulator.old.data.WeightDTO;
 
 public interface IUI {
 	void start(WeightDTO data);

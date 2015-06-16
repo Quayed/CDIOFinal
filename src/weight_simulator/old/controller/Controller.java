@@ -1,7 +1,7 @@
-package weight_simulator.controller;
+package weight_simulator.old.controller;
 
-import weight_simulator.boundary.IUI;
-import weight_simulator.data.WeightDTO;
+import weight_simulator.old.boundary.IUI;
+import weight_simulator.old.data.WeightDTO;
 
 public class Controller implements Runnable {
 
