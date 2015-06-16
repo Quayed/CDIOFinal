@@ -136,9 +136,7 @@ public class FormulaComposite extends PageComposite {
 		FlexTable contentTable = new FlexTable();
 		
 		tableClickHandler(){
-			contentTable.setWidget(0, 0, new Label("Material ID"));
-			contentTable.setWidget(0, 1, new Label("Nom_netto"));
-			contentTable.setWidget(0, 2, new Label("Tolerance"));
+			
 		}
 		
 		@Override
@@ -168,7 +166,13 @@ public class FormulaComposite extends PageComposite {
 
 				@Override
 				public void onSuccess(List<FormulaCompDTO> result) {
+					contentTable.removeAllRows();
+					contentTable.setWidget(0, 0, new Label("Material ID"));
+					contentTable.setWidget(0, 1, new Label("Nom_netto"));
+					contentTable.setWidget(0, 2, new Label("Tolerance"));
 					for(int i = 0; i < result.size(); i++){
+						Window.alert("" + i);
+						Window.alert("" + result.get(i).getMaterialID());
 						contentTable.setWidget(i+1, 0, new Label(String.valueOf(result.get(i).getMaterialID())));
 						contentTable.setWidget(i+1, 1, new Label(String.valueOf(result.get(i).getNomNetto())));
 						contentTable.setWidget(i+1, 2, new Label(String.valueOf(result.get(i).getTolerance())));
@@ -183,8 +187,8 @@ public class FormulaComposite extends PageComposite {
 	}
 	
 	private void addRow(FormulaDTO formulas) {
-		formulaTable.setWidget(numberOfRows, 0, new Label("" + formulas.getFormulaID()));
-		formulaTable.setWidget(numberOfRows, 1, new Label(formulas.getFormulaName()));
+		formulaTable.setWidget(numberOfRows+1, 0, new Label("" + formulas.getFormulaID()));
+		formulaTable.setWidget(numberOfRows+1, 1, new Label(formulas.getFormulaName()));
 				
 		numberOfRows++;
 	
