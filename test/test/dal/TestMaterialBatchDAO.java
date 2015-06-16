@@ -43,7 +43,7 @@ public class TestMaterialBatchDAO {
 	@Test
 	public void getMaterialbatchList() {
 		try {
-			materialbatchDAO.getMaterialBatchList();
+			System.out.println("materialBatches: "+ materialbatchDAO.getMaterialBatchList().size());
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

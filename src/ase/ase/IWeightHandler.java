@@ -13,7 +13,7 @@ public interface IWeightHandler {
 
 	double tare() throws WeightException;
 
-	double weigh() throws WeightException;
+	double weigh(String message) throws WeightException;
 
 	class WeightException extends Exception {
 

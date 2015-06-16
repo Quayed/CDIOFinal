@@ -31,13 +31,11 @@ public class SocketHandler {
 	}
 
 	public void println(String msg) throws IOException {
-		System.out.println("c: " + msg);
 		print(msg + "\r\n");
 	}
 
 	public String readLine() throws IOException {
 		String readLine = in.readLine();
-		System.out.println("s: " + readLine);
 		return readLine;
 	}
 
