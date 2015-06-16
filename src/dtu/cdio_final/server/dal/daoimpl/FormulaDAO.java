@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
+
 import dtu.cdio_final.server.dal.connector.Connector;
 import dtu.cdio_final.server.dal.daointerfaces.DALException;
 import dtu.cdio_final.server.dal.daointerfaces.IFormulaDAO;

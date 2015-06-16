@@ -41,10 +41,10 @@ public class Group13cdio_final implements EntryPoint
 					RootPanel.get().add(gui);
 					gui.login();
 					gui.addPage("Users", new UsersComposite(service), true);
-					gui.addPage("Materials", new MaterialComposite(service, false), true);
+					gui.addPage("Materials", new MaterialComposite(service, false));
 					gui.addPage("Fomulas", new FormulaComposite(service, false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false));
 					
 				}
 				else if (user.getRole() == 2){
@@ -55,7 +55,7 @@ public class Group13cdio_final implements EntryPoint
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,true));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false));
 				}
 					
 				else if (user.getRole() == 3){
@@ -66,16 +66,8 @@ public class Group13cdio_final implements EntryPoint
 					gui.addPage("Materials", new MaterialComposite(service,false), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
-				}
-				
-					// DELETE BELOW WHEN DONE WITH TESTING.
-//					gui.addPage("Users", new UsersComposite(service), true);
-//					gui.addPage("Materials", new MaterialComposite(service,true), true);
-//					gui.addPage("Fomulas", new FormulaComposite(service,true));
-//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
-				
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, true));	
+				}				
 			}
 		}), true);
 	}
@@ -96,10 +88,10 @@ public class Group13cdio_final implements EntryPoint
 					RootPanel.get().add(gui);
 					gui.login();
 					gui.addPage("Users", new UsersComposite(service), true);
-					gui.addPage("Materials", new MaterialComposite(service, false), true);
+					gui.addPage("Materials", new MaterialComposite(service, false));
 					gui.addPage("Fomulas", new FormulaComposite(service, false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false));
 				}
 				else if (user.getRole() == 2){
 					gui = new MainComposite();
@@ -109,7 +101,7 @@ public class Group13cdio_final implements EntryPoint
 					gui.addPage("Materials", new MaterialComposite(service,true), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,true));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, false));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, false),true);
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, false));
 				}
 					
 				else if (user.getRole() == 3){
@@ -120,16 +112,8 @@ public class Group13cdio_final implements EntryPoint
 					gui.addPage("Materials", new MaterialComposite(service,false), true);
 					gui.addPage("Fomulas", new FormulaComposite(service,false));
 					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);	
-				}
-				
-					// DELETE BELOW WHEN DONE WITH TESTING.
-//					gui.addPage("Users", new UsersComposite(service), true);
-//					gui.addPage("Materials", new MaterialComposite(service,true), true);
-//					gui.addPage("Fomulas", new FormulaComposite(service,true));
-//					gui.addPage("MaterialBatch", new MaterialBatchComposite(service, true));
-//					gui.addPage("ProductBatches", new ProductBatchComposite(service, true),true);
-				
+					gui.addPage("ProductBatches", new ProductBatchComposite(service, true));	
+				}				
 			}
 		}), true);
 	}

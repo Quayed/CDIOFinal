@@ -58,10 +58,11 @@ public class FormulaCompDAO implements IFormulaCompDAO {
 			if (!rs.first()) {
 				throw new DALException("No formula with ID " + formulaID + " could be found.");
 			} else {
-				while (rs.next()) {
+				do{
+					System.out.println(rs.getInt("material_id"));
 					list.add(new FormulaCompDTO(formulaID, rs.getInt("material_id"), rs.getDouble("nom_netto"), rs
 							.getDouble("tolerance")));
-				}
+				}while (rs.next());
 			}
 		} catch (SQLException e) {
 			throw new DALException(e);
