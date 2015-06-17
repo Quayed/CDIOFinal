@@ -330,7 +330,7 @@ private class Nom_NettoKeyUp implements KeyUpHandler{
 		
 		@Override
 		public void onKeyUp(KeyUpEvent event) {
-			if(FieldVerifier.isValidNomNetto(Double.valueOf((textBoxNom_Netto.getText())))){
+			if(FieldVerifier.isValidNomNetto(textBoxNom_Netto.getText())){
 				textBoxNom_Netto.removeStyleName("invalidEntry");
 				validComps.set(index, true);
 			} else{
@@ -356,7 +356,7 @@ private class ToleranceKeyUp implements KeyUpHandler{
 		
 		@Override
 		public void onKeyUp(KeyUpEvent event) {
-			if(FieldVerifier.isValidTolerance(Double.valueOf((textBoxTolerance.getText())))){
+			if(FieldVerifier.isValidTolerance(textBoxTolerance.getText())){
 				textBoxTolerance.removeStyleName("invalidEntry");
 				validComps.set(index, true);
 			} else{
