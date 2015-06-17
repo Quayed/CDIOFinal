@@ -98,12 +98,7 @@ public enum State {
 			productBatch = dal.getProductBatchDao().getProductbatch(productBID); // get productbatch from database
 			if (productBatch == null)
 				return ENTER_PRODUCTBATCH_ID;
-			if (productBatch.getStatus() != 1){
-				List<ProductbatchCompDTO> productComp = dal.getProductBatchCompDao().getProductbatchCompList(productBatch.getPbID());
-				if(productComp.size() == 0 || productComp.get(0).getUserID() != user.getUserID())
-					return ENTER_PRODUCTBATCH_ID;
-			}
-				
+			
 			// UPDATE STATUS
 			productBatch.setStatus(2); // set productbatch status to "under production"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
@@ -203,7 +198,7 @@ public enum State {
 			// double tolerance = State.formulaComp.getTolerance();
 			
 			double diff = Math.abs(weight - State.formulaComp.getNomNetto());
-			double acceptedDiff = (weight / 100) * tolerance;
+			double acceptedDiff = (State.formulaComp.getNomNetto() / 100) * tolerance;
 			
 			if (diff > acceptedDiff)
 				return WEIGHING;
@@ -244,7 +239,7 @@ public enum State {
 	REGISTER_PRODUCTBATCH_COMP {
 		@Override
 		public
-		State entry() throws DALException {
+		State entry() throws WeightException, DALException {
 			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.nettoWeight, State.containerWeight
 					+ State.containerWeight);
 			materialBatch.setQuantity(materialBatch.getQuantity()-State.nettoWeight);
@@ -252,6 +247,7 @@ public enum State {
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
 			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
+
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
 
 			// VALIDATE PRODUCTBATCH COMPONENT
@@ -282,8 +278,8 @@ public enum State {
 			return ENTER_USER_ID;
 		}
 
-	},
-	;
+	};
+	
 	private static FormulaCompDTO formulaComp;
 	private static MaterialDTO material;
 	private static MaterialbatchDTO materialBatch;
