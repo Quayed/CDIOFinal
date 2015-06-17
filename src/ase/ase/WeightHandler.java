@@ -16,7 +16,7 @@ public class WeightHandler implements IWeightHandler {
 		while (weightSocket == null) {
 			System.out.println("try connect");
 			try {
-				weightSocket = new SocketHandler("localhost", 8000);
+				weightSocket = new SocketHandler("169.254.2.3", 8000);
 				try {
 					getWeight();
 				} catch (WeightException e) {
@@ -107,12 +107,16 @@ public class WeightHandler implements IWeightHandler {
 	}
 
 	@Override
-	public double weigh(String message) throws WeightException {
-		instruction(message);
+	public double weigh(String message) throws WeightException {		
 		try {
+			weightSocket.println("P111 \""+message+"\"");
+			System.out.println(weightSocket.readLine());
 			weightSocket.println("ST 1");
-			weightSocket.readLine();
+			System.out.println(weightSocket.readLine());
 			String msg = weightSocket.readLine();
+			System.out.println(msg);
+			weightSocket.println("P110");
+			System.out.println(weightSocket.readLine());
 			if (msg.substring(7, 8).equals("-"))
 				return -Double.parseDouble(msg.substring(8, msg.length() - 3));
 			else

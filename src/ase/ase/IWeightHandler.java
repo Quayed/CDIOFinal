@@ -17,6 +17,14 @@ public interface IWeightHandler {
 
 	class WeightException extends Exception {
 
+		private static final long serialVersionUID = 1L;
+
+	}
+	
+	class CancelException extends Exception {
+
+		private static final long serialVersionUID = 1L;
+
 	}
 
 }

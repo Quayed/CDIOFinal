@@ -166,8 +166,7 @@ public enum State {
 			String input = "";
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			weightHandler.instruction("Find " + material.getMaterialID());
-			input = weightHandler.dialog("Enter MaterialbatchID");
+			input = weightHandler.dialog("Find MaterialID: "+material.getMaterialID());
 			// VALIDATE INPUT TYPE
 			try {
 				materialBatchID = Integer.parseInt(input);
@@ -196,7 +195,7 @@ public enum State {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weight = weightHandler.weigh("Fill container at " + formulaComp.getNomNetto() + "kg");
+			weight = weightHandler.weigh("Fill container: " + formulaComp.getNomNetto() + "kg");
 			// CALCULATE TOLERANCE
 			double tolerance = 10;
 			// double tolerance = State.formulaComp.getTolerance();
@@ -204,10 +203,26 @@ public enum State {
 			double diff = Math.abs(weight - State.formulaComp.getNomNetto());
 			double acceptedDiff = (State.formulaComp.getNomNetto() / 100) * tolerance;
 			
-			if (diff > acceptedDiff)
-				return WEIGHING;
-			
+			if (diff > acceptedDiff){
+				if(weightHandler.confirm("Invalid Tolerance")){
+					return WEIGHING;
+				}
+				else{
+					return CLEAR_WEIGHT;
+				}
+			}
+				
 			State.nettoWeight = weight;
+			// RETURN NEXT STATE
+			return BRUTTO_CONTROL;
+		}
+	},
+	INVALID_TOLERANCE {
+		@Override
+		public
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			weightHandler.instruction("Invalid weighing, re-do!");
 			// RETURN NEXT STATE
 			return BRUTTO_CONTROL;
 		}
@@ -227,6 +242,8 @@ public enum State {
 			// VALIDATE BRUTTO CONTROL
 			if (weight != -State.containerWeight)
 				return INVALID_WEIGHING;
+			
+			
 			return REGISTER_PRODUCTBATCH_COMP;
 		}
 	},
@@ -244,16 +261,17 @@ public enum State {
 		@Override
 		public
 		State entry() throws WeightException, DALException {
-			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.nettoWeight, State.containerWeight
-					+ State.containerWeight);
+			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.containerWeight, State.nettoWeight);
 			materialBatch.setQuantity(materialBatch.getQuantity()-State.nettoWeight);
 			
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
 			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
-
+			
+			weightHandler.instruction("Productbatch registered");
+			
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
-
+			
 			// VALIDATE PRODUCTBATCH COMPONENT
 			if (material != null) {
 				return CLEAR_WEIGHT;
@@ -261,16 +279,6 @@ public enum State {
 			productBatch.setStatus(3); // set productbatch status to "done"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
 			return PRODUCTION_DONE; // UPDATE STATUS
-		}
-	},
-	NEXT_WEIGHING {
-		@Override
-		public
-		State entry() throws WeightException {
-			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weightHandler.instruction("Productbatch registered");
-			// RETURN NEXT STATE
-			return CLEAR_WEIGHT;
 		}
 	},
 	PRODUCTION_DONE {
