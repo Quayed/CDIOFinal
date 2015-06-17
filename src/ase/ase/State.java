@@ -253,8 +253,11 @@ public enum State {
 		State entry() throws DALException {
 			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.nettoWeight, State.containerWeight
 					+ State.containerWeight);
+			materialBatch.setQuantity(materialBatch.getQuantity()-State.nettoWeight);
+			
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
+			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
 
 			// VALIDATE PRODUCTBATCH COMPONENT
