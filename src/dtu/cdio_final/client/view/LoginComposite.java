@@ -17,8 +17,8 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
-import dtu.cdio_final.client.Group13cdio_final.LoginEvent;
+import dtu.cdio_final.client.Controller;
+import dtu.cdio_final.client.Controller.LoginEvent;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.shared.dto.UserDTO;
@@ -28,7 +28,7 @@ public class LoginComposite extends PageComposite
 	interface LoginUiBinder extends UiBinder<Widget, LoginComposite> {}
 
 	private DataServiceAsync service = null;
-	private LoginEvent loginEvent;
+	private Controller.LoginEvent loginEvent;
 
 
 	@UiField TextBox usernameTextbox;
@@ -37,41 +37,25 @@ public class LoginComposite extends PageComposite
 
 	private static LoginUiBinder uiBinder = GWT.create(LoginUiBinder.class);
 
-	public LoginComposite(DataServiceAsync service, LoginEvent loginEvent)
+	public LoginComposite(DataServiceAsync service, Controller.LoginEvent loginEvent)
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		this.service = service;
 		this.loginEvent = loginEvent;
 	}
+	
+	@Override
+	public void reloadPage()
+	{
+		
+	}
+	
 	@UiHandler("loginButton")
 	void login(ClickEvent e)
 	{
 		try
 		{
-			service.login(Integer.parseInt(usernameTextbox.getValue()), passwordTextbox.getValue(), new TokenAsyncCallback<HashMap<String, Object>>()
-				{
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						super.onFailure(caught);
-						Window.alert(caught.getMessage());
-					}
-	
-					@Override
-					public void onSuccess(HashMap<String, Object> result)
-					{
-						if(result != null)
-						{	
-							Group13cdio_final.token = (String)result.get("token");
-							
-							LoginComposite.this.loginEvent.login((UserDTO)result.get("user"));
-						}
-						else
-						{
-							MaterialToast.alert("Wrong login information");
-						}
-					}
-				});
+			login();
 		}
 		catch (NumberFormatException e2)
 		{
@@ -79,40 +63,12 @@ public class LoginComposite extends PageComposite
 			MaterialToast.alert("UserID should be a number");
 		}
 	}
-	@Override
-	public void reloadPage()
-	{
-		
-	}
 	
 	@UiHandler("usernameTextbox")
 	void keyDownUserName(KeyDownEvent e){
 		if(e.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 			try{
-			service.login(Integer.parseInt(usernameTextbox.getValue()), passwordTextbox.getValue(), new TokenAsyncCallback<HashMap<String, Object>>(){
-
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					super.onFailure(caught);
-					Window.alert(caught.getMessage());
-				}
-				
-				@Override
-				public void onSuccess(HashMap<String, Object> result) {
-					if(result != null)
-					{	
-						Group13cdio_final.token = (String)result.get("token");
-						
-						LoginComposite.this.loginEvent.login((UserDTO)result.get("user"));
-					}
-					else
-					{
-						MaterialToast.alert("Wrong login information");
-					}
-				}
-				
-			});
+				login();
 			} catch(NumberFormatException error){
 				MaterialToast.alert("UserID should be a number");
 			}
@@ -122,33 +78,31 @@ public class LoginComposite extends PageComposite
 	void keyDownPassword(KeyDownEvent e){
 		if(e.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 			try{
-			service.login(Integer.parseInt(usernameTextbox.getValue()), passwordTextbox.getValue(), new TokenAsyncCallback<HashMap<String, Object>>(){
-
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					super.onFailure(caught);
-					Window.alert(caught.getMessage());
-				}
-				
-				@Override
-				public void onSuccess(HashMap<String, Object> result) {
-					if(result != null)
-					{	
-						Group13cdio_final.token = (String)result.get("token");
-						
-						LoginComposite.this.loginEvent.login((UserDTO)result.get("user"));
-					}
-					else
-					{
-						MaterialToast.alert("Wrong login information");
-					}
-				}
-				
-			});
+				login();
 			} catch(NumberFormatException error){
 				MaterialToast.alert("UserID should be a number");
 			}
 		}
+	}
+
+	
+	private void login(){
+		service.login(Integer.parseInt(usernameTextbox.getValue()), passwordTextbox.getValue(), new TokenAsyncCallback<HashMap<String, Object>>(){
+			
+			@Override
+			public void onSuccess(HashMap<String, Object> result) {
+				if(result != null)
+				{	
+					Controller.setToken((String)result.get("token"));
+					
+					LoginComposite.this.loginEvent.login((UserDTO)result.get("user"));
+				}
+				else
+				{
+					MaterialToast.alert("Wrong login information");
+				}
+			}
+			
+		});
 	}
 }

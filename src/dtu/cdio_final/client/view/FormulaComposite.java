@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.client.Controller;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
@@ -99,7 +99,7 @@ public class FormulaComposite extends PageComposite {
 			createBox.setVisible(false);
 		}
 		
-		service.getFormulas(Group13cdio_final.token, new TokenAsyncCallback<List<FormulaDTO>>() {
+		service.getFormulas(Controller.getToken(), new TokenAsyncCallback<List<FormulaDTO>>() {
 
 			@Override
 			public void onSuccess(List<FormulaDTO> formulas ) {
@@ -118,7 +118,7 @@ public class FormulaComposite extends PageComposite {
 
 		});
 		
-		service.getMaterials(Group13cdio_final.token, new TokenAsyncCallback<List<MaterialDTO>>(){
+		service.getMaterials(Controller.getToken(), new TokenAsyncCallback<List<MaterialDTO>>(){
 
 			@Override
 			public void onSuccess(List<MaterialDTO> result) {
@@ -162,7 +162,7 @@ public class FormulaComposite extends PageComposite {
 		private void showComponents(){
 			formulaTable.insertRow(editRow+1);
 			formulaTable.getFlexCellFormatter().setColSpan(editRow+1, 0, 2);
-			service.getFormulaComps(Group13cdio_final.token, Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
+			service.getFormulaComps(Controller.getToken(), Integer.valueOf(((Label)formulaTable.getWidget(editRow, 0)).getText()), new TokenAsyncCallback<List<FormulaCompDTO>>(){
 
 				@Override
 				public void onSuccess(List<FormulaCompDTO> result) {
@@ -240,7 +240,7 @@ public class FormulaComposite extends PageComposite {
 					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).getText()),
 					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).getText())));
 		}
-		service.createFormualWithComponents(Group13cdio_final.token, formula, components, new TokenAsyncCallback<Void>(){
+		service.createFormualWithComponents(Controller.getToken(), formula, components, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
