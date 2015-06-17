@@ -3,9 +3,9 @@ package ase.ase;
 public interface IWeightHandler {
 	void connect();
 
-	void instruction(String message) throws WeightException;
+	void instruction(String message) throws WeightException, CancelException;
 
-	String dialog(String message) throws WeightException;
+	String dialog(String message) throws WeightException, CancelException;
 
 	boolean confirm(String message) throws WeightException;
 
