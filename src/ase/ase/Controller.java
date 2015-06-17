@@ -1,8 +1,7 @@
 package ase.ase;
 
-import dtu.cdio_final.server.dal.daointerfaces.DALException;
 import ase.ase.IWeightHandler.WeightException;
-import ase.ase.State;
+import dtu.cdio_final.server.dal.daointerfaces.DALException;
 
 public class Controller {
 	private State currentState;
@@ -20,7 +19,7 @@ public class Controller {
 		while (true) {
 			currentState = State.START;
 			try {
-				fsm();
+				startStateMachine();
 			} catch (WeightException e) {
 			}
 			try {
@@ -30,7 +29,7 @@ public class Controller {
 		}
 	}
 
-	private void fsm() throws WeightException {
+	private void startStateMachine() throws WeightException {
 		while (true) {
 			try {
 				currentState = currentState.entry();

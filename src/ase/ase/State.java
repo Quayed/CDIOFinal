@@ -1,10 +1,14 @@
 package ase.ase;
 
-import java.util.List;
-
 import ase.ase.IWeightHandler.WeightException;
-import dtu.cdio_final.server.dal.daointerfaces.*;
-import dtu.cdio_final.shared.dto.*;
+import dtu.cdio_final.server.dal.daointerfaces.DALException;
+import dtu.cdio_final.shared.dto.FormulaCompDTO;
+import dtu.cdio_final.shared.dto.FormulaDTO;
+import dtu.cdio_final.shared.dto.MaterialDTO;
+import dtu.cdio_final.shared.dto.MaterialbatchDTO;
+import dtu.cdio_final.shared.dto.ProductbatchCompDTO;
+import dtu.cdio_final.shared.dto.ProductbatchDTO;
+import dtu.cdio_final.shared.dto.UserDTO;
 
 public enum State {
 	START {
@@ -162,8 +166,8 @@ public enum State {
 			String input = "";
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			weightHandler.instruction("Find " + material.getMaterialID() + " " + material.getMaterialName());
-			input = weightHandler.dialog("Enter Materialbatch ID");
+			weightHandler.instruction("Find " + material.getMaterialID());
+			input = weightHandler.dialog("Enter MaterialbatchID");
 			// VALIDATE INPUT TYPE
 			try {
 				materialBatchID = Integer.parseInt(input);
