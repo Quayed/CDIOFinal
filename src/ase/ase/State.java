@@ -1,5 +1,7 @@
 package ase.ase;
 
+import java.util.List;
+
 import ase.ase.IWeightHandler.WeightException;
 import dtu.cdio_final.server.dal.daointerfaces.*;
 import dtu.cdio_final.shared.dto.*;
@@ -53,7 +55,9 @@ public enum State {
 			user = dal.getUserDao().getUser(userID); // get user from database
 			if (user == null)
 				return ENTER_USER_ID;
-			if (user.getRole() < 4)
+			if (user.getRole() != 4)
+				return ENTER_USER_ID;
+			if (user.getStatus() != 1)
 				return ENTER_USER_ID;
 			// RETURN NEXT STATE
 			return CONFIRM_OPERATOR;
@@ -94,8 +98,12 @@ public enum State {
 			productBatch = dal.getProductBatchDao().getProductbatch(productBID); // get productbatch from database
 			if (productBatch == null)
 				return ENTER_PRODUCTBATCH_ID;
-			if (productBatch.getStatus() != 1)
-				return ENTER_PRODUCTBATCH_ID;
+			if (productBatch.getStatus() != 1){
+				List<ProductbatchCompDTO> productComp = dal.getProductBatchCompDao().getProductbatchCompList(productBatch.getPbID());
+				if(productComp.size() == 0 || productComp.get(0).getUserID() != user.getUserID())
+					return ENTER_PRODUCTBATCH_ID;
+			}
+				
 			// UPDATE STATUS
 			productBatch.setStatus(2); // set productbatch status to "under production"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
@@ -147,21 +155,6 @@ public enum State {
 			State.containerWeight = weightHandler.getWeight();
 			weightHandler.tare();
 			// RETURN NEXT STATE
-			return FIND_MATERIAL;
-		}
-
-	},
-	FIND_MATERIAL {
-		@Override
-		public
-		State entry() throws WeightException {
-			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			String string = ("Find " + material.getMaterialID() + " " + material.getMaterialName());
-			if (string.length() > 24)
-				string = string.substring(0, 24);
-			weightHandler.instruction(string);
-			// RETURN NEXT STATE
 			return ENTER_MATERIALBATCH_ID;
 		}
 
@@ -174,6 +167,7 @@ public enum State {
 			String input = "";
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
+			weightHandler.instruction("Find " + material.getMaterialID() + " " + material.getMaterialName());
 			input = weightHandler.dialog("Enter Materialbatch ID");
 			// VALIDATE INPUT TYPE
 			try {
@@ -186,7 +180,7 @@ public enum State {
 			if (materialBatch == null)
 				return ENTER_MATERIALBATCH_ID;
 			// VALIDATE MATERIALBATCH ID
-			if (materialBatchID != State.materialBatch.getMbID())
+			if (materialBatch.getMaterialID() != material.getMaterialID())
 				return ENTER_MATERIALBATCH_ID;
 			formulaComp = dal.getFormulaCompDao().getFormulaComp(State.productBatch.getFormulaID(), material.getMaterialID()); // get formula from database
 			if (materialBatch.getQuantity() < formulaComp.getNomNetto())

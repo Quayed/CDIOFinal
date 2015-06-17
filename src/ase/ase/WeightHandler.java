@@ -34,6 +34,8 @@ public class WeightHandler implements IWeightHandler {
 
 	@Override
 	public void instruction(String message) throws WeightException {
+		if (message.length() > 24)
+			message = message.substring(0, 24);
 		rm20(message);
 	}
 
