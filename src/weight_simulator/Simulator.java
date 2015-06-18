@@ -3,18 +3,18 @@ package weight_simulator;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class NewMainSimulator implements Runnable{
+public class Simulator implements Runnable{
 	
-	private NewServer server;
+	private Server server;
 	private Scanner scanner;
 	private double gross;
 	private double tare;
 	private boolean rm20State;
 	private boolean weighingState;
 	
-	public NewMainSimulator() {
+	public Simulator(int port) {
 		try {
-			server = new NewServer();
+			server = new Server(port);
 			scanner = new Scanner(System.in);
 			new Thread(server).start();
 			new Thread(this).start();
@@ -94,12 +94,6 @@ public class NewMainSimulator implements Runnable{
 				}
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		
-		new NewMainSimulator();
-		
 	}
 
 }
