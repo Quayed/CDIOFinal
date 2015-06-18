@@ -102,6 +102,7 @@ public class UsersComposite extends PageComposite {
 		usersTable.setWidget(0, 8, new Label(""));
 		createUserButton.addStyleName("fullWidth");
 		createUserButton.addStyleName("disableButton");
+		checkForm();
 		
 		service.getUsers(Controller.getToken(), new TokenAsyncCallback<List<UserDTO>>() {
 

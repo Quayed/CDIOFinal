@@ -84,6 +84,8 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.setWidget(0, 2, new Label("Quantity(KG)"));
 		createMaterialBatchButton.addStyleName("fullWidth");
 		createMaterialBatchButton.addStyleName("disableButton");
+		checkForm();
+		
 		if(!createAccess){
 			createBox.setVisible(false);
 		}
@@ -186,11 +188,9 @@ public class MaterialBatchComposite extends PageComposite {
 	
 	private boolean checkForm(){
 		if (validMaterialBatchID && validQuantity){
-			createMaterialBatchButton.setDisable(false);
 			createMaterialBatchButton.removeStyleName("disableButton");
 			return true;
 		} else{
-			createMaterialBatchButton.setDisable(true);
 			createMaterialBatchButton.addStyleName("disableButton");
 			return false;
 		}

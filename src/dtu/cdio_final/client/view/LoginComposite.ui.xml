@@ -18,7 +18,7 @@
 		<m:MaterialLabel>Password</m:MaterialLabel>
 		<g:PasswordTextBox ui:field="passwordTextbox" />
 		
-		<m:MaterialButton ui:field="loginButton" text="Login"></m:MaterialButton>
+		<m:MaterialButton ui:field="loginButton" text="Login" color="blue"></m:MaterialButton>
 		
 	</g:HTMLPanel>
 </ui:UiBinder> 

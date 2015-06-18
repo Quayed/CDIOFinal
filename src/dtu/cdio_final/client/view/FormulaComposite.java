@@ -98,6 +98,7 @@ public class FormulaComposite extends PageComposite {
 		componentTable.setWidget(1, 3, textBoxTolerance);
 		
 		createFormulaButton.addStyleName("disableButton");
+		checkForm();
 
 		if(!createAccess){
 			createBox.setVisible(false);
@@ -237,6 +238,9 @@ public class FormulaComposite extends PageComposite {
 	
 	@UiHandler("createFormulaButton")
 	void createFormula(ClickEvent event){
+		if(!checkForm())
+			return;
+		
 		List<FormulaCompDTO> components = new ArrayList<FormulaCompDTO>();
 		final FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
 		for(int i = 1; i < componentCounter; i++){
