@@ -17,7 +17,7 @@ public abstract class TokenAsyncCallback<T> implements AsyncCallback<T>
 		if(caught instanceof TokenException)
 		{
 //			Window.alert(((TokenException)caught).getMessage()); // DEN RETURNERE BARE NULL.
-			Window.alert("You were inactive too long, and will have to login in again."); //TODO POPS UP TWICE. IT SHOULDT 
+			Window.alert("You were inactive too long, and will have to login in again."); 
 			Window.Location.reload();
 		}
 		else if(caught instanceof ServiceException){
