@@ -163,15 +163,20 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			components != null
 		);
 		
-		// TODO need component verify and exsists verify
 		
 		try {
+			if(formulaDao.getFormula(formula.getFormulaID()) != null){
+				throw new ServiceException("FormulaID already exsists");
+			}
 			formulaDao.createFormula(formula);
 		} catch (DALException e) {
 			throw new ServiceException(e);
 		}	
 		for(FormulaCompDTO component : components){
 			try {
+				if(materialDao.getMaterial(component.getMaterialID()) == null){
+					throw new ServiceException("Material don't exist.");
+				}
 				formulaCompDao.createFormulaComp(component);
 			} catch (DALException e) {
 				throw new ServiceException(e);

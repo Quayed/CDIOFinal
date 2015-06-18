@@ -251,11 +251,6 @@ public class FormulaComposite extends PageComposite {
 		service.createFormualWithComponents(Controller.getToken(), formula, components, new TokenAsyncCallback<Void>(){
 
 			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-			}
-
-			@Override
 			public void onSuccess(Void result) {
 				MaterialToast.alert("Formula has been created!");
 				addRow(formula);			
