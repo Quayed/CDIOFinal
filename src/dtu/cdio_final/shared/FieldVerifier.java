@@ -30,7 +30,7 @@ public class FieldVerifier
 	 */
 	private static final String NAME_PATTERN = "^[a-zA-ZæøåÆØÅ -]{2,20}$";
 	private static final String INI_PATTERN = "^[a-zA-ZæøåÆØÅ]{2,4}$";
-	private static final String CPR_PATTERN = "^((0[1-9]|[12][0-9]|3[01])(0[13578]|1[02])[0-9]{6})|((0[1-9]|[12][0-9]|30)(0[469]|11)[0-9]{6})|((0[1-9]|1[0-9]|2[0-9])02([02468][048]|[13579][26])[0-9]{4})|((0[1-9]|1[0-9]|2[0-8])02[0-9]{6})$"; 
+	private static final String CPR_PATTERN = "^((0[1-9]|[12][0-9]|3[01])(0[13578]|1[02])[0-9]{6})|((0[1-9]|[12][0-9]|30)(0[469]|11)[0-9]{6})|((0[1-9]|1[0-9]|2[0-9])02([02468][048]|[13579][26])[0-9]{4})|((0[1-9]|1[0-9]|2[0-8])02[0-9]{6})$"; //tager højde for alt andet end de sidste 4 cifre
 	private static final String ID_PATTERN = "^[0-9]{1,8}$"; // 1­99999999
 	private static final String PROVIDER_PATTERN = "^[a-zA-ZæøåÆØÅ -\\+\\-_?=!\\.]{2,20}$"; //Bogstaver,tal,forskellige tegn
 	private static final String QUANTITY_PATTERN = "^[0-9]+(\\.[0-9]{1,4})?$";
