@@ -52,6 +52,12 @@ public class NewMainSimulator implements Runnable{
 					+ (tare < 0 ? "" : " ")
 					+ tare + " kg");
 
+		} else if (action.contains("P111")) {
+			server.printLn("P111 A");
+
+		} else if (action.equals("P110")) {
+			server.printLn("P110 A");
+
 		} else if(action.equals("ST 1")) {
 			server.printLn("ST A");
 			weighingState = true;
@@ -82,11 +88,11 @@ public class NewMainSimulator implements Runnable{
 			}
 			else if(weighingState){
 				if(line.equals("t")){
-					System.out.println("trans");
 					double netto = gross - tare;
 					server.printLn("S S    "
 							+ (netto < 0 ? "" : " ")
 							+ netto + " kg");
+					weighingState = false;
 				}
 			}
 		}
