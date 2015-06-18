@@ -84,6 +84,7 @@ public class FormulaComposite extends PageComposite {
 		
 		textBoxMaterialID = new MaterialListBox();
 		
+		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
 		textBoxNom_Netto.setPlaceholder("nom_netto");
 		textBoxNom_Netto.addKeyUpHandler(new Nom_NettoKeyUp(textBoxNom_Netto, componentIndexCounter));
@@ -129,6 +130,7 @@ public class FormulaComposite extends PageComposite {
 					textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
 				}
 				componentTable.setWidget(1, 1, textBoxMaterialID);
+				Window.alert(String.valueOf(componentTable.getWidget(1, 1).getClass()));
 			}
 		});	
 	}
@@ -209,6 +211,7 @@ public class FormulaComposite extends PageComposite {
 		for(MaterialDTO material : materials){
 			textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
 		}
+		
 		componentTable.setWidget(componentCounter, 1, textBoxMaterialID);
 		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
@@ -232,13 +235,21 @@ public class FormulaComposite extends PageComposite {
 	
 	@UiHandler("createFormulaButton")
 	void createFormula(ClickEvent event){
-		List<FormulaCompDTO> components = null;
+		List<FormulaCompDTO> components = new ArrayList<FormulaCompDTO>();
 		FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
+		Window.alert(String.valueOf(componentCounter));
 		for(int i = 1; i < componentCounter; i++){
-			components.add(new FormulaCompDTO(formula.getFormulaID(), 
-					Integer.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 1)).getText()), 
-					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 2)).getText()),
-					Double.valueOf(((MaterialTextBox)componentTable.getWidget(componentCounter, 3)).getText())));
+			Window.alert(String.valueOf(componentTable.getWidget(1,  1).getClass()));
+			int index = ((MaterialListBox)componentTable.getWidget(i, 1)).getSelectedIndex();
+			Window.alert(String.valueOf(index));
+			String selected = ((MaterialListBox)componentTable.getWidget(i, 1)).getValue(index);
+			Window.alert(selected);
+			selected = selected.substring(0, selected.indexOf("("));
+			Window.alert(selected);
+			components.add(new FormulaCompDTO(formula.getFormulaID(), 				
+					Integer.valueOf(selected), 
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(i, 2)).getText()),
+					Double.valueOf(((MaterialTextBox)componentTable.getWidget(i, 3)).getText())));
 		}
 		service.createFormualWithComponents(Controller.getToken(), formula, components, new TokenAsyncCallback<Void>(){
 

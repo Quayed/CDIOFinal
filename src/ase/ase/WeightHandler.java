@@ -16,7 +16,7 @@ public class WeightHandler implements IWeightHandler {
 		while (weightSocket == null) {
 			System.out.println("try connect");
 			try {
-				weightSocket = new SocketHandler("169.254.2.3", 8000);
+				weightSocket = new SocketHandler("localhost", 8000);
 				try {
 					getWeight();
 				} catch (WeightException e) {
