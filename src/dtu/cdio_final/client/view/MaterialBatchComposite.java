@@ -83,7 +83,7 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.setWidget(0, 1, new Label("Material ID"));
 		materialBatchTable.setWidget(0, 2, new Label("Quantity(KG)"));
 		createMaterialBatchButton.addStyleName("fullWidth");
-
+		createMaterialBatchButton.addStyleName("disableButton");
 		if(!createAccess){
 			createBox.setVisible(false);
 		}
@@ -187,17 +187,15 @@ public class MaterialBatchComposite extends PageComposite {
 	private boolean checkForm(){
 		if (validMaterialBatchID && validQuantity){
 			createMaterialBatchButton.setDisable(false);
+			createMaterialBatchButton.removeStyleName("disableButton");
+			createMaterialBatchButton.addStyleName("enableButton");
 			return true;
 		} else{
 			createMaterialBatchButton.setDisable(true);
+			createMaterialBatchButton.removeStyleName("enableButton");
+			createMaterialBatchButton.addStyleName("disableButton");
 			return false;
 		}
-	}
-	private boolean containsElement(MaterialListBox box , String element){
-		for(int i = 0; i < box.getItemCount(); i++)
-			if(box.getItemText(i).equals(element))
-				return true;
-		return false;
 	}
 }
 	
