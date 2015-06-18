@@ -53,10 +53,6 @@ tbody :nth-child(1) .gwt-Label{
 	border-color: red !important;
 }
 
-.enableButton:first-child button {
-	 background-color: #2196F3 !important;
-}
-
 .disableButton:first-child button{
 	background-color: #f5f5f5 !important;
 }

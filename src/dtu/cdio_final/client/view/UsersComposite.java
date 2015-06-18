@@ -9,13 +9,20 @@ import gwt.material.design.client.ui.MaterialToast;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -165,15 +172,18 @@ public class UsersComposite extends PageComposite {
 			submitButton.addStyleName("disableButton");
 			
 			usersTable.setWidget(editRow, 7, cancelButton);
+			
 		}
 		
 	}
+	
+	
 	
 	@UiHandler("submitButton")
 	void submitClickHandler(ClickEvent event){
 		if(!checkEditForm())
 			return;
-		
+			
 			int userIDInt = Integer.valueOf(userID.getText());
 			int userRoleInt = userRole.getSelectedIndex() +1;
 			int userStatusInt;
@@ -325,27 +335,13 @@ public class UsersComposite extends PageComposite {
 	
 	private boolean checkForm(){
 		if (validCreateUserID && validCreateUserName && validCreateUserIni && validCreateUserCPR && validCreateUserPassword){
-			createUserButton.setDisable(false);
 			createUserButton.setStyleName("disableButton", false);
 			return true;
 		} else{
-			createUserButton.setDisable(true);
 			createUserButton.setStyleName("disableButton", true);
 			return false;
 		}
 	}
-	
-//	@UiHandler("userID")
-//	void keyUpUserID(KeyUpEvent e) {
-//		if(FieldVerifier.isValidID(userID.getText())){
-//			userID.removeStyleName("invalidEntry");
-//			validUserID = true;
-//		} else{
-//			userID.addStyleName("invalidEntry");
-//			validUserID = false;
-//		}
-//		checkEditForm();
-//	}
 	
 	@UiHandler("userName")
 	void keyUpUserName(KeyUpEvent e) {
@@ -396,19 +392,43 @@ public class UsersComposite extends PageComposite {
 		checkEditForm();
 	}
 	
+	@UiHandler("userStatus")
+	void statusClick(ClickEvent e){
+		checkEditForm();
+	}
+	
 	private boolean checkEditForm(){
-		if (validUserName && validUserIni && validUserCPR && validUserPassword){
-			//submitButton.setDisable(false);
+		Window.alert("Start edit form");
+		String oldUsername = ((Label) usersTable.getWidget(editRow+1, 1)).getText();
+		String currentUserName = userName.getText();
+		String oldIni = ((Label) usersTable.getWidget(editRow+1, 2)).getText();
+		String ini = userIni.getText();
+		String oldUserCPR = ((Label) usersTable.getWidget(editRow+1, 3)).getText();
+		String currentUserCPR = userCPR.getText();
+		String oldUserPassword = ((Label) usersTable.getWidget(editRow+1, 4)).getText();
+		String currentUserPassword = userPassword.getText();
+		String oldRole = ((Label) usersTable.getWidget(editRow+1, 5)).getText();
+		String role = userRole.getValue(userRole.getSelectedIndex()); 
+		String oldStatus = ((Label) usersTable.getWidget(editRow+1, 6)).getText();
+		String status = userStatus.getValue() ? "Active" : "Inactive";
+		Window.alert(oldRole + " " + role);
+		if(oldUsername.equals(currentUserName) && oldIni.equals(ini) && oldUserCPR.equals(currentUserCPR) && oldUserPassword.equals(currentUserPassword) && oldRole.equals(role) && oldStatus.equals(status)) {
+			Window.alert("ENS");
+			submitButton.setStyleName("disableButton", true);
+			return false;
+		} else {
+			Window.alert("Ikke ens");
+			submitButton.setStyleName("disableButton", false);
+		}
+		
+		if (validUserName && validUserIni && validUserCPR && validUserPassword) {
 			submitButton.setStyleName("disableButton", false);
 			return true;
 		} else{
-			//submitButton.setDisable(true);
 			submitButton.setStyleName("disableButton", true);
 			return false;
 		}
 	}
-	
-	
 
 	private String roleToString(int role){
 		if(role == 1){
@@ -455,7 +475,4 @@ public class UsersComposite extends PageComposite {
 			return "Inactive";
 		}
 	}
-
-	
-
 }
