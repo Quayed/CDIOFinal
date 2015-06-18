@@ -6,11 +6,13 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialTextBox;
+import gwt.material.design.client.ui.MaterialToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -56,6 +58,7 @@ public class FormulaComposite extends PageComposite {
 	private int numberOfRows;
 	DataServiceAsync service;
 	private boolean createAccess;
+	private List<MaterialListBox> listBoxes = new ArrayList<MaterialListBox>();
 	
 	private boolean validFormulaID;
 	private boolean validFormulaName;
@@ -72,7 +75,6 @@ public class FormulaComposite extends PageComposite {
 	@Override
 	public void reloadPage() 
 	{
-//		editRow = -1;
 		componentIndexCounter = 0;
 		numberOfRows = 1;
 		formulaTable.removeAllRows();
@@ -130,7 +132,7 @@ public class FormulaComposite extends PageComposite {
 					textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
 				}
 				componentTable.setWidget(1, 1, textBoxMaterialID);
-				Window.alert(String.valueOf(componentTable.getWidget(1, 1).getClass()));
+				listBoxes.add(textBoxMaterialID);
 			}
 		});	
 	}
@@ -211,7 +213,7 @@ public class FormulaComposite extends PageComposite {
 		for(MaterialDTO material : materials){
 			textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
 		}
-		
+		listBoxes.add(componentCounter, textBoxMaterialID);
 		componentTable.setWidget(componentCounter, 1, textBoxMaterialID);
 		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
@@ -236,16 +238,11 @@ public class FormulaComposite extends PageComposite {
 	@UiHandler("createFormulaButton")
 	void createFormula(ClickEvent event){
 		List<FormulaCompDTO> components = new ArrayList<FormulaCompDTO>();
-		FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
-		Window.alert(String.valueOf(componentCounter));
+		final FormulaDTO formula = new FormulaDTO(Integer.valueOf(createFormulaID.getText()), createFormulaName.getText());
 		for(int i = 1; i < componentCounter; i++){
-			Window.alert(String.valueOf(componentTable.getWidget(1,  1).getClass()));
-			int index = ((MaterialListBox)componentTable.getWidget(i, 1)).getSelectedIndex();
-			Window.alert(String.valueOf(index));
-			String selected = ((MaterialListBox)componentTable.getWidget(i, 1)).getValue(index);
-			Window.alert(selected);
+			int index = listBoxes.get(i).getSelectedIndex();
+			String selected = listBoxes.get(i).getValue(index);
 			selected = selected.substring(0, selected.indexOf("("));
-			Window.alert(selected);
 			components.add(new FormulaCompDTO(formula.getFormulaID(), 				
 					Integer.valueOf(selected), 
 					Double.valueOf(((MaterialTextBox)componentTable.getWidget(i, 2)).getText()),
@@ -255,12 +252,17 @@ public class FormulaComposite extends PageComposite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Something went wrong!");
+				Window.alert(caught.getMessage());
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				// TODO implement this method.
+				MaterialToast.alert("Formula has been created!");
+				addRow(formula);			
+				if (tableHandler != null){
+					tableHandler.removeHandler();
+				}
+				tableHandler = formulaTable.addClickHandler(myTableClickHandler);
 			}
 			
 		});
