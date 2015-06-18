@@ -14,8 +14,7 @@ import dtu.cdio_final.shared.dto.UserDTO;
 public enum State {
 	START {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// CONNECT/RECONNECT
 			weightHandler.connect();
 			dal.connect();
@@ -35,8 +34,7 @@ public enum State {
 	},
 	INVALID_DATABASE {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			try {
 				weightHandler.instruction("Database error!");
 			} catch (CancelException e) {
@@ -46,8 +44,7 @@ public enum State {
 	},
 	ENTER_USER_ID {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int userID;
@@ -76,8 +73,7 @@ public enum State {
 	},
 	CONFIRM_OPERATOR {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// VARIABLES
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
@@ -92,8 +88,7 @@ public enum State {
 	},
 	ENTER_PRODUCTBATCH_ID {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int productBID;
@@ -127,8 +122,7 @@ public enum State {
 	},
 	START_PROCESS {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			// VARIABLES
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
@@ -149,8 +143,7 @@ public enum State {
 	},
 	CLEAR_WEIGHT {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
 			try {
 				weightHandler.instruction("Clear weight");
@@ -165,8 +158,7 @@ public enum State {
 	},
 	PLACE_CONTAINER {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
 			try {
 				weightHandler.instruction("Place container");
@@ -182,8 +174,7 @@ public enum State {
 	},
 	ENTER_MATERIALBATCH_ID {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int materialBatchID;
@@ -216,8 +207,7 @@ public enum State {
 	},
 	WEIGHING {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
@@ -225,19 +215,14 @@ public enum State {
 			// CALCULATE TOLERANCE
 			double tolerance = 10;
 			// double tolerance = State.formulaComp.getTolerance();
-			
+
 			double diff = Math.abs(weight - State.formulaComp.getNomNetto());
 			double acceptedDiff = (State.formulaComp.getNomNetto() / 100) * tolerance;
-			
-			if (diff > acceptedDiff){
-				if(weightHandler.confirm("Invalid Tolerance")){
-					return WEIGHING;
-				}
-				else{
-					return CLEAR_WEIGHT;
-				}
+
+			if (diff > acceptedDiff) {
+				return INVALID_TOLERANCE;
 			}
-				
+
 			State.nettoWeight = weight;
 			// RETURN NEXT STATE
 			return BRUTTO_CONTROL;
@@ -245,22 +230,17 @@ public enum State {
 	},
 	INVALID_TOLERANCE {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Invalid weighing, re-do!");
-			} catch (CancelException e) {
-				return CLEAR_WEIGHT;
+			if (weightHandler.confirm("Invalid Tolerance")) {
+				return WEIGHING;
 			}
-			// RETURN NEXT STATE
-			return BRUTTO_CONTROL;
+			return CLEAR_WEIGHT;
 		}
 	},
 	BRUTTO_CONTROL {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
@@ -276,15 +256,13 @@ public enum State {
 			// VALIDATE BRUTTO CONTROL
 			if (weight != -State.containerWeight)
 				return INVALID_WEIGHING;
-			
-			
+
 			return REGISTER_PRODUCTBATCH_COMP;
 		}
 	},
 	INVALID_WEIGHING {
 		@Override
-		public
-		State entry() throws WeightException {
+		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
 			try {
 				weightHandler.instruction("Invalid weighing, re-do!");
@@ -296,22 +274,21 @@ public enum State {
 	},
 	REGISTER_PRODUCTBATCH_COMP {
 		@Override
-		public
-		State entry() throws WeightException, DALException {
+		public State entry() throws WeightException, DALException {
 			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.containerWeight, State.nettoWeight);
-			materialBatch.setQuantity(materialBatch.getQuantity()-State.nettoWeight);
-			
+			materialBatch.setQuantity(materialBatch.getQuantity() - State.nettoWeight);
+
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
 			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
-			
+
 			try {
 				weightHandler.instruction("Productbatch registered");
 			} catch (CancelException e) {
 			}
-			
+
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
-			
+
 			// VALIDATE PRODUCTBATCH COMPONENT
 			if (material != null) {
 				return CLEAR_WEIGHT;
@@ -334,7 +311,7 @@ public enum State {
 		}
 
 	};
-	
+
 	private static FormulaCompDTO formulaComp;
 	private static MaterialDTO material;
 	private static MaterialbatchDTO materialBatch;
