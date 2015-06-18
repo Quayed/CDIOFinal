@@ -137,18 +137,23 @@ public class UsersComposite extends PageComposite {
 			
 			userID.setText(getTableLabelText(0));
 			usersTable.setText(editRow, 0, userID.getText());
+			validUserID = true;
 			
 			userName.setText(getTableLabelText(1));
 			usersTable.setWidget(editRow, 1, userName);
+			validUserName = true;
 			
 			userIni.setText(getTableLabelText(2));
 			usersTable.setWidget(editRow, 2, userIni);
+			validUserIni = true;
 			
 			userCPR.setText(getTableLabelText(3));
 			usersTable.setWidget(editRow, 3, userCPR);
+			validUserCPR = true;
 			
 			userPassword.setText(getTableLabelText(4));
 			usersTable.setWidget(editRow, 4, userPassword);
+			validUserPassword = true;
 			
 			userRole.setItemSelected(roleToInt(getTableLabelText(5)) - 1, true);
 			usersTable.setWidget(editRow, 5, userRole);
@@ -393,11 +398,11 @@ public class UsersComposite extends PageComposite {
 	
 	private boolean checkEditForm(){
 		if (validUserName && validUserIni && validUserCPR && validUserPassword){
-			submitButton.setDisable(false);
+			//submitButton.setDisable(false);
 			submitButton.setStyleName("disableButton", false);
 			return true;
 		} else{
-			submitButton.setDisable(true);
+			//submitButton.setDisable(true);
 			submitButton.setStyleName("disableButton", true);
 			return false;
 		}

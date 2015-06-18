@@ -1,8 +1,11 @@
-package ase.ase;
+package ase;
 
 import java.io.IOException;
 
-import ase.shared.SocketHandler;
+import shared.SocketHandler;
+import ase.controller.Controller;
+import ase.dal.DAL;
+import ase.weight.WeightHandler;
 
 
 public class Main {

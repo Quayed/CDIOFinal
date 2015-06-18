@@ -290,22 +290,20 @@ public class FormulaComposite extends PageComposite {
 		checkForm();
 	}
 	
-	private void checkForm(){
+	private boolean checkForm() {
 		if(validFormulaID && validFormulaName){
 			int falses = 0;
 			for(int i = 0; i < componentIndexCounter; i++)
-				if(!validComps.get(i).booleanValue()){
+				if(!validComps.get(i).booleanValue())
 					falses++;
 					
 					if(falses == 0){
 						createFormulaButton.setStyleName("disableButton", false);
+						return true;
 					}
-					else {
-						Window.alert("SET STYLENAME = DISABLE");
-						createFormulaButton.setStyleName("disableButton", true);
-					}
-				}
 		}
+		createFormulaButton.setStyleName("disableButton", true);
+		return false;
 	}
 	
 	private class Nom_NettoKeyUp implements KeyUpHandler{

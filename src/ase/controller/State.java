@@ -1,7 +1,9 @@
-package ase.ase;
+package ase.controller;
 
-import ase.ase.IWeightHandler.CancelException;
-import ase.ase.IWeightHandler.WeightException;
+import ase.dal.IDAL;
+import ase.weight.IWeightHandler;
+import ase.weight.IWeightHandler.CancelException;
+import ase.weight.IWeightHandler.WeightException;
 import dtu.cdio_final.server.dal.daointerfaces.DALException;
 import dtu.cdio_final.shared.dto.FormulaCompDTO;
 import dtu.cdio_final.shared.dto.FormulaDTO;

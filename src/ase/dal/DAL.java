@@ -1,4 +1,4 @@
-package ase.ase;
+package ase.dal;
 
 import dtu.cdio_final.server.dal.daoimpl.FormulaCompDAO;
 import dtu.cdio_final.server.dal.daoimpl.FormulaDAO;
