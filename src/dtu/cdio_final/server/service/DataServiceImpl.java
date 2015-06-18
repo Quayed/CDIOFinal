@@ -40,7 +40,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	private final IFormulaCompDAO formulaCompDao = new FormulaCompDAO();
 	private final IMaterialBatchDAO materialBatchDao = new MaterialBatchDAO();
 	private final IProductbatchDAO productBathcDao = new ProductbatchDAO();
-	
+
 	@Override
 	public void createUser(String token, UserDTO user) throws ServiceException, TokenException
 	{
