@@ -35,10 +35,7 @@ public enum State {
 	INVALID_DATABASE {
 		@Override
 		public State entry() throws WeightException {
-			try {
-				weightHandler.instruction("Database error!");
-			} catch (CancelException e) {
-			}
+			weightHandler.confirm("Database error!");
 			throw new WeightException();
 		}
 	},
@@ -145,11 +142,9 @@ public enum State {
 		@Override
 		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Clear weight");
-			} catch (CancelException e) {
+			if(!weightHandler.confirm("Clear weight"))
 				return State.ENTER_PRODUCTBATCH_ID;
-			}
+
 			weightHandler.tare();
 			// RETURN NEXT STATE
 			return PLACE_CONTAINER;
@@ -160,11 +155,9 @@ public enum State {
 		@Override
 		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Place container");
-			} catch (CancelException e) {
+			if(!weightHandler.confirm("Place container"))
 				return CLEAR_WEIGHT;
-			}
+
 			State.containerWeight = weightHandler.getWeight();
 			weightHandler.tare();
 			// RETURN NEXT STATE
@@ -244,11 +237,10 @@ public enum State {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Remove container");
-			} catch (CancelException e) {
+			
+			if(!weightHandler.confirm("Remove container"))
 				return CLEAR_WEIGHT;
-			}
+
 			weight = weightHandler.getWeight();
 			System.out.println("BC " + State.containerWeight);
 			System.out.println("BC " + State.nettoWeight);
@@ -264,10 +256,9 @@ public enum State {
 		@Override
 		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Invalid weighing, re-do!");
-			} catch (CancelException e) {
-			}
+			
+			weightHandler.confirm("Invalid weighing, re-do!");
+
 			// RETURN NEXT STATE
 			return CLEAR_WEIGHT;
 		}
@@ -282,10 +273,7 @@ public enum State {
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
 			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
 
-			try {
-				weightHandler.instruction("Productbatch registered");
-			} catch (CancelException e) {
-			}
+			weightHandler.confirm("Productbatch registered");
 
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
 
@@ -302,10 +290,8 @@ public enum State {
 		@Override
 		public State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			try {
-				weightHandler.instruction("Production done!");
-			} catch (CancelException e) {
-			}
+			weightHandler.confirm("Production done!");
+
 			// RETURN NEXT STATE
 			return ENTER_USER_ID;
 		}
