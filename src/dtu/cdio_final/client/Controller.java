@@ -1,10 +1,7 @@
 package dtu.cdio_final.client;
 
-import javax.xml.stream.events.StartDocument;
-
 import com.google.gwt.user.client.ui.RootPanel;
 
-import dtu.cdio_final.client.Controller.LoginEvent;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.view.FormulaComposite;
 import dtu.cdio_final.client.view.LoginComposite;
@@ -36,7 +33,7 @@ public class Controller {
 
 	
 	public Controller(DataServiceAsync service) {
-		this.service = service;
+		Controller.service = service;
 	}
 
 	public static void start() {

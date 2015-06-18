@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 
 public class UserDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges
 	 * af brugerne

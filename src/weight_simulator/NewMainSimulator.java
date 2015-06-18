@@ -3,8 +3,6 @@ package weight_simulator;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.mysql.fabric.xmlrpc.Client;
-
 public class NewMainSimulator implements Runnable{
 	
 	private NewServer server;

@@ -9,20 +9,13 @@ import gwt.material.design.client.ui.MaterialToast;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.DropEvent;
-import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -74,7 +67,6 @@ public class UsersComposite extends PageComposite {
 	private boolean validCreateUserCPR;
 	private boolean validCreateUserPassword;
 	
-	private boolean validUserID;
 	private boolean validUserName;
 	private boolean validUserIni;
 	private boolean validUserCPR;
@@ -145,7 +137,6 @@ public class UsersComposite extends PageComposite {
 			
 			userID.setText(getTableLabelText(0));
 			usersTable.setText(editRow, 0, userID.getText());
-			validUserID = true;
 			
 			userName.setText(getTableLabelText(1));
 			usersTable.setWidget(editRow, 1, userName);

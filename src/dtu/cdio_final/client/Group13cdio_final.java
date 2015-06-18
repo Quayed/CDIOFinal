@@ -14,6 +14,7 @@ public class Group13cdio_final implements EntryPoint
 		DataServiceAsync service = GWT.create(DataService.class);
 		((ServiceDefTarget) service).setServiceEntryPoint(GWT.getModuleBaseURL() + "data");
 
-		new Controller(service).start();
+		new Controller(service);
+		Controller.start();
 	}
 }

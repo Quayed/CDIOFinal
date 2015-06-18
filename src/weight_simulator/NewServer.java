@@ -2,13 +2,11 @@ package weight_simulator;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 import shared.SocketHandler;
 
 public class NewServer implements Runnable{
 
-	private final int port;
 	private final ServerSocket server;
 	private SocketHandler client;
 	
@@ -17,7 +15,6 @@ public class NewServer implements Runnable{
 	}
 	
 	public NewServer(int port) throws IOException {
-		this.port = port;
 		this.server = new ServerSocket(port);
 	}
 	

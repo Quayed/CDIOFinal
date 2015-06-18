@@ -7,12 +7,8 @@ import dtu.cdio_final.server.dal.daointerfaces.DALException;
 
 public class Controller {
 	private State currentState;
-	private IDAL dal;
-	private IWeightHandler weightHandler;
 
 	public Controller(IDAL dal, IWeightHandler weightHandler) {
-		this.dal = dal;
-		this.weightHandler = weightHandler;
 		State.initialize(dal, weightHandler);
 		start();
 	}

@@ -1,9 +1,6 @@
 package ase.test;
 
-import java.math.RoundingMode;
 import java.util.Scanner;
-
-import com.ibm.icu.text.DecimalFormat;
 
 import ase.weight.IWeightHandler;
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import dtu.cdio_final.client.Group13cdio_final;
 import dtu.cdio_final.client.service.DataService;
 import dtu.cdio_final.server.dal.daoimpl.FormulaCompDAO;
 import dtu.cdio_final.server.dal.daoimpl.FormulaDAO;

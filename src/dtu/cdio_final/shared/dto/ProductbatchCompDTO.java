@@ -3,6 +3,7 @@ package dtu.cdio_final.shared.dto;
 import java.io.Serializable;
 
 public class ProductbatchCompDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int pbID; // produktbatchets id
 	private int mbID; // i omraadet 1-99999999
 	private int userID; // operatoer-nummer

@@ -3,6 +3,7 @@ package dtu.cdio_final.shared.dto;
 import java.io.Serializable;
 
 public class MaterialbatchDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int mbID; // i omraadet 1-99999999
 	private int materialID; // i omraadet 1-99999999
 	private double quantity; // kan vaere negativ

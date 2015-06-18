@@ -3,6 +3,7 @@ package dtu.cdio_final.shared.dto;
 import java.io.Serializable;
 
 public class FormulaCompDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int formulaID; // auto genereres fra 1..n
 	private int materialID; // i omraadet 1-99999999
 	private double nomNetto; // skal vaere positiv og passende stor

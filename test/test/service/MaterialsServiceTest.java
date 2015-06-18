@@ -1,6 +1,6 @@
 package test.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 
@@ -15,7 +15,6 @@ import dtu.cdio_final.shared.ServiceException;
 import dtu.cdio_final.shared.TokenException;
 import dtu.cdio_final.shared.TokenHandler;
 import dtu.cdio_final.shared.dto.MaterialDTO;
-import dtu.cdio_final.shared.dto.UserDTO;
 
 public class MaterialsServiceTest {
 

@@ -3,6 +3,7 @@ package dtu.cdio_final.shared.dto;
 import java.io.Serializable;
 
 public class ProductbatchDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int pbID; // i omraadet 1-99999999
 	private int formulaID;
 	private int status; // 0: ikke paabegyndt, 1: under produktion, 2: afsluttet
