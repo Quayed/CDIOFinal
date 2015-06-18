@@ -5,10 +5,10 @@ import ase.dal.DAL;
 import ase.weight.WeightHandler;
 
 
-public class Main {
+public class MainASE {
 	public static void main(String[] args) {
 		
-		new Controller(new DAL(), new WeightHandler());
+		new Controller(new DAL(), new WeightHandler("169.254.2.3", 8000));
 		
 	}
 }

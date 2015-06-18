@@ -6,8 +6,12 @@ import shared.SocketHandler;
 
 public class WeightHandler implements IWeightHandler {
 	private SocketHandler weightSocket;
-
-	public WeightHandler() {
+	private final String host;
+	private final int port;
+	
+	public WeightHandler(String host, int port) {
+		this.host = host;
+		this.port = port;
 		connect();
 	}
 
@@ -16,7 +20,7 @@ public class WeightHandler implements IWeightHandler {
 		while (weightSocket == null) {
 			System.out.println("try connect");
 			try {
-				weightSocket = new SocketHandler("169.254.2.3", 8000);
+				weightSocket = new SocketHandler(host, port);
 				try {
 					getWeight();
 				} catch (WeightException e) {

@@ -5,16 +5,12 @@ import java.net.ServerSocket;
 
 import shared.SocketHandler;
 
-public class NewServer implements Runnable{
+public class Server implements Runnable{
 
 	private final ServerSocket server;
 	private SocketHandler client;
 	
-	public NewServer() throws IOException {
-		this(8000);
-	}
-	
-	public NewServer(int port) throws IOException {
+	public Server(int port) throws IOException {
 		this.server = new ServerSocket(port);
 	}
 	
