@@ -1,4 +1,4 @@
-package ase.ase;
+package ase.weight;
 
 public interface IWeightHandler {
 	void connect();

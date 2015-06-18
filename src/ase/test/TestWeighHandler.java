@@ -1,11 +1,11 @@
-package ase;
+package ase.test;
 
 import java.math.RoundingMode;
 import java.util.Scanner;
 
 import com.ibm.icu.text.DecimalFormat;
 
-import ase.ase.IWeightHandler;
+import ase.weight.IWeightHandler;
 
 public class TestWeighHandler implements IWeightHandler {
 	Scanner scanner = new Scanner(System.in);

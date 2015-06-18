@@ -1,12 +1,12 @@
-package ase;
+package ase.test;
 
 import java.sql.SQLException;
 
 import org.junit.Test;
 
-import ase.ase.DAL;
-import ase.ase.IWeightHandler.WeightException;
-import ase.ase.State;
+import ase.controller.State;
+import ase.dal.DAL;
+import ase.weight.IWeightHandler.WeightException;
 import dtu.cdio_final.server.dal.connector.Connector;
 import dtu.cdio_final.server.dal.daointerfaces.DALException;
 
