@@ -1,8 +1,8 @@
-package ase.ase;
+package ase.weight;
 
 import java.io.IOException;
 
-import ase.shared.SocketHandler;
+import shared.SocketHandler;
 
 public class WeightHandler implements IWeightHandler {
 	private SocketHandler weightSocket;

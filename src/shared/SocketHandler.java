@@ -1,4 +1,4 @@
-package ase.shared;
+package shared;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ase.shared.SocketHandler;
+import shared.SocketHandler;
 
 public class NewServer implements Runnable{
 
