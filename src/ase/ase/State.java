@@ -114,6 +114,9 @@ public enum State {
 			if (productBatch == null)
 				return ENTER_PRODUCTBATCH_ID;
 			
+			if (productBatch.getStatus() == 3)
+				return ENTER_PRODUCTBATCH_ID;
+			
 			// UPDATE STATUS
 			productBatch.setStatus(2); // set productbatch status to "under production"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
@@ -186,7 +189,7 @@ public enum State {
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
 			try {
-				input = weightHandler.dialog("Find MaterialID: "+material.getMaterialID());
+				input = weightHandler.dialog("Enter mbID for: "+material.getMaterialID());
 			} catch (CancelException e1) {
 				return CLEAR_WEIGHT;
 			}
