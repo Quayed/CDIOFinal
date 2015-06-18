@@ -59,10 +59,8 @@ public class WeightHandler implements IWeightHandler {
 			weightSocket.println("RM20 8 \"" + message + "\" \"\" \"&3\"");
 			weightSocket.readLine();
 			String msg = weightSocket.readLine();
-			if (msg.contains("RM20 C"))
+			if (msg.equals("RM20 C"))
 				throw new CancelException();
-			if (msg.contains("RM20 B"))
-				return "B";
 			if (msg.length() > 9)
 				return msg.substring(8, msg.length() - 1);
 			return msg;
@@ -124,6 +122,7 @@ public class WeightHandler implements IWeightHandler {
 				return Double.parseDouble(msg.substring(8, msg.length() - 3));
 		} catch (IOException e) {
 			weightSocket = null;
+			weightSocket.disconnect();
 			throw new WeightException();
 		}
 	}
