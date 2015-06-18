@@ -94,6 +94,7 @@ public class UsersComposite extends PageComposite {
 		usersTable.setWidget(0, 7, new Label(""));
 		usersTable.setWidget(0, 8, new Label(""));
 		createUserButton.addStyleName("fullWidth");
+		createUserButton.addStyleName("disableButton");
 		
 		service.getUsers(Controller.getToken(), new TokenAsyncCallback<List<UserDTO>>() {
 
@@ -156,6 +157,7 @@ public class UsersComposite extends PageComposite {
 			usersTable.setWidget(editRow, 5, userStatus);
 						
 			usersTable.setWidget(editRow, 6, submitButton);
+			submitButton.addStyleName("disableButton");
 			
 			usersTable.setWidget(editRow, 7, cancelButton);
 		}
@@ -164,7 +166,9 @@ public class UsersComposite extends PageComposite {
 	
 	@UiHandler("submitButton")
 	void submitClickHandler(ClickEvent event){
-
+		if(!checkEditForm())
+			return;
+		
 			int userIDInt = Integer.valueOf(userID.getText());
 			int userRoleInt = userRole.getSelectedIndex() +1;
 			int userStatusInt;
@@ -200,6 +204,9 @@ public class UsersComposite extends PageComposite {
 	
 	@UiHandler("createUserButton")
 	void createUser(ClickEvent event){
+		if(!checkForm())
+			return;
+		
 		newUser = new UserDTO(Integer.valueOf(createUserID.getText()), createUserName.getText(), createUserIni.getText(), createUserCPR.getText(), createUserPassword.getText(), createUserRole.getSelectedIndex()+1, 1);
 		service.createUser(Controller.getToken(), newUser, new TokenAsyncCallback<Void>(){
 
@@ -311,26 +318,29 @@ public class UsersComposite extends PageComposite {
 		checkForm();
 	}
 	
-	private void checkForm(){
+	private boolean checkForm(){
 		if (validCreateUserID && validCreateUserName && validCreateUserIni && validCreateUserCPR && validCreateUserPassword){
 			createUserButton.setDisable(false);
+			createUserButton.setStyleName("disableButton", false);
+			return true;
 		} else{
 			createUserButton.setDisable(true);
+			createUserButton.setStyleName("disableButton", true);
+			return false;
 		}
 	}
 	
-	//virker ikke lige pt. i flextable.. !
-	@UiHandler("userID")
-	void keyUpUserID(KeyUpEvent e) {
-		if(FieldVerifier.isValidID(userID.getText())){
-			userID.removeStyleName("invalidEntry");
-			validUserID = true;
-		} else{
-			userID.addStyleName("invalidEntry");
-			validUserID = false;
-		}
-		checkEditForm();
-	}
+//	@UiHandler("userID")
+//	void keyUpUserID(KeyUpEvent e) {
+//		if(FieldVerifier.isValidID(userID.getText())){
+//			userID.removeStyleName("invalidEntry");
+//			validUserID = true;
+//		} else{
+//			userID.addStyleName("invalidEntry");
+//			validUserID = false;
+//		}
+//		checkEditForm();
+//	}
 	
 	@UiHandler("userName")
 	void keyUpUserName(KeyUpEvent e) {
@@ -381,11 +391,15 @@ public class UsersComposite extends PageComposite {
 		checkEditForm();
 	}
 	
-	private void checkEditForm(){
-		if (validUserID && validUserName && validUserIni && validUserCPR && validUserPassword){
+	private boolean checkEditForm(){
+		if (validUserName && validUserIni && validUserCPR && validUserPassword){
 			submitButton.setDisable(false);
+			submitButton.setStyleName("disableButton", false);
+			return true;
 		} else{
 			submitButton.setDisable(true);
+			submitButton.setStyleName("disableButton", true);
+			return false;
 		}
 	}
 	

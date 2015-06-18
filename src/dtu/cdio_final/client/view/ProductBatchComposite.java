@@ -72,6 +72,7 @@ public class ProductBatchComposite extends PageComposite
 		productBatchTable.setWidget(0, 1, new Label("Formula ID"));
 		productBatchTable.setWidget(0, 2, new Label("Batch Status"));
 		createProductBatchButton.addStyleName("fullWidth");
+		createProductBatchButton.addStyleName("disableButton");
 
 		if(!createAccess){
 			createBox.setVisible(false);
@@ -156,9 +157,11 @@ public class ProductBatchComposite extends PageComposite
 	private boolean checkForm(){
 		if (validPbID){
 			createProductBatchButton.setDisable(false);
+			createProductBatchButton.setStyleName("disableButton", false);
 			return true;
 		} else{
 			createProductBatchButton.setDisable(true);
+			createProductBatchButton.setStyleName("disableButton", true);
 			return false;
 		}
 	}

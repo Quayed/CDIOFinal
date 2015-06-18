@@ -40,7 +40,7 @@ public class FormulaComposite extends PageComposite {
 	
 	private static MainUiBinder uiBinder = GWT.create(MainUiBinder.class);
 	private int componentCounter = 2;
-	private int componentIndexCounter = 0;
+	private int componentIndexCounter;
 	private HandlerRegistration tableHandler;
 	@UiField FlexTable formulaTable;
 	
@@ -73,6 +73,7 @@ public class FormulaComposite extends PageComposite {
 	public void reloadPage() 
 	{
 //		editRow = -1;
+		componentIndexCounter = 0;
 		numberOfRows = 1;
 		formulaTable.removeAllRows();
 		for(int i = componentCounter-1; i > 1; i--){
@@ -82,8 +83,6 @@ public class FormulaComposite extends PageComposite {
 		componentCounter = 2;
 		
 		textBoxMaterialID = new MaterialListBox();
-		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
-		
 		
 		MaterialTextBox textBoxNom_Netto = new MaterialTextBox();
 		textBoxNom_Netto.setPlaceholder("nom_netto");
@@ -95,6 +94,8 @@ public class FormulaComposite extends PageComposite {
 		textBoxTolerance.addKeyUpHandler(new ToleranceKeyUp(textBoxTolerance, componentIndexCounter));
 		componentTable.setWidget(1, 3, textBoxTolerance);
 		
+		createFormulaButton.addStyleName("disableButton");
+
 		if(!createAccess){
 			createBox.setVisible(false);
 		}
@@ -205,7 +206,6 @@ public class FormulaComposite extends PageComposite {
 	@UiHandler("addCompButton")
 	void addComponent(ClickEvent event){
 		MaterialListBox textBoxMaterialID = new MaterialListBox();
-		textBoxMaterialID.addKeyUpHandler(new MaterialIDKeyUp(textBoxMaterialID, componentIndexCounter));
 		for(MaterialDTO material : materials){
 			textBoxMaterialID.addItem(String.valueOf(material.getMaterialID()) + "(" + material.getMaterialName() + ")");
 		}
@@ -224,6 +224,8 @@ public class FormulaComposite extends PageComposite {
 		MaterialButton componentTableButton = new MaterialButton("mdi-content-clear", "blue", "", "light", "");
 		componentTableButton.addClickHandler(new removeComponent());
 		componentTable.setWidget(componentCounter, 4, componentTableButton);
+		
+		createFormulaButton.setStyleName("disableButton");
 		
 		componentCounter++;
 	}
@@ -281,39 +283,21 @@ public class FormulaComposite extends PageComposite {
 		if(validFormulaID && validFormulaName){
 			int falses = 0;
 			for(int i = 0; i < componentIndexCounter; i++)
-				if(!validComps.get(i).booleanValue())
+				if(!validComps.get(i).booleanValue()){
 					falses++;
 					
 					if(falses == 0){
-						createFormulaButton.setDisable(false);
+						createFormulaButton.setStyleName("disableButton", false);
 					}
-		} else {
-			createFormulaButton.setDisable(true);
-			}
+					else {
+						Window.alert("SET STYLENAME = DISABLE");
+						createFormulaButton.setStyleName("disableButton", true);
+					}
+				}
 		}
+	}
 	
-	private class MaterialIDKeyUp implements KeyUpHandler{
-		
-		private final MaterialListBox textBoxMaterialID;
-		private int index;
-		
-		private MaterialIDKeyUp(MaterialListBox textbox, int componentIndex){
-			this.textBoxMaterialID = textbox;
-			this.index = componentIndex;
-			
-			validComps.add(index, false);
-			componentIndexCounter++;
-		}
-
-		@Override
-		public void onKeyUp(KeyUpEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	};
-		
-private class Nom_NettoKeyUp implements KeyUpHandler{
+	private class Nom_NettoKeyUp implements KeyUpHandler{
 		
 		private final MaterialTextBox textBoxNom_Netto;
 		private int index;
@@ -321,9 +305,10 @@ private class Nom_NettoKeyUp implements KeyUpHandler{
 		private Nom_NettoKeyUp(MaterialTextBox textbox, int componentIndex){
 			this.textBoxNom_Netto = textbox;
 			this.index = componentIndex;
-
+			
 			validComps.add(index, false);
 			componentIndexCounter++;
+			
 		}
 		
 		@Override
@@ -333,13 +318,14 @@ private class Nom_NettoKeyUp implements KeyUpHandler{
 				validComps.set(index, true);
 			} else{
 				textBoxNom_Netto.addStyleName("invalidEntry");
+				if(validComps.get(index))
 				validComps.set(index, false);
 			}
 			checkForm();
 		}
 	};
 	
-private class ToleranceKeyUp implements KeyUpHandler{
+	private class ToleranceKeyUp implements KeyUpHandler{
 		
 		private final MaterialTextBox textBoxTolerance;
 		private int index;
@@ -347,6 +333,7 @@ private class ToleranceKeyUp implements KeyUpHandler{
 		private ToleranceKeyUp(MaterialTextBox textbox, int componentIndex){
 			this.textBoxTolerance = textbox;
 			this.index = componentIndex;
+			
 			
 			validComps.add(index, false);
 			componentIndexCounter++;
@@ -359,6 +346,7 @@ private class ToleranceKeyUp implements KeyUpHandler{
 				validComps.set(index, true);
 			} else{
 				textBoxTolerance.addStyleName("invalidEntry");
+				if(validComps.get(index))
 				validComps.set(index, false);
 			}
 			checkForm();

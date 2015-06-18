@@ -67,6 +67,7 @@ public class MaterialComposite extends PageComposite{
 		materialsTable.setWidget(0, 3, new Label(""));
 		materialsTable.setWidget(0, 4, new Label(""));
 		createMaterialButton.addStyleName("fullWidth");
+		createMaterialButton.addStyleName("disableButton");
 		
 		if(!createAccess){
 			createBox.setVisible(false);
@@ -150,8 +151,10 @@ public class MaterialComposite extends PageComposite{
 	private void checkForm(){
 		if (validID && validName && validProvider){
 			createMaterialButton.setDisable(false);
+			createMaterialButton.setStyleName("disableButton", false);
 		} else{
 			createMaterialButton.setDisable(true);
+			createMaterialButton.setStyleName("disableButton", true);
 		}
 	}
 	private void addRow(MaterialDTO materials) {

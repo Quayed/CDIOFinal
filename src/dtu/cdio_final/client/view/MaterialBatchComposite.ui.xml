@@ -18,7 +18,7 @@
 			            	    <m:MaterialColumn grid="s6"><m:MaterialTextBox ui:field="createQuantity" placeholder="Quantity"></m:MaterialTextBox></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            	<m:MaterialRow>
-			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createMaterialBatchButton" icon="mdi-content-add" waves="light"></m:MaterialButton></m:MaterialColumn>
+			            	    <m:MaterialColumn grid="s12"><m:MaterialButton ui:field="createMaterialBatchButton" icon="mdi-content-add" waves="light" color="blue"></m:MaterialButton></m:MaterialColumn>
 			            	</m:MaterialRow>
 			            </g:VerticalPanel>
 			        </m:content>

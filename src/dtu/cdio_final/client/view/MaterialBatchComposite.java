@@ -188,11 +188,9 @@ public class MaterialBatchComposite extends PageComposite {
 		if (validMaterialBatchID && validQuantity){
 			createMaterialBatchButton.setDisable(false);
 			createMaterialBatchButton.removeStyleName("disableButton");
-			createMaterialBatchButton.addStyleName("enableButton");
 			return true;
 		} else{
 			createMaterialBatchButton.setDisable(true);
-			createMaterialBatchButton.removeStyleName("enableButton");
 			createMaterialBatchButton.addStyleName("disableButton");
 			return false;
 		}
