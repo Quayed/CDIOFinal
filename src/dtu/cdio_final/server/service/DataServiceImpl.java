@@ -307,15 +307,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public HashMap<String, Object> login(int userID, String password) throws ServiceException
 	{
-		//TODO: update to use tokens
-		//TODO: update to use hashing
 		HashMap<String, Object> results = new HashMap<String, Object>();
 		
 		try
 		{
 			UserDTO user = userDao.getUser(userID);
 			
-			if((user != null) && user.getPassword().equals(password))
+			if((user != null) && (user.getPassword().equals(password)) && (user.getStatus() != 0))
 			{
 				results.put("token", TokenHandler.getInstance().createToken(Integer.toString(userID)));
 				results.put("user", user);

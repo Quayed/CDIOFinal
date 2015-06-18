@@ -33,26 +33,7 @@ public class WeightHandler implements IWeightHandler {
 	}
 
 	@Override
-	public void instruction(String message) throws WeightException, CancelException {
-		rm20(message);
-	}
-
-	@Override
 	public String dialog(String message) throws WeightException, CancelException {
-		return rm20(message);
-	}
-
-	@Override
-	public boolean confirm(String message) throws WeightException {
-		try {
-			rm20(message);
-		} catch (CancelException e) {
-			return false;
-		}
-		return true;
-	}
-
-	private String rm20(String message) throws WeightException, CancelException {
 		if (message.length() > 24)
 			message = message.substring(0, 24);
 		try {
@@ -68,6 +49,16 @@ public class WeightHandler implements IWeightHandler {
 			weightSocket = null;
 			throw new WeightException();
 		}
+	}
+
+	@Override
+	public boolean confirm(String message) throws WeightException {
+		try {
+			dialog(message);
+		} catch (CancelException e) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
