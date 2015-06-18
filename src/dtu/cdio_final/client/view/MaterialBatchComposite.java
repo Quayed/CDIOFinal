@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.client.Controller;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
@@ -83,12 +83,12 @@ public class MaterialBatchComposite extends PageComposite {
 		materialBatchTable.setWidget(0, 1, new Label("Material ID"));
 		materialBatchTable.setWidget(0, 2, new Label("Quantity(KG)"));
 		createMaterialBatchButton.addStyleName("fullWidth");
-
+		createMaterialBatchButton.addStyleName("disableButton");
 		if(!createAccess){
 			createBox.setVisible(false);
 		}
 		
-		service.getMaterialBatches(Group13cdio_final.token, new TokenAsyncCallback<List<MaterialbatchDTO>>() {
+		service.getMaterialBatches(Controller.getToken(), new TokenAsyncCallback<List<MaterialbatchDTO>>() {
 			
 			@Override
 			public void onSuccess(List<MaterialbatchDTO> materialBatches) 
@@ -100,7 +100,7 @@ public class MaterialBatchComposite extends PageComposite {
 
 		});
 		
-		service.getMaterials(Group13cdio_final.token, new MaterialCallback(materialBatchesID));
+		service.getMaterials(Controller.getToken(), new MaterialCallback(materialBatchesID));
 	}
 
 	private class MaterialCallback extends TokenAsyncCallback<List<MaterialDTO>> {
@@ -142,7 +142,7 @@ public class MaterialBatchComposite extends PageComposite {
 		double quantityDouble2 = Double.valueOf(createQuantity.getText());
 		final MaterialbatchDTO newMaterialBatch = new MaterialbatchDTO(materialBatchIDInt2, materialIDInt2, quantityDouble2);
 		
-		service.createMaterialBatch(Group13cdio_final.token, newMaterialBatch, new TokenAsyncCallback<Void>(){
+		service.createMaterialBatch(Controller.getToken(), newMaterialBatch, new TokenAsyncCallback<Void>(){
 			@Override
 			public void onSuccess(Void result) {
 				// Add a new row to the table, when the database query has been completed.
@@ -187,17 +187,15 @@ public class MaterialBatchComposite extends PageComposite {
 	private boolean checkForm(){
 		if (validMaterialBatchID && validQuantity){
 			createMaterialBatchButton.setDisable(false);
+			createMaterialBatchButton.removeStyleName("disableButton");
+			createMaterialBatchButton.addStyleName("enableButton");
 			return true;
 		} else{
 			createMaterialBatchButton.setDisable(true);
+			createMaterialBatchButton.removeStyleName("enableButton");
+			createMaterialBatchButton.addStyleName("disableButton");
 			return false;
 		}
-	}
-	private boolean containsElement(MaterialListBox box , String element){
-		for(int i = 0; i < box.getItemCount(); i++)
-			if(box.getItemText(i).equals(element))
-				return true;
-		return false;
 	}
 }
 	

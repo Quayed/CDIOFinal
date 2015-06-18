@@ -1,8 +1,8 @@
-package weight_simulator.boundary;
+package weight_simulator.old.boundary;
 
 import java.util.Scanner;
 
-import weight_simulator.data.WeightDTO;
+import weight_simulator.old.data.WeightDTO;
 
 public class UI implements Runnable, IUI {
 	private Scanner in;

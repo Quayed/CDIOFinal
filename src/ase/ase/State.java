@@ -1,17 +1,26 @@
 package ase.ase;
 
+import ase.ase.IWeightHandler.CancelException;
 import ase.ase.IWeightHandler.WeightException;
-import dtu.cdio_final.server.dal.daointerfaces.*;
-import dtu.cdio_final.shared.dto.*;
+import dtu.cdio_final.server.dal.daointerfaces.DALException;
+import dtu.cdio_final.shared.dto.FormulaCompDTO;
+import dtu.cdio_final.shared.dto.FormulaDTO;
+import dtu.cdio_final.shared.dto.MaterialDTO;
+import dtu.cdio_final.shared.dto.MaterialbatchDTO;
+import dtu.cdio_final.shared.dto.ProductbatchCompDTO;
+import dtu.cdio_final.shared.dto.ProductbatchDTO;
+import dtu.cdio_final.shared.dto.UserDTO;
 
 public enum State {
 	START {
 		@Override
+		public
 		State entry() throws WeightException {
 			// CONNECT/RECONNECT
 			weightHandler.connect();
 			dal.connect();
 			// RESET
+
 			formulaComp = null;
 			material = null;
 			materialBatch = null;
@@ -26,19 +35,27 @@ public enum State {
 	},
 	INVALID_DATABASE {
 		@Override
+		public
 		State entry() throws WeightException {
-			weightHandler.instruction("Database error!");
+			try {
+				weightHandler.instruction("Database error!");
+			} catch (CancelException e) {
+			}
 			throw new WeightException();
 		}
 	},
 	ENTER_USER_ID {
 		@Override
+		public
 		State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int userID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			input = weightHandler.dialog("Enter User ID");
+			try {
+				input = weightHandler.dialog("Enter User ID");
+			} catch (CancelException e) {
+			}
 			// VALIDATE INPUT TYPE
 			try {
 				userID = Integer.parseInt(input);
@@ -49,7 +66,9 @@ public enum State {
 			user = dal.getUserDao().getUser(userID); // get user from database
 			if (user == null)
 				return ENTER_USER_ID;
-			if (user.getRole() < 4)
+			if (user.getRole() != 4)
+				return ENTER_USER_ID;
+			if (user.getStatus() != 1)
 				return ENTER_USER_ID;
 			// RETURN NEXT STATE
 			return CONFIRM_OPERATOR;
@@ -57,11 +76,12 @@ public enum State {
 	},
 	CONFIRM_OPERATOR {
 		@Override
+		public
 		State entry() throws WeightException {
 			// VARIABLES
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
-			input = weightHandler.confirm("Confirm " + State.user.getUserName());
+			input = weightHandler.confirm("Confirm User: " + State.user.getIni());
 			// VALIDATE CONFIRMATION
 			if (!input)
 				return ENTER_USER_ID;
@@ -72,12 +92,17 @@ public enum State {
 	},
 	ENTER_PRODUCTBATCH_ID {
 		@Override
+		public
 		State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int productBID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			input = weightHandler.dialog("Enter Productbatch ID");
+			try {
+				input = weightHandler.dialog("Enter Productbatch ID");
+			} catch (CancelException e) {
+				return ENTER_USER_ID;
+			}
 			// VALIDATE INPUT TYPE
 			try {
 				productBID = Integer.parseInt(input);
@@ -88,6 +113,7 @@ public enum State {
 			productBatch = dal.getProductBatchDao().getProductbatch(productBID); // get productbatch from database
 			if (productBatch == null)
 				return ENTER_PRODUCTBATCH_ID;
+			
 			// UPDATE STATUS
 			productBatch.setStatus(2); // set productbatch status to "under production"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
@@ -98,12 +124,13 @@ public enum State {
 	},
 	START_PROCESS {
 		@Override
+		public
 		State entry() throws WeightException, DALException {
 			// VARIABLES
 			boolean input;
 			// CONFIRM: DISPLAY MESSAGE AND RECEIVE CONFIRMATION
 			formula = dal.getFormulaDao().getFormula(State.productBatch.getFormulaID()); // get formula from database
-			input = weightHandler.confirm("Confirm " + formula.getFormulaName());
+			input = weightHandler.confirm("Confirm: " + formula.getFormulaName());
 			// VALIDATE CONFIRMATION
 			if (!input) {
 				productBatch.setStatus(1); // set productbatch status to "created"
@@ -111,16 +138,22 @@ public enum State {
 				return ENTER_PRODUCTBATCH_ID;
 			}
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
-
+			if (material == null)
+				return ENTER_PRODUCTBATCH_ID;
 			// RETURN NEXT STATE
 			return CLEAR_WEIGHT;
 		}
 	},
 	CLEAR_WEIGHT {
 		@Override
+		public
 		State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weightHandler.instruction("Clear weight");
+			try {
+				weightHandler.instruction("Clear weight");
+			} catch (CancelException e) {
+				return State.ENTER_PRODUCTBATCH_ID;
+			}
 			weightHandler.tare();
 			// RETURN NEXT STATE
 			return PLACE_CONTAINER;
@@ -129,9 +162,14 @@ public enum State {
 	},
 	PLACE_CONTAINER {
 		@Override
+		public
 		State entry() throws WeightException {
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weightHandler.instruction("Place container");
+			try {
+				weightHandler.instruction("Place container");
+			} catch (CancelException e) {
+				return CLEAR_WEIGHT;
+			}
 			State.containerWeight = weightHandler.getWeight();
 			weightHandler.tare();
 			// RETURN NEXT STATE
@@ -141,13 +179,17 @@ public enum State {
 	},
 	ENTER_MATERIALBATCH_ID {
 		@Override
+		public
 		State entry() throws WeightException, DALException {
 			// VARIABLES
 			String input = "";
 			int materialBatchID;
 			// DIALOG: DISPLAY MESSAGE AND RECEIVE INPUT
-			weightHandler.instruction("Find material " + material.getMaterialID());
-			input = weightHandler.dialog("Enter batch ID for material");
+			try {
+				input = weightHandler.dialog("Find MaterialID: "+material.getMaterialID());
+			} catch (CancelException e1) {
+				return CLEAR_WEIGHT;
+			}
 			// VALIDATE INPUT TYPE
 			try {
 				materialBatchID = Integer.parseInt(input);
@@ -159,7 +201,10 @@ public enum State {
 			if (materialBatch == null)
 				return ENTER_MATERIALBATCH_ID;
 			// VALIDATE MATERIALBATCH ID
-			if (materialBatchID != State.materialBatch.getMbID())
+			if (materialBatch.getMaterialID() != material.getMaterialID())
+				return ENTER_MATERIALBATCH_ID;
+			formulaComp = dal.getFormulaCompDao().getFormulaComp(State.productBatch.getFormulaID(), material.getMaterialID()); // get formula from database
+			if (materialBatch.getQuantity() < formulaComp.getNomNetto())
 				return ENTER_MATERIALBATCH_ID;
 			// RETURN NEXT STATE
 			return WEIGHING;
@@ -168,59 +213,125 @@ public enum State {
 	},
 	WEIGHING {
 		@Override
+		public
 		State entry() throws WeightException, DALException {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weightHandler.instruction("Fill container at " + formulaComp.getNomNetto() + "kg");
-			weight = weightHandler.getWeight();
+			weight = weightHandler.weigh("Fill container: " + formulaComp.getNomNetto() + "kg");
 			// CALCULATE TOLERANCE
-			formulaComp = dal.getFormulaCompDao().getFormulaComp(State.productBatch.getFormulaID(), material.getMaterialID()); // get formula from database
 			double tolerance = 10;
-			// double tolerance = State.formulaComp.getNomNetto() * 0.01 * State.formulaComp.getTolerance();
-			if (weight < State.formulaComp.getNomNetto() - tolerance || weight > State.formulaComp.getNomNetto() + tolerance)
-				return WEIGHING;
+			// double tolerance = State.formulaComp.getTolerance();
+			
+			double diff = Math.abs(weight - State.formulaComp.getNomNetto());
+			double acceptedDiff = (State.formulaComp.getNomNetto() / 100) * tolerance;
+			
+			if (diff > acceptedDiff){
+				if(weightHandler.confirm("Invalid Tolerance")){
+					return WEIGHING;
+				}
+				else{
+					return CLEAR_WEIGHT;
+				}
+			}
+				
 			State.nettoWeight = weight;
 			// RETURN NEXT STATE
 			return BRUTTO_CONTROL;
 		}
-
+	},
+	INVALID_TOLERANCE {
+		@Override
+		public
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			try {
+				weightHandler.instruction("Invalid weighing, re-do!");
+			} catch (CancelException e) {
+				return CLEAR_WEIGHT;
+			}
+			// RETURN NEXT STATE
+			return BRUTTO_CONTROL;
+		}
 	},
 	BRUTTO_CONTROL {
 		@Override
+		public
 		State entry() throws WeightException {
 			// VARIABLES
 			double weight;
 			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
-			weightHandler.instruction("Remove container");
+			try {
+				weightHandler.instruction("Remove container");
+			} catch (CancelException e) {
+				return CLEAR_WEIGHT;
+			}
 			weight = weightHandler.getWeight();
+			System.out.println("BC " + State.containerWeight);
+			System.out.println("BC " + State.nettoWeight);
+			System.out.println("BC " + weight);
 			// VALIDATE BRUTTO CONTROL
 			if (weight != -State.containerWeight)
-				return CLEAR_WEIGHT;
+				return INVALID_WEIGHING;
+			
+			
 			return REGISTER_PRODUCTBATCH_COMP;
 		}
-
+	},
+	INVALID_WEIGHING {
+		@Override
+		public
+		State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			try {
+				weightHandler.instruction("Invalid weighing, re-do!");
+			} catch (CancelException e) {
+			}
+			// RETURN NEXT STATE
+			return CLEAR_WEIGHT;
+		}
 	},
 	REGISTER_PRODUCTBATCH_COMP {
 		@Override
-		State entry() throws DALException {
-			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.nettoWeight, State.containerWeight
-					+ State.containerWeight);
+		public
+		State entry() throws WeightException, DALException {
+			ProductbatchCompDTO pbCompDTO = new ProductbatchCompDTO(State.productBatch.getPbID(), materialBatch.getMbID(), State.user.getUserID(), State.containerWeight, State.nettoWeight);
+			materialBatch.setQuantity(materialBatch.getQuantity()-State.nettoWeight);
+			
 			// DISPLAY MESSAGE AND RECEIVE INPUT
 			dal.getProductBatchCompDao().createProductbatchComp(pbCompDTO); // create productbatchcomponent on database
+			dal.getMaterialBatchDao().updateMaterialBatch(materialBatch);
+			
+			try {
+				weightHandler.instruction("Productbatch registered");
+			} catch (CancelException e) {
+			}
+			
 			material = dal.getProductBatchDao().getNextMaterial(productBatch.getPbID());
-
+			
 			// VALIDATE PRODUCTBATCH COMPONENT
 			if (material != null) {
 				return CLEAR_WEIGHT;
 			}
 			productBatch.setStatus(3); // set productbatch status to "done"
 			dal.getProductBatchDao().updateProductbatch(productBatch); // update productbatch on database
-			return ENTER_USER_ID; // UPDATE STATUS
+			return PRODUCTION_DONE; // UPDATE STATUS
+		}
+	},
+	PRODUCTION_DONE {
+		@Override
+		public State entry() throws WeightException {
+			// INSTRUCTION: DISPLAY MESSAGE AND CONTINUE
+			try {
+				weightHandler.instruction("Production done!");
+			} catch (CancelException e) {
+			}
+			// RETURN NEXT STATE
+			return ENTER_USER_ID;
 		}
 
-	},
-	;
+	};
+	
 	private static FormulaCompDTO formulaComp;
 	private static MaterialDTO material;
 	private static MaterialbatchDTO materialBatch;
@@ -232,9 +343,9 @@ public enum State {
 	private static double containerWeight; // tare
 	private static double nettoWeight;
 
-	abstract State entry() throws WeightException, DALException;
+	public abstract State entry() throws WeightException, DALException;
 
-	static void initialize(IDAL dal, IWeightHandler weightHandler) {
+	public static void initialize(IDAL dal, IWeightHandler weightHandler) {
 		State.dal = dal;
 		State.weightHandler = weightHandler;
 	}

@@ -44,7 +44,9 @@ public class TestFormulaCompDAO {
 	@Test
 	public void getFormulaCompList() throws DALException {
 		try {
-			formulaCompDAO.getFormulaCompList();
+			for (FormulaCompDTO fc : formulaCompDAO.getFormulaCompList()) {
+				System.out.println(fc);
+			}
 		} catch (DALException e) {
 			fail(e.getMessage());
 		}

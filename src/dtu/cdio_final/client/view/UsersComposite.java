@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.client.Controller;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.FieldVerifier;
@@ -95,7 +95,7 @@ public class UsersComposite extends PageComposite {
 		usersTable.setWidget(0, 8, new Label(""));
 		createUserButton.addStyleName("fullWidth");
 		
-		service.getUsers(Group13cdio_final.token, new TokenAsyncCallback<List<UserDTO>>() {
+		service.getUsers(Controller.getToken(), new TokenAsyncCallback<List<UserDTO>>() {
 
 			@Override
 			public void onSuccess(List<UserDTO> users) {
@@ -174,7 +174,7 @@ public class UsersComposite extends PageComposite {
 				userStatusInt = 0;
 			}
 			UserDTO user = new UserDTO(userIDInt, userName.getText(), userIni.getText(), userCPR.getText(), userPassword.getText(), userRoleInt, userStatusInt);
-			service.updateUser(Group13cdio_final.token, user, new TokenAsyncCallback<Void>(){
+			service.updateUser(Controller.getToken(), user, new TokenAsyncCallback<Void>(){
 
 				@Override
 				public void onSuccess(Void result) {
@@ -201,7 +201,7 @@ public class UsersComposite extends PageComposite {
 	@UiHandler("createUserButton")
 	void createUser(ClickEvent event){
 		newUser = new UserDTO(Integer.valueOf(createUserID.getText()), createUserName.getText(), createUserIni.getText(), createUserCPR.getText(), createUserPassword.getText(), createUserRole.getSelectedIndex()+1, 1);
-		service.createUser(Group13cdio_final.token, newUser, new TokenAsyncCallback<Void>(){
+		service.createUser(Controller.getToken(), newUser, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {

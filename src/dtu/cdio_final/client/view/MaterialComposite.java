@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.client.Controller;
 import dtu.cdio_final.client.service.DataServiceAsync;
 import dtu.cdio_final.client.service.TokenAsyncCallback;
 import dtu.cdio_final.shared.dto.MaterialDTO;
@@ -72,7 +72,7 @@ public class MaterialComposite extends PageComposite{
 			createBox.setVisible(false);
 		}
 		
-		service.getMaterials(Group13cdio_final.token, new TokenAsyncCallback<List<MaterialDTO>>() {
+		service.getMaterials(Controller.getToken(), new TokenAsyncCallback<List<MaterialDTO>>() {
 			
 			@Override
 			public void onSuccess(List<MaterialDTO> materials) {
@@ -89,7 +89,7 @@ public class MaterialComposite extends PageComposite{
 	void createUser(ClickEvent event){
 		newMaterial = new MaterialDTO(Integer.valueOf(createMaterialID.getText()), createMaterialName.getText(), createProvider.getText());
 
-		service.createMaterial(Group13cdio_final.token, newMaterial, new TokenAsyncCallback<Void>(){
+		service.createMaterial(Controller.getToken(), newMaterial, new TokenAsyncCallback<Void>(){
 
 			@Override
 			public void onSuccess(Void result) {

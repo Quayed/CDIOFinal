@@ -30,7 +30,7 @@ public class FieldVerifier
 	 */
 	private static final String NAME_PATTERN = "^[a-zA-ZæøåÆØÅ -]{2,20}$";
 	private static final String INI_PATTERN = "^[a-zA-ZæøåÆØÅ]{2,4}$";
-	private static final String CPR_PATTERN = "^((0)[1-9]|((1|2)[0-9]|3[01]))(0[1-9]{7}|1[012][0-9]{6})$"; 
+	private static final String CPR_PATTERN = "^((0[1-9]|[12][0-9]|3[01])(0[13578]|1[02])[0-9]{6})|((0[1-9]|[12][0-9]|30)(0[469]|11)[0-9]{6})|((0[1-9]|1[0-9]|2[0-9])02([02468][048]|[13579][26])[0-9]{4})|((0[1-9]|1[0-9]|2[0-8])02[0-9]{6})$"; //tager højde for alt andet end de sidste 4 cifre
 	private static final String ID_PATTERN = "^[0-9]{1,8}$"; // 1­99999999
 	private static final String PROVIDER_PATTERN = "^[a-zA-ZæøåÆØÅ -\\+\\-_?=!\\.]{2,20}$"; //Bogstaver,tal,forskellige tegn
 	private static final String QUANTITY_PATTERN = "^[0-9]+(\\.[0-9]{1,4})?$";
@@ -101,22 +101,25 @@ public class FieldVerifier
 	}
 	
 	/** nominel nettomængde i området 0,05 ­ 20,0 kg */
-	public static boolean isValidNomNetto(double nomNetto)
+	public static boolean isValidNomNetto(String nomNetto)
 	{
-		if(Double.toString(nomNetto).matches(QUANTITY_PATTERN))
-			if (nomNetto >= 0.05 && nomNetto <= 20)
-				return true;
-
+		
+		if(nomNetto.matches(QUANTITY_PATTERN)){
+			double doubleNomNetto = Double.valueOf(nomNetto);
+				if (doubleNomNetto >= 0.05 && doubleNomNetto <= 20)
+					return true;
+		}
 		return false;
 	}
 
 	/** tolerance i området 0,1 ­ 10,0 % */
-	public static boolean isValidTolerance(double tolerance)
+	public static boolean isValidTolerance(String tolerance)
 	{
-		if(Double.toString(tolerance).matches(TOLERANCE_PATTERN))
-			if (tolerance >= 0.1 && tolerance <= 10)
-				return true;
-
+		if(tolerance.matches(TOLERANCE_PATTERN)){
+			double doubleTolerance = Double.valueOf(tolerance);
+				if (doubleTolerance >= 0.1 && doubleTolerance <= 10)
+					return true;
+		}
 		return false;
 	}
 

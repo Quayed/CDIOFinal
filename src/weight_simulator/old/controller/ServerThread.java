@@ -1,4 +1,4 @@
-package weight_simulator.controller;
+package weight_simulator.old.controller;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,8 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import weight_simulator.boundary.IUI;
-import weight_simulator.data.WeightDTO;
+import weight_simulator.old.boundary.IUI;
+import weight_simulator.old.data.WeightDTO;
 
 public class ServerThread implements Runnable {
 

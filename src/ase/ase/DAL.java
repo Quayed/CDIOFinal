@@ -1,8 +1,19 @@
 package ase.ase;
 
-import dtu.cdio_final.server.dal.daoimpl.*;
-import dtu.cdio_final.server.dal.daointerfaces.*;
-import dtu.cdio_final.server.dal.connector.*;
+import dtu.cdio_final.server.dal.daoimpl.FormulaCompDAO;
+import dtu.cdio_final.server.dal.daoimpl.FormulaDAO;
+import dtu.cdio_final.server.dal.daoimpl.MaterialBatchDAO;
+import dtu.cdio_final.server.dal.daoimpl.MaterialDAO;
+import dtu.cdio_final.server.dal.daoimpl.ProductbatchCompDAO;
+import dtu.cdio_final.server.dal.daoimpl.ProductbatchDAO;
+import dtu.cdio_final.server.dal.daoimpl.UserDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IFormulaCompDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IFormulaDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IMaterialBatchDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IMaterialDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IProductbatchCompDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IProductbatchDAO;
+import dtu.cdio_final.server.dal.daointerfaces.IUserDAO;
 
 public class DAL implements IDAL {
 	private IUserDAO userDao;

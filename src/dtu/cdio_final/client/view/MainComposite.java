@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import dtu.cdio_final.client.Group13cdio_final;
+import dtu.cdio_final.client.Controller;
 
 public class MainComposite extends Composite {
 	interface MainUiBinder extends UiBinder<Widget, MainComposite> {
@@ -30,9 +30,10 @@ public class MainComposite extends Composite {
 		
 	}
 	
-	private void setContent(Composite composite){
+	private void setContent(PageComposite page){
 		contentPanel.clear();
-		contentPanel.add(composite);
+		contentPanel.add(page);
+		page.reloadPage();
 	}
 	
 	public void addPage(String linkText, PageComposite page){
@@ -48,16 +49,16 @@ public class MainComposite extends Composite {
 	}
 	
 	public void login(){
-		MaterialButton loginButton =new MaterialButton("Logout", "red", "light");
-		loginButton.addClickHandler(new ClickHandler(){
+		MaterialButton logoutButton = new MaterialButton("Logout", "red", "light");
+		logoutButton.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-				Group13cdio_final.logout();
+				Controller.logout();
 			}
 			
 		});
-		navBar.addWidget(loginButton);
+		navBar.addWidget(logoutButton);
 	}
 	
 	private class NavClickHandler implements ClickHandler
@@ -72,7 +73,6 @@ public class MainComposite extends Composite {
 		public void onClick(ClickEvent e)
 		{
 			setContent(page);
-			page.reloadPage();
 			MaterialNavBar.hideNav();
 		}
 	}

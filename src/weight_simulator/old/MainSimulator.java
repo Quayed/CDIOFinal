@@ -1,7 +1,7 @@
-package weight_simulator;
+package weight_simulator.old;
 
-import weight_simulator.boundary.UI;
-import weight_simulator.controller.Controller;
+import weight_simulator.old.boundary.UI;
+import weight_simulator.old.controller.Controller;
 
 public class MainSimulator {
 	

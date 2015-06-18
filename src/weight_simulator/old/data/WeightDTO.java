@@ -1,4 +1,4 @@
-package weight_simulator.data;
+package weight_simulator.old.data;
 
 public class WeightDTO {
 	private double gross = 0;
