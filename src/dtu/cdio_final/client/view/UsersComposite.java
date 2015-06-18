@@ -390,7 +390,6 @@ public class UsersComposite extends PageComposite {
 	}
 	
 	private boolean checkEditForm(){
-		Window.alert("Start edit form");
 		String oldUsername = ((Label) usersTable.getWidget(editRow+1, 1)).getText();
 		String currentUserName = userName.getText();
 		String oldIni = ((Label) usersTable.getWidget(editRow+1, 2)).getText();
@@ -403,13 +402,11 @@ public class UsersComposite extends PageComposite {
 		String role = userRole.getValue(userRole.getSelectedIndex()); 
 		String oldStatus = ((Label) usersTable.getWidget(editRow+1, 6)).getText();
 		String status = userStatus.getValue() ? "Active" : "Inactive";
-		Window.alert(oldRole + " " + role);
+		
 		if(oldUsername.equals(currentUserName) && oldIni.equals(ini) && oldUserCPR.equals(currentUserCPR) && oldUserPassword.equals(currentUserPassword) && oldRole.equals(role) && oldStatus.equals(status)) {
-			Window.alert("ENS");
 			submitButton.setStyleName("disableButton", true);
 			return false;
 		} else {
-			Window.alert("Ikke ens");
 			submitButton.setStyleName("disableButton", false);
 		}
 		
