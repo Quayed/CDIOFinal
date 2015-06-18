@@ -31,9 +31,11 @@ CREATE TABLE productbatch_component(pb_id INT, mb_id INT, tare REAL NOT NULL, ne
 
 
 INSERT INTO `user`(user_id, user_name, ini, cpr, password, role, status) VALUES
-(1, 'Angelo A', 'AA', '0707707007', 'lKje4fa', 4, 1),
-(2, 'Antonella B', 'AB', '0808808008', 'atoJ21v', 3, 1),
-(3, 'Luigi C', 'LC', '0909909009', 'jEfm5aQ', 1, 0);
+(1, 'Angelo A', 'AA', '1701114234', '#DTU#cdio2015', 1, 1),
+(2, 'Antonella B', 'AB', '1801114234', '#DTU#cdio2015', 2, 1),
+(3, 'Luigi C', 'AC', '1901114234', '#DTU#cdio2015', 3, 1);
+(4, 'Mario D', 'AD', '0102114234', '#DTU#cdio2015', 4, 1);
+(5, 'Mads Nyborg', 'MN', '1911991123', '#GWT#cdio2015', 1, 0);
 
 INSERT INTO material(material_id, material_name, provider) VALUES
 (1, 'dej', 'Wawelka'),
@@ -45,13 +47,13 @@ INSERT INTO material(material_id, material_name, provider) VALUES
 (7, 'champignon', 'Igloo Frostvarer');
 
 INSERT INTO materialbatch(mb_id, material_id, quantity) VALUES
-(1, 1, 1000),
-(2, 2, 300),
-(3, 3, 300),
-(4, 5, 100),
-(5, 5, 100), 
-(6, 6, 100),
-(7, 7, 100);
+(1, 1, 1.5),
+(2, 2, 4.5),
+(3, 3, 2.32),
+(4, 5, 3.31),
+(5, 5, 0.127), 
+(6, 6, 0.321),
+(7, 7, 5.93);
 
 INSERT INTO formula(formula_id, formula_name) VALUES
 (1, 'margherita'),
@@ -76,28 +78,28 @@ INSERT INTO formula_component(formula_id, material_id, nom_netto, tolerance) VAL
 (3, 7, 1.0, 0.1);
 
 INSERT INTO productbatch(pb_id, formula_id, status) VALUES
-(1, 1, 2), 
-(2, 1, 2),
+(1, 1, 3), 
+(2, 1, 3),
 (3, 2, 2),
 (4, 3, 1),
-(5, 3, 0);
+(5, 3, 1);
 
 
 INSERT INTO productbatch_component(pb_id, mb_id, tare, netto, user_id) VALUES
-(1, 1, 0.5, 10.05, 1),
-(1, 2, 0.5, 2.03, 1),
-(1, 4, 0.5, 1.98, 1),
+(1, 1, 0.5, 5.05, 4),
+(1, 2, 0.5, 2.03, 4),
+(1, 4, 0.5, 1.98, 4),
 
-(2, 1, 0.5, 10.01, 2),
-(2, 2, 0.5, 1.99, 2),
-(2, 5, 0.5, 1.47, 2),
+(2, 1, 0.5, 5.01, 4),
+(2, 2, 0.5, 1.99, 4),
+(2, 5, 0.5, 1.47, 4),
 
-(3, 1, 0.5, 10.07, 1),
-(3, 3, 0.5, 2.06, 2),
-(3, 4, 0.5, 1.55, 1),
-(3, 6, 0.5, 1.53, 2),
+(3, 1, 0.5, 5.07, 4),
+(3, 3, 0.5, 2.06, 4),
+(3, 4, 0.5, 1.55, 4),
+(3, 6, 0.5, 1.53, 4),
 
-(4, 1, 0.5, 10.02, 3),
-(4, 5, 0.5, 1.57, 3),
-(4, 6, 0.5, 1.03, 3),
-(4, 7, 0.5, 0.99, 3);
+(4, 1, 0.5, 5.02, 4),
+(4, 5, 0.5, 1.57, 4),
+(4, 6, 0.5, 1.03, 4),
+(4, 7, 0.5, 0.99, 4);

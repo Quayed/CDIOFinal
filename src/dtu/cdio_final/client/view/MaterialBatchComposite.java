@@ -154,7 +154,7 @@ public class MaterialBatchComposite extends PageComposite {
 				createQuantity.setText("");
 				createQuantity.backToDefault();
 				
-				MaterialToast.alert("The user has been created!");
+				MaterialToast.alert("The MaterialBatch has been created!");
 			}
 		});
 	}

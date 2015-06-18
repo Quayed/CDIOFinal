@@ -17,37 +17,14 @@ public class TestWeighHandler implements IWeightHandler {
 	};
 	int di = 0;
 	boolean[] confirms = {
-		true, true
+		true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true
 	};
 	int ci = 0;
-	int ii = 0;
 	
 	@Override
 	public void connect() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void instruction(String message) throws WeightException {
-		switch (ii++) {
-		case 0:
-			
-			break;
-		case 1:
-			gross = 0.2;
-			break;
-		case 2:
-			
-			break;
-		case 3:
-			gross -= 10.2;
-			gross = (double)Math.round(gross * 1000) / 1000;
-			System.out.println(gross);
-			break;
-		default:
-			break;
-		}
 	}
 
 	@Override
@@ -57,6 +34,17 @@ public class TestWeighHandler implements IWeightHandler {
 
 	@Override
 	public boolean confirm(String message) throws WeightException {
+		switch (ci) {
+			case 3:
+				gross = 0.3;
+				break;
+
+			case 4:
+				gross = 0;
+				break;
+			default:
+				break;
+		}
 		return confirms[ci++];
 	}
 
@@ -68,14 +56,12 @@ public class TestWeighHandler implements IWeightHandler {
 	@Override
 	public double tare() throws WeightException {
 		tare = gross;
-		System.out.println("tare: "+tare);
-		System.out.println("gross: "+gross);
 		return getWeight();
 	}
 
 	@Override
 	public double weigh(String message) throws WeightException {
-		gross += 10.0;
+		gross = 1.3;
 		return getWeight();
 	}
 
